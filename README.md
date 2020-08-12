@@ -1,39 +1,19 @@
-# Peaker
+# Eventer
 
-PEAKER ANALYSIS TOOLBOX
+EVENTER (with GUI)
+Software for the detection of spontaneous synaptic events
 
-Peaker Analysis Toolbox is a collection of scripts and functions for 
-the analysis of spontaneous and evoked synaptic currents or potentials
-in Matlab.
+Requires toolboxes:
+Statistics and Machine Learning Toolbox
+Parallel Toolbox (EventerGUI only)
+AppDesigner
 
+This software was written and designed using MATLAB R2018b
 
-
-VERSION HISTORY
-
-v1.1  Bug fixes
-
-v1.0	Initial release
-
-
-REQUIREMENTS
-
-Requires Matlab. Tested on Windows MATLAB version 7.4 (R2007A) and 
-Macintosh MATLAB version 7.9 (R2009b). The code is not compatibile with 
-GNU Octave. 
-
-Peaker Analysis Toolbox can only READ the following file formats:
-- Axon binary files (.abf, ABF versions 1 and 2) using abfload.m from 
-  Harald Hentschke, Forrest Collman and Ulrich Egert
-- Igor Binary Files (.ibw) using IBWread.m from Jakub Bialek
-- ACQ4 HDF5 binary files (.ma) using readMeta.m from Luke Campagnola
-  (uncompressed format only)
-- Tab-delimited text files (.txt)
-- Comma-separated values text files (.csv)
-
-Peaker Analysis Toolbox can READ and WRITE the following file formats:
-- Axon text files (.atf)
-- Igor text files (.itx) 
-- ephysIO HDF5 (MAT v7.3) binary files (.mat) 
+INSTALL guide
+Download and unzip the code
+Add the eventer folder with all subdirectories to the MATLAB path
+Start 'appdesigner', open the eventerapp.mlapp file and then click RUN.
 
 
 DISCLAIMER
@@ -54,11 +34,7 @@ who have learnt to use this analysis toolbox like it and still use it today.
 I will attempt to keep up with requests for help and for bug fixes but I do 
 not plan to add much more in the way of functionality.
 
-Requires toolboxes:
-Statistics and Machine Learning Toolbox
-Parallel Toolbox (EventerGUI only)
-Image Processing Toolbox
-Signal Processing Toolbox
+
 
 
 
