@@ -1,0 +1,24 @@
+Note regarding the use of matcfs64c.mexw64
+
+- 64 bit mex file for Matlab to interface to cfs files 
+(using CFS64c.dll).
+
+There is a tendency to use the same name for both
+32 bit and 64 bit versions of programs, where they are
+"compatible" (ie no additional functionality specifically
+for 64 bits is offered over the 32 bit version).  
+
+CED have done this with CFS32.dll, but I find this very confusing,
+so I have recompiled cfs.c (version 2.70) to CFS64c.dll.
+
+The Matlab nomenclature is clearer.  I have chosen 
+matcfs64c to indicate that this a compatible version,
+so no 64bit-specific variables have been used.
+
+matcfs64c.mexw64 should be put in a directory in the
+Matlab path, along with CFS64c.dll version as supplied.
+
+The mex file can be tested using the m files included,
+namely cfsRead64c and cfsWriteRL64c.
+
+JG Colebatch Sydney October, 2014
