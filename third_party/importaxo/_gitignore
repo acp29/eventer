@@ -1,0 +1,5 @@
+#.gitignore Matlab basic
+
+.DS_Store
+*~
+
