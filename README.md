@@ -1,6 +1,7 @@
 # Eventer
 
-EVENTER (with GUI)
+EVENTER 
+
 Software for the detection of spontaneous synaptic events
 
 Requires toolboxes:
