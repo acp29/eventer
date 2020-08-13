@@ -17,6 +17,9 @@ To install and run the source code:
 - Add the eventer folder with all subdirectories to the MATLAB path
 - Start 'appdesigner', open the eventerapp.mlapp file and then click RUN.
 
+The pre-print for this software is in preparation.
+
+Authors: Giles Winchester, Samuel Liu and Andrew Penn
 
 DISCLAIMER
 The matlab files included in this analysis toolbox I have written on-and-
