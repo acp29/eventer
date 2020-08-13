@@ -2,19 +2,20 @@
 
 EVENTER 
 
-Software for the detection of spontaneous synaptic events
+Software for the detection of spontaneous synaptic events by Fast Fourier Transform(FFT)-based deconvolution followed by event selection using Random Forest  Machine Learning
 
-Requires toolboxes:
-Statistics and Machine Learning Toolbox
-Parallel Toolbox (EventerGUI only)
-AppDesigner
+For standalone executables (Windows, Mac and Linux), please visit https://sourceforge.net/projects/eventer/ 
+
+The source code hosted on GitHub runs within Matlab and requires Appdesigner and the following toolboxes:
+- Statistics and Machine Learning Toolbox
+- Parallel Toolbox 
 
 This software was written and designed using MATLAB R2018b
 
-INSTALL guide
-Download and unzip the code
-Add the eventer folder with all subdirectories to the MATLAB path
-Start 'appdesigner', open the eventerapp.mlapp file and then click RUN.
+To install and run the source code:
+- Download and unzip the code
+- Add the eventer folder with all subdirectories to the MATLAB path
+- Start 'appdesigner', open the eventerapp.mlapp file and then click RUN.
 
 
 DISCLAIMER
