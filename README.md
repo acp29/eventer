@@ -50,6 +50,8 @@ Brighton, BN1 9QG.
 United Kingdom.
 
 Change log
+
 v1.0.0 First release
+
 v1.0.1 Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes
 
