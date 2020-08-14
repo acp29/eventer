@@ -33,7 +33,7 @@
 %
 %  --------------------- Notes on ephysIO's HDF5 file format ---------------------
 %
-%  The preferred ephysIO format (.mat) is a simple hdf5 format that is created for
+%  The preferred ephysIO format (.phy) is a simple hdf5 format that is created for
 %  convenience using the matlab save command (Matlab file version 7.3). It is
 %  designed for efficient data storage, where the int16 data array format is
 %  suitable for most applications.
@@ -64,9 +64,9 @@
 %  will return the proper (rescaled) data in the 'array' variable. If extracting the
 %  raw data directly from the HDF5 file then the following retransformation must be
 %  performed:
-%      > scale=double(h5read('test.mat','/scale'));
-%      > start=double(h5read('test.mat','/start'));
-%      > array=double(h5read('test.mat','/array'));
+%      > scale=double(h5read('test.phy','/scale'));
+%      > start=double(h5read('test.phy','/start'));
+%      > array=double(h5read('test.phy','/array'));
 %      > scale = 2.^(scale*ones(1,size(array,2)));
 %      > array = array./scale;
 %      > array = cat(2,start,array);
@@ -78,14 +78,15 @@
 %
 %  -------------------------------------------------------------------------------
 %
-%  Read and write support is provided for Axon text files (.atf), Igor
-%  text files (.itx) and ephysIO HDF5/MATLAB binary file format (.mat).
+%  Both read and write support is provided for Axon text files (.atf), Igor
+%  text files (.itx), ephysIO HDF5/MATLAB binary files (.phy), Stimfit HDF5
+%  binary files (*.h5), comma separated value text files (.csv) and tab-
+%  delimited text files (.txt, .asc).
 %
-%  Tab-delimited text files (.txt) or comma-separated values text files
-%  (.csv) containing the data array in the above format can also be read.
-%  If a header line is present it will be detected automatically.
-%  Support is also provided to export an ASCII tab-delimited text file
-%  (.asc) with waves stacked; suitable to import into WinWCP or WinEDR.
+%  If a header line is encountered when reading text file formats (.txt or
+%  .csv), it will be detected automatically. Support is also provided to
+%  export an ASCII tab-delimited text file (.asc) with waves stacked;
+%  suitable to import into WinWCP or WinEDR.
 %
 %  Zip (.zip) or gzip (.gz) compressed files of the supported input file
 %  formats will automatically be decompressed.
@@ -117,7 +118,8 @@
 %    Igor binary wave files (*.ibw, *.bwav) (versions 2 and 5 only)
 %    WaveSurfer binary (HDF5) files (*.h5)
 %    ACQ4 binary (HDF5) files (*.ma) (no compression only)
-%    ephysIO HDF5/MATLAB binary files (*.mat)
+%    GINJ2 MATLAB binary files (*.mat)
+%    ephysIO HDF5/MATLAB binary files (*.phy)
 %    Stimfit binary (HDF5) files (*.h5)
 %    Igor text files (*.itx,*.awav)
 %    Axon text files (*.atf)
@@ -125,7 +127,7 @@
 %    ASCII comma-separated values text files (*.csv) (with or without header)
 %
 %  Supported output file formats:
-%    HDF5 (Matlab v7.3) binary files (*.mat)
+%    ephysIO HDF5 (Matlab v7.3) binary files (*.phy)
 %    HDF5 (Stimfit) binary files (*.h5)
 %    Igor text files (*.itx)
 %    Axon text files (*.atf)
@@ -137,7 +139,7 @@
 %  a further .gz extenstion to the filename. Note that in most circumstances, compression
 %  offers little benefit to the specific HDF5 files saved by ephysIO.
 %
-%  ephysIO v1.9 (last updated: 08/11/2018)
+%  ephysIO v1.9.1 (last updated: 12/01/2020)
 %  Author: Andrew Charles Penn
 %  https://www.researchgate.net/profile/Andrew_Penn/
 %
@@ -226,7 +228,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     %D = dir(sprintf('%s*',filename));
     %[junk,idx] = sort([D.datenum],'descend');
     %filename = D(idx(1)).name;
-    pat = ['(.\.mat)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.abf)*'...
+    pat = ['(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.abf)*'...
            '(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
     if isempty(regexpi(filename(end-4:end),pat))
       error('unsupported filetype for load')
@@ -254,7 +256,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     else
       gzflag = 0;
     end
-    pat = '(.\.mat)*(.\.h5)*(.\.itx)*(.\.awav)*(.\.atf)*(.\.txt)*(.\.csv)*(.\.asc)*';
+    pat = '(.\.phy)*(.\.h5)*(.\.itx)*(.\.awav)*(.\.atf)*(.\.txt)*(.\.csv)*(.\.asc)*';
     if isempty(regexpi(filename(end-4:end),pat))
       error('unsupported filetype for save')
     end
@@ -311,14 +313,14 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
       notes={};
     end
     if exist('datatype','var')
-      if ~strcmpi(filename(end-3:end),'.mat')
+      if ~strcmpi(filename(end-3:end),'.phy')
         fprintf('datatype only used by ephysIO HDF5/MATLAB file format');
       end
       if ~strcmpi(datatype,'int16') && ~strcmpi(datatype,'int32')
         error('string defining the datatype must match either int16 or int32')
       end
     else
-      if strcmpi(filename(end-3:end),'.mat')
+      if strcmpi(filename(end-3:end),'.phy')
         datatype='int16';
       end
     end
@@ -328,8 +330,10 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
   % Perform input-output operation depending on function usage
   % LOAD DATA if only filename input argument is provided
   if (nargin <= 1)
-    if strcmpi(filename(end-3:end),'.mat')
+    if strcmpi(filename(end-3:end),'.phy')
       [array,xdiff,xunit,yunit,names,notes,saved] = MATload (filename); %#ok<*ASGLU>
+    elseif strcmpi(filename(end-3:end),'.mat')
+      [array,xdiff,xunit,yunit,names,notes] = ginj2load (filename,ch); %#ok<*ASGLU>
     elseif strcmpi(filename(end-3:end),'.txt')
       [array,xdiff,xunit,yunit,names,notes] = TXTread (filename,'\t');
     elseif strcmpi(filename(end-3:end),'.csv')
@@ -431,7 +435,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     % Remove unit prefixes and scale the data appropriately
     [array(:,1),xunit,SF] = scale_units(array(:,1),xunit);
     xdiff = xdiff*SF;
-    if abs(array(1,1))>0 && strcmpi(filename(end-3:end),'.mat')
+    if abs(array(1,1))>0 && strcmpi(filename(end-3:end),'.phy')
       warning('timebase offset will be reset to zero','TimeOffset')
       array(:,1) = xdiff * [0:size(array,1)-1]';
     end
@@ -478,7 +482,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     [array(:,2:end),yunit] = scale_units(array(:,2:end),yunit);
     % Set data values below the machine precision to 0
     array(abs(array)<eps) = 0;
-    if strcmpi(filename(end-3:end),'.mat')
+    if strcmpi(filename(end-3:end),'.phy')
       if any(isnan(array(:)))>0 || any(isinf(array(:)))>0
         error(['ephysIO binary files do not support the storage of NaN '...
               'or inf values in the data array'])
@@ -1538,9 +1542,10 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = MAload (filename,ch)
   end
 
   % (MATLAB) [PYTHON] Channel name
-  % (1)      [0]      command
+  % (1)      [0]      command (IGNORED)
   % (2)      [1]      primary
   % (3)      [2]      secondary
+  ch=ch+1;  % Ignore channel 1 (command channel); consider primary channel as the default
 
   % Read units for x and y axes
   xunit = metadata{2}.units(2);
@@ -1610,35 +1615,41 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = MAload (filename,ch)
   end
 
   % Parse metadata into notes array
-  notes = cell(0);
-  % Metadata organization has changed in newer versions of ACQ4 HDF5 data files
-  %obj = {'ClampState';'ClampParams';'DAQ';'Protocol'};
-  %for i=1:4
-  %  if i == 2
-  %    notes = cat(1,notes,[obj{i-1},'.',obj{i}]);
-  %    key = fieldnames(metadata{3}.(obj{i-1}).(obj{i}));
-  %    val = struct2cell(metadata{3}.(obj{i-1}).(obj{i}));
-  %  elseif i == 3
-  %    key = fieldnames(metadata{3}.(obj{i}));
-  %    notes = cat(1,notes,[obj{3},'.',char(key(ch))]);
-  %    tmp = struct2cell(metadata{3}.(obj{i}));
-  %    key = fieldnames(tmp{ch});
-  %    val = struct2cell(tmp{ch});
-  %  else
-  %    notes = cat(1,notes,[obj{i}]);
-  %    key = fieldnames(metadata{3}.(obj{i}));
-  %    val = struct2cell(metadata{3}.(obj{i}));
-  %  end
-  %  for j=1:numel(key)
-  %    if ischar(val{j})
-  %      notes = cat(1,notes,sprintf(['  ',char(key(j)),': ',val{j}]));
-  %    elseif isnumeric(val{j})
-  %      notes = cat(1,notes,sprintf(['  ',char(key(j)),': ',num2str(val{j})]));
-  %    else
-  %      % Do nothing
-  %    end
-  %  end
-  %end
+  try
+    % Suitable for older ACQ4 HDF5 data file versions
+    notes = cell(0);
+    obj = {'ClampState';'ClampParams';'DAQ';'Protocol'};
+    for i=1:4
+      if i == 2
+        notes = cat(1,notes,[obj{i-1},'.',obj{i}]);
+        key = fieldnames(metadata{3}.(obj{i-1}).(obj{i}));
+        val = struct2cell(metadata{3}.(obj{i-1}).(obj{i}));
+      elseif i == 3
+        key = fieldnames(metadata{3}.(obj{i}));
+        notes = cat(1,notes,[obj{3},'.',char(key(ch))]);
+        tmp = struct2cell(metadata{3}.(obj{i}));
+        key = fieldnames(tmp{ch});
+        val = struct2cell(tmp{ch});
+      else
+        notes = cat(1,notes,[obj{i}]);
+        key = fieldnames(metadata{3}.(obj{i}));
+        val = struct2cell(metadata{3}.(obj{i}));
+      end
+      for j=1:numel(key)
+        if ischar(val{j})
+          notes = cat(1,notes,sprintf(['  ',char(key(j)),': ',val{j}]));
+        elseif isnumeric(val{j})
+          notes = cat(1,notes,sprintf(['  ',char(key(j)),': ',num2str(val{j})]));
+        else
+          % Do nothing
+        end
+      end
+    end
+  catch
+    % Metadata organization has changed in newer versions of ACQ4 HDF5 data files
+    % For now, leave notes array empty until further development
+    notes = cell(0);
+  end
 
   % Convert list of wave names to character array
   names = char(names);
@@ -2435,7 +2446,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = TDMSload (filename,ch)
   if ch > nChan
     error('channel number out of range')
   end
-  
+
   % Load TDMS file
   [data] = tdmsreader(filename,ch,'all');
 
@@ -2683,5 +2694,38 @@ function H5save (filename,array,xunit,yunit,names,notes)
 
   % close file
   H5F.close (fileID);
+
+end
+
+%--------------------------------------------------------------------------
+
+function [array,xdiff,xunit,yunit,names,notes,clist] = ginj2load (filename,ch)
+
+  % Get channel information
+  load(filename);
+
+  % Get meta data
+  [nWaves,nPoints] = size(sweep_struct.data);
+  if ch > nWaves
+    error('Channel number out of range')
+  end
+  xOffset = 0;
+  xdiff = 1/sweep_struct.stiminfo.samplerate;
+  xunit = 's';
+  yunit = sweep_struct.stiminfo.in_units{ch};
+
+  % Create x dimension
+  x = 1:nPoints;
+  x = (x-1)';           % first datapoint at zero
+  x = xdiff*x+xOffset;
+
+  % Form data array
+  array = cat(2,x,sweep_struct.data(ch,:)');
+
+  % Create cell array of column names
+  names = {'Time',sweep_struct.filename};
+
+  % Pass stimdef into notes array
+  notes = sweep_struct.stimdef;
 
 end

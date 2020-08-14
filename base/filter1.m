@@ -12,18 +12,18 @@
 %     algorithm.
 %
 %     Low pass filtering is achieved using a digital Gaussian filter at the
-%     specified cut-off frequency LPF.
-%
+%     specified cut-off frequency LPF. 
+
 %     High pass filtering is achieved using a digital binomial filter
-%     (default method='binomial'). If the method is specified as 'median',
+%     (default method='binomial'). If the method is specified as 'median', 
 %     then a median filtering method is used at the specified HPF cut-off
 %     frequency and the resulting trace is subtracted from the input.
 %     The filter rank is estimated from the desired cut-off value for the
 %     analagous linear filter (boxcar). The median filter does not cause
 %     the edge effects that linear filters are prone to, but is slower
 %     Note that in the case of the median filter, the HPF value reported
-%     is an estimate of the -3 dB cut-off for the initial low-pass
-%     filtering prior to subtraction and not the -3 dB cutoff of the
+%     is an estimate of the -3 dB cut-off for the initial low-pass 
+%     filtering prior to subtraction and not the -3 dB cutoff of the 
 %     resulting high-pass filter.
 %
 %     In the first example of the function usage, filtering is by default
