@@ -49,7 +49,8 @@ University of Sussex,
 Brighton, BN1 9QG.
 United Kingdom.
 
-Change log
+
+CHANGE LOG
 
 v1.0.0 First release
 
