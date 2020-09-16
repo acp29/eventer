@@ -19,7 +19,8 @@ To install and run the source code:
 
 The pre-print for this software is in preparation.
 
-Authors: Giles Winchester, Samuel Liu and Andrew Penn
+In the mean time please cite: 
+Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging (Version 1.0.1). http://doi.org/10.5281/zenodo.3991677
 
 DISCLAIMER
 The matlab files included in this analysis toolbox I have written on-and-
