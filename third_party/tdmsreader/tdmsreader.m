@@ -224,8 +224,6 @@ data = Coef(1);
 for ii=2:n
     data = data + Coef(ii)*rawdata.^(ii-1);
 end
-    % add scale/gain settings from nidaq_scope (where scale = 2e-9 and gain = 20)
-    data = data*1e-10;
 end
 end
 % data = Coef(1) + Coef(2)*rawdata + Coef(3)*rawdata.^2 + Coef(4)*rawdata.^3;
