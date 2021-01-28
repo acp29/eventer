@@ -1773,9 +1773,9 @@ function [array,xdiff,xunit,yunit,names,notes] = IBWload (filename)
   % Get X dimension units
   try
     if isfield(S.waveHeader,'xUnits')
-      xunit = regexprep(S.waveHeader.xUnits,'''','');
+      xunit = regexprep(S.waveHeader.xUnits,{'[''\s]',char(0)},'');
     elseif isfield(S.waveHeader,'dimUnits')
-      xunit = regexprep(S.waveHeader.dimUnits,'''','');
+      xunit = regexprep(S.waveHeader.dimUnits,{'[''\s]',char(0)},'');
     end
     if isempty(xunit)
       error('invoke catch statement')
@@ -1783,7 +1783,7 @@ function [array,xdiff,xunit,yunit,names,notes] = IBWload (filename)
   catch
     xunit = strtrim(tmparr(find(strcmpi(tmparr,'xLabel'))+1));
     if isempty(xunit)
-      xunit = 's';
+      xunit = 'ms'; % defaults is ms
     end
   end
   if iscell(xunit)
