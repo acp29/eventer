@@ -1,6 +1,7 @@
 %  Function File: eventer
 %
 %  peak = eventer(file,TC,s,SF)
+%  peak = eventer(file,TC,s,SF,...,'method',method)
 %  peak = eventer(file,TC,s,SF,...,'exclude',exclude)
 %  peak = eventer(file,TC,s,SF,...,'criterion',criterion)
 %  peak = eventer(file,TC,s,SF,...,'rmin',rmin)
@@ -20,22 +21,28 @@
 %  peak = eventer(file,TC,s,SF,...,'globvar',globvar)
 %  [peak,IEI] = eventer(...)
 %
-%  peak = eventer(file,TC,s,SF) returns the amplitudes of peaks detected by
-%    an algorithm implementing FFT-based deconvolution of a wave composed
-%    of spontaneously occurring EPSC- or EPSP-like waveforms [1]. The
-%    algorithm uses a template modeled by the sum of two exponentials,
-%    whose time constants must be provided in units seconds as a vector
-%    (TC). The sign (s) of the event peak deflections in the wave file
-%    must be specified as '-' or '+'. Event times are then defined where
-%    there are maxima of delta-like waves exceeding a threshold, which
-%    is set to the standard deviation of the noise of the deconvoluted wave
-%    multiplied by a scale factor (SF). Events are then extracted as
-%    episodic data and the factor parameter of least-squares fits with the
-%    template define the peak amplitudes. See the associated input-output
-%    function ephysIO for details of supported input file formats. The file
-%    extension must be included in the filename of the file input argument.
-%    The template kinetics is modeled by the difference of 2 exponentials:
+%  peak = eventer(file,TC,s,SF) returns the amplitudes of spontaneous EPSC-
+%    or EPSP-like waveforms, detected either from the first derivative or by
+%    FFT-based deconvolution [1]. In both cases, a template modeled by the
+%    sum of two exponentials is required, whose time constants must be
+%    provided in units seconds as a vector (TC). The sign (s) of the event
+%    peak deflections in the wave file must be specified as '-' or '+'.
+%    Event times are then defined where there are maxima of delta-like waves
+%    exceeding a threshold, which is set to the standard deviation of the
+%    noise of the first derivative (or deconvoluted wave) multiplied by a
+%    scale factor (SF). Events are then extracted as episodic data and the
+%    factor parameter of least-squares fits with the template define the
+%    peak amplitudes. See the associated input-output function ephysIO for
+%    details of supported input file formats. The file extension must be
+%    included in the filename of the file input argument. The template
+%    kinetics is modeled by the difference of 2 exponentials:
 %      f(t) = exp ( - t / tau_decay ) - exp ( - t / tau_rise )
+%
+%  peak = eventer(file,TC,s,SF,...,'method',method) sets the detection
+%    method of eventer. The options available are 'deconvolution' (default)
+%    or 'derivative'. At very low sampling frequencies, the derivative
+%    method is preferable, in which case the template is only used for
+%    refitting events and applying the criterion for event screening.
 %
 %  peak = eventer(file,TC,s,SF,...,'exclude',exclude) sets exclusion zones,
 %    which must be specified as a 2-column matrix, where the first and
@@ -145,7 +152,7 @@
 %    EPSCs at the mossy fibre synapse on CA3 pyramidal cells of the rat
 %    hippocampus. J Physiol. 472:615-663.
 %
-%  eventer v1.5 (last updated: 27/07/2016)
+%  eventer v1.6 (last updated: 18/12/2020)
 %  Author: Andrew Charles Penn
 %  https://www.researchgate.net/profile/Andrew_Penn/
 
@@ -181,6 +188,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
 
   % Set additional options
   options = varargin;
+  method = 1+find(strcmp('method',options));
   excl = 1+find(strcmp('exclude',options));
   rmin = 1+find(strcmp('rmin',options));
   criterion = 1+find(strcmp('criterion',options));
@@ -200,6 +208,16 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   globvar = 1+find(strcmp('globvar',options));
   merge = 1+find(strcmp('merge',options));
   showfig = 1+find(strcmp('showfig',options));
+  absT = 1+find(strcmp('threshold',options));
+  if ~isempty(method)
+    try
+      method = options{method};
+    catch
+      method = 'Deconvolution';
+    end
+  else
+    method = 'Deconvolution';
+  end
   if ~isempty(excl)
     try
       excl = options{excl};
@@ -388,6 +406,15 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   else
     showfig = 'on';
   end
+  if ~isempty(absT)
+    try
+      absT = options{absT};
+    catch
+      absT = 0;
+    end
+  else
+    absT = 0;
+  end
 
   % Error checking
   if size(win,1)~=1 && size(win,2)~=2
@@ -508,13 +535,17 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     Template = Template*-1;
   end
 
-  % Perform fourier transform-based deconvolution (pad ends to mask end effects)
-  Template_FFT = fft(cat(1,Template,zeros(2*sample_rate,1)));
-  Trace_FFT = fft(bounce(Trace,sample_rate));
-  DEC = real(ifft(Trace_FFT./Template_FFT));
-  clear Trace_FFT Template_FFT
-  DEC(1:sample_rate) = [];
-  DEC(end-sample_rate+1:end) = [];
+  if strcmpi(method, 'Deconvolution')
+    % Perform fourier transform-based deconvolution (pad ends to mask end effects)
+    Template_FFT = fft(cat(1,Template,zeros(2*sample_rate,1)));
+    Trace_FFT = fft(bounce(Trace,sample_rate));
+    DEC = real(ifft(Trace_FFT./Template_FFT));
+    clear Trace_FFT Template_FFT
+    DEC(1:sample_rate) = [];
+    DEC(end-sample_rate+1:end) = [];
+  elseif strcmpi(method, 'Derivative')
+    DEC = [diff(Trace);0];
+  end
 
   % Band-pass filter the deconvoluted trace (default is 1-200 Hz)
   DEC = filter1 (DEC, t, hpf, lpf, 'median');
@@ -594,7 +625,13 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   % optimization result
   DEC = (DEC-p(2))/p(3);
   x = (x-p(2))/p(3);
-
+  
+  % Absolute threshold provided. Overide scale factor setting.
+  noiseSD = sigma*p(3);
+  if absT > 0
+    SF = absT/noiseSD;
+  end
+  
   % Scan superthreshold deconvoluted wave for local maxima (vectorized)
   N = numel(Trace); % Number of sample points in cropped wave
   npeaks = sum(diff(sign(diff(DEC)))==-2); % Total number of peaks without threshold
@@ -844,7 +881,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     fprintf(fid,'High-pass filter cut-off on deconvoluted wave (at -3 dB, in Hz): %.3g\n',hpf);
     fprintf(fid,'Low-pass filter cut-off on deconvoluted wave (at -3 dB, in Hz): %.3g\n',lpf);
     fprintf(fid,'Vector of model template time constants (in s): [%.3g,%.3g]\n',TC*1e3);
-    fprintf(fid,'Standard deviation of the noise of the deconvoluted wave (a.u.): %.3g\n',sigma*p(3));
+    fprintf(fid,'Standard deviation of the noise of the deconvoluted wave (a.u.): %.3g\n',noiseSD);
     fprintf(fid,'Scale factor of noise standard deviations for threshold setting: %.3g\n',SF);
     fprintf(fid,'Theoretical false positive detection rate before applying event criterion (in Hz): %.3g\n',(1-normcdf(SF))*sample_rate);
     fprintf(fid,'Sign of the event peaks: %s\n',s);
@@ -871,7 +908,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     chdir(filewave);
 
     % Save detection parameters and event amplitudes and times to text file
-    dlmwrite('_parameters',[TC';sigma*p(3);AnalysedTime;sample_rate;npeaks],'newline','pc')
+    dlmwrite('_parameters',[TC';noiseSD;AnalysedTime;sample_rate;npeaks],'newline','pc')
     dlmwrite('_offset',win(1),'newline','pc');
     if exist('summary.txt','file')~=0
       delete('summary.txt');
@@ -1054,7 +1091,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   fprintf(fid,'High-pass filter cut-off on deconvoluted wave (at -3 dB, in Hz): %.3g\n',hpf);
   fprintf(fid,'Low-pass filter cut-off on deconvoluted wave (at -3 dB, in Hz): %.3g\n',lpf);
   fprintf(fid,'Vector of model template time constants (in ms): [%.3g,%.3g]\n',TC*1e3);
-  fprintf(fid,'Standard deviation of the noise of the deconvoluted wave (a.u.): %.3g\n',sigma*p(3));
+  fprintf(fid,'Standard deviation of the noise of the deconvoluted wave (a.u.): %.3g\n',noiseSD);
   fprintf(fid,'Scale factor of noise standard deviations for threshold setting: %.3g\n',SF);
   fprintf(fid,'Theoretical false positive detection rate before applying event criterion (in Hz): %.3g\n',(1-normcdf(SF))*sample_rate);
   fprintf(fid,'Sign of the event peaks: %s\n',s);
@@ -1090,7 +1127,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   end
 
   % Save detection parameters and event amplitudes and times to text file
-  dlmwrite('_parameters',[TC';sigma*p(3);AnalysedTime;sample_rate;npeaks],'newline','pc')
+  dlmwrite('_parameters',[TC';noiseSD;AnalysedTime;sample_rate;npeaks],'newline','pc')
   dlmwrite('_offset',win(1),'newline','pc');
   if exist('summary.txt','file')~=0
     delete('summary.txt');
