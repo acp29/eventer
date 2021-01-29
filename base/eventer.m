@@ -1451,6 +1451,9 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     save('ensemble_average.txt','ensemble_average','-ascii','-tabs');
     save('fit.txt','fit','-ascii','-tabs');
     save('residuals.txt','residuals','-ascii','-tabs');
+    fid = fopen('event_counts.txt','w');
+    fprintf(fid,'%d\n',numtraces);
+    fclose(fid);
     ephysIO ('event_data.phy',events,xunit,yunit);
     ephysIO ('ensemble_average.phy',ensemble_average,xunit,yunit);
     if ~strcmpi(export,'none')
