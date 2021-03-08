@@ -1,9 +1,9 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration file="/home/acpennlab/Documents/MATLAB/eventer-master/eventer_R2019a.prj" location="/home/acpennlab/Documents/MATLAB/eventer-master" name="eventer_R2019a" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="2571127071" file="/home/acpennlab/Documents/MATLAB/eventer-master/eventer_R2019a.prj" location="/home/acpennlab/Documents/MATLAB/eventer-master" name="eventer_R2019a" preferred-package-location="/home/acpennlab/Documents/MATLAB/eventer-master/eventer_R2019a/for_redistribution" preferred-package-type="package.type.install" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>Eventer</param.appname>
     <param.icon />
     <param.icons />
-    <param.version>1.1</param.version>
+    <param.version>1.0</param.version>
     <param.authnamewatermark>Winchester, G., Liu, S., Steele, O.G., Azi</param.authnamewatermark>
     <param.email>A.C.Penn@sussex.ac.uk</param.email>
     <param.company>University of Sussex</param.company>
@@ -40,7 +40,7 @@ ${LD_LIBRARY_PATH}:MR/v96/runtime/glnxa64:MR/v96/bin/glnxa64:MR/v96/sys/os/glnxa
     <param.web.mcr>true</param.web.mcr>
     <param.package.mcr>false</param.package.mcr>
     <param.no.mcr>false</param.no.mcr>
-    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.web.mcr.name>Eventer_1.1.0_Linux_R2019a</param.web.mcr.name>
     <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
     <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
     <param.windows.command.prompt>false</param.windows.command.prompt>
@@ -58,6 +58,7 @@ ${LD_LIBRARY_PATH}:MR/v96/runtime/glnxa64:MR/v96/bin/glnxa64:MR/v96/sys/os/glnxa
     <unset>
       <param.icon />
       <param.icons />
+      <param.version />
       <param.description />
       <param.screenshot />
       <param.guid />
@@ -76,7 +77,6 @@ ${LD_LIBRARY_PATH}:MR/v96/runtime/glnxa64:MR/v96/bin/glnxa64:MR/v96/sys/os/glnxa
       <param.web.mcr />
       <param.package.mcr />
       <param.no.mcr />
-      <param.web.mcr.name />
       <param.package.mcr.name />
       <param.no.mcr.name />
       <param.windows.command.prompt />
