@@ -63,6 +63,8 @@ v1.1.0 Release version
 - Added a progress bar when applying wave filter
 - Added credits accessible by a 'Credits' button
 - Added capability to set an absolute threshold on the scale of the deconvoluted wave (as opposed to the relative threshold, which is a scale factor of the standard deviation of the noise)
+- Removed tab shortcut keys since they clash with other functionalities
 - Fixed bug that caused the event classification window to appear off the screen at low screen resolutions
 - Fixed bug that prevented filter settings from being loaded on all waves when loading an analysis.evt file
 - Fixed bug that caused incorrect scaling of data loaded from raw .tdms files
+- Fixed bug that prevented time constants for individual waves being applied correctly when running batch mode
