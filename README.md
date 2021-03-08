@@ -64,6 +64,7 @@ Additional features or feature enhancements:
 - Added a progress bar when applying wave filter
 - Added credits accessible by a 'Credits' button
 - Added capability to set an absolute threshold on the scale of the deconvoluted wave (as opposed to the relative threshold, which is a scale factor of the standard deviation of the noise)
+
 Bug fixes: 
 - Fixed bug that caused the event classification window to appear off the screen at low screen resolutions
 - Fixed bug that prevented filter settings from being loaded on all waves when loading an analysis.evt file
