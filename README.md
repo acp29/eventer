@@ -58,6 +58,7 @@ v1.0.0 First release
 v1.0.1 Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes
 
 v1.1.0 
+
 Additional features or feature enhancements:
 - GUI windows can now be resized
 - Under parallel settings, users can no longer attempt to set the number of processors beyond the number of physical cores
