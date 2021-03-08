@@ -58,14 +58,10 @@ v1.0.0 First release
 v1.0.1 Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes
 
 v1.1.0 
-
-Additional features or feature enhancements:
 - GUI windows can now be resized
 - Under parallel settings, users can no longer attempt to set the number of processors beyond the number of physical cores
 - Added a progress bar when applying wave filter
 - Added credits accessible by a 'Credits' button
 - Added capability to set an absolute threshold on the scale of the deconvoluted wave (as opposed to the relative threshold, which is a scale factor of the standard deviation of the noise)
-
-Bug fixes: 
 - Fixed bug that caused the event classification window to appear off the screen at low screen resolutions
 - Fixed bug that prevented filter settings from being loaded on all waves when loading an analysis.evt file
