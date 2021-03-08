@@ -57,7 +57,7 @@ v1.0.0 First release
 
 v1.0.1 Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes
 
-v1.1.0 
+v1.1.0 Release version
 - GUI windows can now be resized
 - Under parallel settings, users can no longer attempt to set the number of processors beyond the number of physical cores
 - Added a progress bar when applying wave filter
