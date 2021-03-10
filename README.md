@@ -1,16 +1,16 @@
 # Eventer
 
 EVENTER v1.1.0
+eventer.neuroscience@gmail.com
+https://eventerneuro.netlify.app/
 
-Software for the detection of spontaneous synaptic events by Fast Fourier Transform(FFT)-based deconvolution followed by event selection using Random Forest  Machine Learning
+Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging. Detection is achieved by Fast Fourier Transform(FFT)-based deconvolution followed by event selection automated by Random Forest Machine Learning.
 
-For standalone executables (Windows, Mac and Linux), please visit https://sourceforge.net/projects/eventer/
+Standalone executables (Windows, Mac and Linux) or MATLAB App are available from https://sourceforge.net/projects/eventer/
 
 The source code hosted on GitHub runs within Matlab and requires Appdesigner and the following toolboxes:
 - Statistics and Machine Learning Toolbox
-- Parallel Toolbox
-
-This software was written and designed using MATLAB R2018b
+- Parallel Toolbox (required only for 'Parallel' functionality)
 
 To install and run the source code:
 - Download and unzip the code
@@ -20,7 +20,7 @@ To install and run the source code:
 The pre-print for this software is in preparation.
 
 In the mean time please cite: 
-Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging (Version 1.0.1). http://doi.org/10.5281/zenodo.3991677
+Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging. http://doi.org/10.5281/zenodo.3991677
 
 DISCLAIMER
 The matlab files included in this analysis toolbox I have written on-and-
@@ -41,7 +41,6 @@ I will attempt to keep up with requests for help and for bug fixes but I do
 not plan to add much more in the way of functionality.
 
 
-
 Dr Andrew Penn,
 A.C.Penn@sussex.ac.uk.
 Sussex Neuroscience,
@@ -53,11 +52,12 @@ United Kingdom.
 
 CHANGE LOG
 
-v1.0.0 First release
+v1.0.0 First release (source code associated with MATLAB R2018b)
 
-v1.0.1 Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes
+v1.0.1 Bug fix for version 1.0(source code associated with MATLAB R2018b)
+- Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes 
 
-v1.1.0 Release version
+v1.1.0 Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)
 - GUI windows can now be resized
 - Under parallel settings, users can no longer attempt to set the number of processors beyond the number of physical cores
 - Added a progress bar when applying wave filter
@@ -69,3 +69,4 @@ v1.1.0 Release version
 - Fixed bug that prevented filter settings from being loaded on all waves when loading an analysis.evt file
 - Fixed bug that caused incorrect scaling of data loaded from raw .tdms files
 - Fixed bug that prevented time constants for individual waves being applied correctly when running batch mode
+- Added button to copy from fitted paramaters to template time constants
