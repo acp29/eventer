@@ -50,7 +50,7 @@ Brighton, BN1 9QG.
 United Kingdom.
 
 
-CHANGE LOG
+# CHANGE LOG
 
 v1.0.0 First release (source code associated with MATLAB R2018b)  
 
