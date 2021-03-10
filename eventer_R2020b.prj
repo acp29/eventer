@@ -12,7 +12,7 @@
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
     <param.email>eventer.neuroscience@gmail.com</param.email>
     <param.company />
-    <param.summary>Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging</param.summary>
+    <param.summary>Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}/misc/logo.png</param.screenshot>
     <param.guid />
@@ -101,6 +101,7 @@ ${DYLD_LIBRARY_PATH}:MR/v99/runtime/maci64:MR/v99/sys/os/maci64:MR/v99/bin/maci6
       <file>${PROJECT_ROOT}/base/mex/medianf_mex_maci64.mexmaci64</file>
       <file>${PROJECT_ROOT}/base/reduce_data.m</file>
       <file>${PROJECT_ROOT}/base/sinv.m</file>
+      <file>${PROJECT_ROOT}/misc/copy.png</file>
       <file>${PROJECT_ROOT}/misc/cursor-23231_1280.png</file>
       <file>${PROJECT_ROOT}/third_party/ImportHEKA/ImportHEKA.m</file>
       <file>${PROJECT_ROOT}/third_party/abfload/abfload.m</file>
