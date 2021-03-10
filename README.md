@@ -1,8 +1,8 @@
 # Eventer
 
-EVENTER v1.1.0
-eventer.neuroscience@gmail.com
-https://eventerneuro.netlify.app/
+EVENTER v1.1.0  
+eventer.neuroscience@gmail.com  
+https://eventerneuro.netlify.app/  
 
 Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging. Detection is achieved by Fast Fourier Transform(FFT)-based deconvolution followed by event selection automated by Random Forest Machine Learning.
 
@@ -52,12 +52,12 @@ United Kingdom.
 
 CHANGE LOG
 
-v1.0.0 First release (source code associated with MATLAB R2018b)
+v1.0.0 First release (source code associated with MATLAB R2018b)  
 
-v1.0.1 Bug fix for version 1.0(source code associated with MATLAB R2018b)
+v1.0.1 Bug fix for version 1.0(source code associated with MATLAB R2018b)  
 - Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes 
 
-v1.1.0 Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)
+v1.1.0 Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
 - GUI windows can now be resized
 - Under parallel settings, users can no longer attempt to set the number of processors beyond the number of physical cores
 - Added a progress bar when applying wave filter
@@ -69,4 +69,4 @@ v1.1.0 Release version (source code in two versions associated with MATLAB R2019
 - Fixed bug that prevented filter settings from being loaded on all waves when loading an analysis.evt file
 - Fixed bug that caused incorrect scaling of data loaded from raw .tdms files
 - Fixed bug that prevented time constants for individual waves being applied correctly when running batch mode
-- Added button to copy from fitted paramaters to template time constants
+- Added button to copy from fitted paramaters to template time constants  
