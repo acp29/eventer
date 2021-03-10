@@ -12,7 +12,7 @@ The source code hosted on GitHub runs within Matlab and requires Appdesigner and
 - Statistics and Machine Learning Toolbox
 - Parallel Toolbox (required only for 'Parallel' functionality)
 
-To install and run the source code:
+To install, run or edit the source code:
 - Download and unzip the code
 - Add the eventer folder with all subdirectories to the MATLAB path
 - Start 'appdesigner', open the eventerapp.mlapp file and then click RUN.
