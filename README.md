@@ -70,3 +70,8 @@ United Kingdom.
 - Fixed bug that caused incorrect scaling of data loaded from raw .tdms files  
 - Fixed bug that prevented time constants for individual waves being applied correctly when running batch mode  
 - Added button to copy from fitted parameters to template time constants  
+
+## Development roadmap  
+
+- Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
+- Add support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
