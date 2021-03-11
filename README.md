@@ -50,13 +50,13 @@ United Kingdom.
   
 ## Changelog
 
-** v1.0.0 ** First release (source code associated with MATLAB R2018b)  
+**v1.0.0** First release (source code associated with MATLAB R2018b)  
 
-** v1.0.1 ** Bug fix for version 1.0(source code associated with MATLAB R2018b)  
+**v1.0.1** Bug fix for version 1.0(source code associated with MATLAB R2018b)  
 
 - Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes 
 
-** v1.1.0 ** Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
+**v1.1.0** Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
 
 - GUI windows can now be resized  
 - Under parallel settings, users can no longer attempt to set the number of processors  beyond the number of physical cores  
