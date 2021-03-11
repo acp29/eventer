@@ -1,7 +1,7 @@
 # Eventer
 Copyright © 2019  
-eventer.neuroscience@gmail.com  
-https://eventerneuro.netlify.app/  
+Email: eventer.neuroscience@gmail.com  
+Website: https://eventerneuro.netlify.app/  
 Eventer is distributed under the GNU General Public Licence v3.0  
   
 *Eventer is software for the detection of spontaneous synaptic events measured by electrophysiology or imaging. Detection is achieved by Fast Fourier Transform(FFT)-based deconvolution followed by event selection automated by machine learning using random forests.*  
