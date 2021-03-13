@@ -52,7 +52,7 @@ United Kingdom.
 
 **v1.0.0** First release (source code associated with MATLAB R2018b)  
 
-**v1.0.1** Bug fix for version 1.0(source code associated with MATLAB R2018b)  
+**v1.0.1** Bug fix for version 1.0 (source code associated with MATLAB R2018b)  
 
 - Bug fix, old version of ephysIO incompatibility with GUI load/save filetypes 
 
