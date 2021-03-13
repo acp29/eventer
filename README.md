@@ -73,6 +73,7 @@ United Kingdom.
 
 ## Development roadmap  
 
+- Enable GPU-accelerated ploting of graphs
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
 - Add support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
 - Add offline series resistance compensation feature
