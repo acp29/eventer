@@ -52,7 +52,9 @@
 %
 %  peak = eventer(file,TC,s,SF,...,'criterion',criterion) sets the type of
 %    correlation coefficient used when comparing the fitted model template
-%    with each event. Options are 'Pearson', 'Spearman' or 'Kendall'
+%    with each event. Options are 'Pearson', 'Spearman' or 'Kendall', or
+%    at an object of class TreeBagger for event classification (machine
+%    learning).
 %
 %  peak = eventer(file,TC,s,SF,...,'rmin',rmin) sets the correlation
 %    coefficient for fitted model template and the event. Events with a
