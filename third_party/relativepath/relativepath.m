@@ -22,6 +22,7 @@ function  rel_path = relativepath( tgt_path, act_path )
 %   See also:  ABSOLUTEPATH PATH
 
 %   Jochen Lenz
+%   Andrew Penn: edit to make case-sensitive (23/03/2021)
 
 
 % 2nd parameter is optional:
@@ -39,10 +40,8 @@ end
 if  length(tgt_path) == 0   |   ~isequal(tgt_path(end),filesep)
    tgt_path = [tgt_path filesep];
 end
-
-% Convert to all lowercase:
-[act_path] = fileparts( lower(act_path) );
-[tgt_path] = fileparts( lower(tgt_path) );
+[act_path] = fileparts( act_path );
+[tgt_path] = fileparts( tgt_path );
 
 % Create a cell-array containing the directory levels:
 act_path_cell = pathparts(act_path);
@@ -85,6 +84,11 @@ elseif  ~isequal(rel_path(1),'.')
    rel_path = ['.' filesep rel_path];
 end
 
+% Remove final filesep if destination is a file
+if  ~isfolder(rel_path)
+   rel_path(end) = '';    
+end
+                       
 return
 
 % -------------------------------------------------
