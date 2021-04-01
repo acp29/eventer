@@ -71,6 +71,16 @@ United Kingdom.
 - Fixed bug that prevented time constants for individual waves being applied correctly when running batch mode  
 - Added button to copy from fitted parameters to template time constants  
 
+**v1.1.1** Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
+
+- Fixed bug where file open dialogue stays behind eventer app
+- Changed handling of path's to be case sensitive
+- Added ability to set units when importing data from raw text files
+- Added ability to set scale factor when loading tdms files
+- Fixed bug after cancellation of model file open dialogue 
+- Changed wave dropdown menu interuption setting from cancel to queue
+- exported the appdesigner to .m file to simplify requesting changes to the source code via GitHub
+
 ## Development roadmap  
 
 - Add option to set units of input data files when loading raw .txt or .csv files  
