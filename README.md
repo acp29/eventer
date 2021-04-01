@@ -83,7 +83,7 @@ United Kingdom.
 
 ## Development roadmap  
 
-- Add option to set units of input data files when loading raw .txt or .csv files  
+- Reduce memory footprint of eventer  
 - Enable GPU-accelerated ploting of graphs
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
 - Add support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
