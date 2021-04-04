@@ -154,7 +154,7 @@
 %    EPSCs at the mossy fibre synapse on CA3 pyramidal cells of the rat
 %    hippocampus. J Physiol. 472:615-663.
 %
-%  eventer v1.6 (last updated: 18/12/2020)
+%  eventer v1.7 (last updated: 05/04/2021)
 %  Author: Andrew Charles Penn
 %  https://www.researchgate.net/profile/Andrew_Penn/
 
@@ -689,9 +689,9 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
       idx = find(Template==min(Template));
     end
     templateTime = idx+round(sample_rate*tau_decay*taus);
-	if templateTime > samples_post
-	  error('Event window size is to small for the events')
-	end
+    if templateTime > samples_post
+      error('Event window size is to small for the events')
+    end
     numelBase = round(base*sample_rate);
     A = [zeros(numelBase,1); Template(1:templateTime)];
     l = length(A);
@@ -708,53 +708,52 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     rstdev = NaN(n,1); % preallocation
     rskew = NaN(n,1);  % preallocation
     r = NaN(n,1);      % preallocation
+    k = NaN(n,1);      % preallocation
     before = NaN(n,1); % preallocation
     after = NaN(n,1);  % preallocation
     tzero = dsearchn(t_fit,0);
     for i=1:n
       % For fitting discard any region of overlap with next event
       if i < n
-        k = min(Event_idx(i)+templateTime,Event_idx(i+1))-Event_idx(i)+numelBase;
+        k(i) = min(Event_idx(i)+templateTime,Event_idx(i+1))-Event_idx(i)+numelBase;
       else
-        k = min(Event_idx(i)+templateTime,N)-Event_idx(i)+numelBase;
+        k(i) = min(Event_idx(i)+templateTime,N)-Event_idx(i)+numelBase;
       end
       % Perform linear least-squares fit using singular value decomposition on events
-      kmin = sinv(A(1:k,:)'*A(1:k,:))*A(1:k,:)'*y_fit(1:k,i);
+      kmin = sinv(A(1:k(i),:)'*A(1:k(i),:))*A(1:k(i),:)'*y_fit(1:k(i),i);
       OFFSET(i) = kmin(1);
       SCALE(i) = abs(kmin(2)); % Absolute value constraint: The template cannot be inverted
       y_template(:,i) = SCALE(i)*A(:,2)+OFFSET(i);
-      r(i) = corr(y_template(1:k,i),y_fit(1:k,i),'type',coeff);
-      residuals = y_fit(1:k,i) - y_template(1:k,i);
-      [tpeak(i), t50(i), tdecay(i), auc(i), skew(i)] = shape(t_fit(1:k),y_fit(1:k,i),OFFSET(i),sample_rate,s);
+      r(i) = corr(y_template(1:k(i),i),y_fit(1:k(i),i),'type',coeff);
+      residuals = y_fit(1:k(i),i) - y_template(1:k(i),i);
+      [tpeak(i), t50(i), tdecay(i), auc(i), skew(i)] = shape(t_fit(tzero:k(i)),y_fit(tzero:k(i),i),OFFSET(i),sample_rate,s);
       rstdev(i) = std(residuals);
       rskew(i) = skewness(residuals);
-      after(i) = (k - numelBase)/sample_rate; % Truncated time to next event
+      after(i) = (k(i) - numelBase)/sample_rate; % Truncated time to next event
       % Time-to-peak dead time. Discard events that are proceeded by another event
       % before the initial event reaches it's peaks
-      if k < numelBase+idx
+      if k(i) < numelBase+idx
         r(i) = -inf;
       end
     end
-    tpeak = tpeak - base;
-    y_events = y_events-ones(length(t_events),1)*OFFSET;
 
     % Create feature matrix
     before = circshift(after,1); before(1) = templateTime / sample_rate;
-    ampl = SCALE';
-    features = [tpeak t50 tdecay auc skew ampl r rstdev before after];
+    features = [tpeak t50 tdecay auc skew SCALE' r rstdev before after];
     % Description of features
     %  1)  tpeak: time-to-peak
     %  2)  t50: duration of event above half-maximum amplitude (approximates FWHM)
     %  3)  tdecay: duration of event post-peak above half-maximum amplitude (approximates decay half-life)
     %  4)  auc: area-under-curve of the event
     %  5)  skew: skewness metric for the distribution of the event sample points around the baseline
-    %  6)  ampl: event amplitude calculated from template fitting
+    %  6)  SCALE: event amplitude estimated from template fitting
     %  7)  r: correlation coefficient of the template fitting
     %  8)  rstdev: standard deviation of residuals from the fit
     %  9)  before: time from preceding event (truncated)
     %  10) after: time to next event (truncated)
 
     % Discard events that are poorly correlated with the fitted template (r < rmin)
+    % or are classified as false events by a TreeBagger model
     if strcmpi(class(criterion),'TreeBagger')
       out = predict(criterion,features);
       ridx = find(cell2mat(out)=='0');
@@ -775,7 +774,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     rstdev(ridx) = [];
     rskew(ridx) = [];
     r(ridx) = [];
-    ampl(ridx) = [];
+    k(ridx) = [];
     before(ridx) = [];
     after(ridx) = [];
     y_events(:,ridx) = [];
@@ -784,17 +783,35 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     features(ridx,:) = [];
     n = numel(Event_idx);
     y_avg = mean(y_fit,2);
-    peak = SCALE';
-
-    % Create wave of fitted templates to overlay onto the event wave
-    % Note that the baseline period is not plotted
-    FITtrace = nan(N,1);
+               
+    % Create wave of chebyshev fits to overlay onto the event wave
+    sz = size(y_fit);
+    y_chebyfits = NaN(sz);
+    FITtrace = NaN(N,1);
     l = length(t_fit(tzero:end));
+    stats = cell(n,1);
+    rise = NaN(n,1);
+    decay = NaN(n,1);
     for i=1:n
-      k = min(Event_idx(i)+(l-1),N);
-      FITtrace(Event_idx(i):k) = y_template(tzero:tzero+k-Event_idx(i),i);
+      m = min(Event_idx(i)+(l-1),N);
+      [y_chebyfits(tzero:k(i),i), stats{i}] = chebexp(t_fit(tzero:k(i)), y_fit(tzero:k(i),i),2);
+      FITtrace(Event_idx(i):m) = y_chebyfits(tzero:tzero+m-Event_idx(i),i);
       FITtrace(Event_idx(i)-1) = NaN;
+      if isreal(stats{i}.tau) && all(stats{i}.tau>0) && diff(stats{i}.tau)>0 
+        rise(i) = stats{i}.tau(1);
+        decay(i) = stats{i}.tau(2);
+      end
     end
+    
+    % Calculate event baseline and peak amplitude
+    y_baseline = median(y_fit(1:tzero-1,:));
+    if s=='+'
+      peak = max(y_chebyfits)-y_baseline;
+    elseif s=='-'
+      peak = min(y_chebyfits)-y_baseline;
+    end
+    y_events = y_events-ones(length(t_events),1)*y_baseline;
+               
   end
 
   % Get screen size and set figure sizes
@@ -920,7 +937,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
 
     if merge == 1
       merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus);
-	end
+    end
 
     return
 
@@ -936,12 +953,12 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   ylimits = [y_minlim,y_maxlim]; % Encoded y-axis autoscaling
   if ~isempty(regexpi(vector,figform))
     try
-      reduce_plot(t_events,y_events,'color',[0.85,0.85,0.85]);
+      reduce_plot(t_events,y_events,'color',[0.75,0.75,0.75]);
     catch
-      plot(t_events,y_events,'color',[0.85,0.85,0.85]);
+      plot(t_events,y_events,'color',[0.75,0.75,0.75]);
     end
   else
-    plot(t_events,y_events,'color',[0.85,0.85,0.85]);
+    plot(t_events,y_events,'color',[0.75,0.75,0.75]);
   end
   ax = gca;
   ax.Toolbar.Visible = 'off';
@@ -1017,12 +1034,12 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   ylimits = [y_minlim y_maxlim]; % Encoded y-axis autoscaling
   if ~isempty(regexpi(vector,figform))
     try
-      reduce_plot(t,Trace,'-','color',[0.85,0.85,0.85],'linewidth',1.25);
+      reduce_plot(t,Trace,'-','color',[0.75,0.75,0.75],'linewidth',1.25);
     catch
-      plot(t,Trace,'-','color',[0.85,0.85,0.85]);
+      plot(t,Trace,'-','color',[0.75,0.75,0.75]);
     end
   else
-    plot(t,Trace,'-','color',[0.85,0.85,0.85]);
+    plot(t,Trace,'-','color',[0.75,0.75,0.75]);
   end
   ax = gca;
   ax.Toolbar.Visible = 'off';
@@ -1036,6 +1053,8 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   else
     plot(t,FITtrace,'-r');
   end
+  plot(Event_time,y_baseline,'+g');
+  plot(Event_time+tpeak,peak+y_baseline,'+b');
   hold off;
   xlim([min(t),max(t)]);
   ylim([ylimits(1), ylimits(2)]);
@@ -1068,7 +1087,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   else
     error('exclusion method not recognised')
   end
-  Amplitude = mean(SCALE);
+  Amplitude = mean(peak);
 
   % Print basic information
   %fprintf(['--------------------------EVENTER---------------------------\n',...
@@ -1140,8 +1159,9 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   end
   chdir('txt');
   dlmwrite('times.txt',Event_time,'delimiter','\t','newline','pc');
-  peak = SCALE';
-  dlmwrite('peak.txt',SCALE','delimiter','\t','newline','pc');
+  dlmwrite('peak.txt',peak','delimiter','\t','newline','pc');
+  dlmwrite('rise.txt',rise,'delimiter','\t','newline','pc');
+  dlmwrite('decay.txt',decay,'delimiter','\t','newline','pc');
   dlmwrite('IEI.txt',IEI,'delimiter','\t','newline','pc');
   dlmwrite('features.txt',features,'delimiter','\t','newline','pc');
   cd ..
@@ -1262,13 +1282,13 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     ~strcmp(dirname{i},'.') &&...
     ~strcmp(dirname{i},'..')
       count = count+1;
-	  if i==3
-	    chdir(char(dirname{i}));
-	  elseif i>3
+      if i==3
+        chdir(char(dirname{i}));
+      elseif i>3
         %chdir(['../',dirname{i}]);
-	    location = strcat(root,filesep,dirname{i});
-	    chdir(char(location));
-	  end
+        location = strcat(root,filesep,dirname{i});
+        chdir(char(location));
+      end
       if exist('event_data.phy','file')
         [temp,xdiff,xunit,yunit] = ephysIO('event_data.phy');
         temp(:,1) = temp(:,1)+win(1);
@@ -1302,6 +1322,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
         cd txt
         IEI{i,1} = load('-ascii','IEI.txt');
         peak{i,1} = load('-ascii','peak.txt');
+        rise{i,1} = load('-ascii','rise.txt');
+        decay{i,1} = load('-ascii','decay.txt');
         if exist('features.txt','file')
           features{i,1} = load('-ascii','features.txt');
         end
@@ -1310,7 +1332,7 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
       % The name in the directory list is not a folder suitable for the
       % merge process so do nothing
     end
-	%chdir(root);
+    %chdir(root);
   end
   chdir(root);
   % Overide data units with configurationn argument
@@ -1332,6 +1354,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     y = cell2mat(data);
     IEI = cell2mat(IEI);
     peak = cell2mat(peak);
+    rise = cell2mat(rise);
+    decay = cell2mat(decay);
     if exist('features','var')
       features = cell2mat(features);
     end
@@ -1365,18 +1389,18 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
       ydata = y_avg(idx)*NF;
     end
     fun3 = @(p,tdata)p(1)*(-exp(-tdata/p(2))+exp(-tdata/p(3)));
-	try
+    try
       [p,resnorm,residual,exitflag] = lsqfit(fun3,p0,tdata,ydata,[],[],optimoptions);
       tpeak = p(3)*p(2)/(p(3)-p(2))*log(p(3)/p(2));
       fitAmplitude = abs((fun3(p,tpeak))/NF);
       fitIntegral = abs(p(1)*(p(3)-p(2))/NF);
       fit = fun3(p,tdata)/NF;
       residuals = y_avg(idx)-fit;
-	  errflag = 0;
-	catch
-	  % do nothing
-	  errflag = 1;
-	end
+      errflag = 0;
+    catch
+      % do nothing
+      errflag = 1;
+    end
 
     % Get screen size and set figure sizes
     set(0,'units','pixels');
@@ -1400,12 +1424,12 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     ylimits = [y_minlim y_maxlim]; % Encoded y-axis autoscaling
     if ~isempty(regexpi(vector,figform))
       try
-        reduce_plot(t,y,'color',[0.85,0.85,0.85]);
+        reduce_plot(t,y,'color',[0.75,0.75,0.75]);
       catch
-        plot(t,y,'color',[0.85,0.85,0.85]);
+        plot(t,y,'color',[0.75,0.75,0.75]);
       end
     else
-      plot(t,y,'color',[0.85,0.85,0.85]);
+      plot(t,y,'color',[0.75,0.75,0.75]);
     end
     ax = gca;
     ax.Toolbar.Visible = 'off';
@@ -1413,20 +1437,20 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     if ~isempty(regexpi(vector,figform))
       try
         reduce_plot(t,y_avg,'-b');
-		if errflag < 1
+        if errflag < 1
           reduce_plot(tdata,fit,'r-','linewidth',2);
-		end
+        end
       catch
         plot(t,y_avg,'-b');
-		if errflag < 1
+        if errflag < 1
           plot(tdata,fit,'r-','linewidth',2);
-		end
+        end
       end
     else
       plot(t,y_avg,'-b');
-	  if errflag < 1
+      if errflag < 1
         plot(tdata,fit,'r-','linewidth',2);
-	  end
+      end
     end
     xlim(win);
     ylim([ylimits(1), ylimits(2)]);
@@ -1445,9 +1469,9 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     end
     box('off'); grid('off');
     hold off;
-	if errflag > 0
-	  error('Fit to ensemble average event failed');
-	end
+    if errflag > 0
+      error('Fit to ensemble average event failed');
+    end
 
     % Save data
     save('ensemble_average.txt','ensemble_average','-ascii','-tabs');
@@ -1493,6 +1517,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     cd('txt')
     dlmwrite('IEI.txt',IEI,'delimiter','\t','newline','pc');
     dlmwrite('peak.txt',peak,'delimiter','\t','newline','pc');
+    dlmwrite('rise.txt',rise,'delimiter','\t','newline','pc');
+    dlmwrite('decay.txt',decay,'delimiter','\t','newline','pc');
     if exist('features','var')
       dlmwrite('features.txt',features,'delimiter','\t','newline','pc');
     end
