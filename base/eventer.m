@@ -790,18 +790,18 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     FITtrace = NaN(N,1);
     l = length(t_fit(tzero:end));
     stats = cell(n,1);
-    rise = NaN(n,1);
-    decay = NaN(n,1);
+    %rise = NaN(n,1);
+    %decay = NaN(n,1);
     for i=1:n
       m = min(Event_idx(i)+(l-1),N);
       [y_chebyfits(tzero:k(i),i), stats{i}] = chebexp(t_fit(tzero:k(i)), y_fit(tzero:k(i),i),2);
       %FITtrace(Event_idx(i):m) = y_chebyfits(tzero:tzero+m-Event_idx(i),i); % Use Chebyshev fits in Figure 5 plot
       FITtrace(Event_idx(i):m) = y_template(tzero:tzero+m-Event_idx(i),i);   % Use Template fits in Figure 5 plot
       FITtrace(Event_idx(i)-1) = NaN;
-      if isreal(stats{i}.tau) && all(stats{i}.tau>0) && diff(stats{i}.tau)>0 
-        rise(i) = stats{i}.tau(1);
-        decay(i) = stats{i}.tau(2);
-      end
+      %if isreal(stats{i}.tau) && all(stats{i}.tau>0) && diff(stats{i}.tau)>0 
+      %  rise(i) = stats{i}.tau(1);
+      %  decay(i) = stats{i}.tau(2);
+      %end
     end
     
     % Calculate event baseline and peak amplitude
@@ -813,6 +813,12 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     end
     peak = peak - y_baseline;  % subtract baseline from peak amplitudes
     y_events = y_events-ones(length(t_events),1)*y_baseline;
+               
+    % Calculate peak times in Chebyshev fits
+    %for i=1:n    
+    %  peakidx = min(find(y_chebyfits(:,i) == peak(i)));
+    %  tpeak(i) = t_fit(peakidx,1);  % peak time correction using Chebyshev fit
+    %end
                
   end
 
@@ -1162,8 +1168,8 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   chdir('txt');
   dlmwrite('times.txt',Event_time,'delimiter','\t','newline','pc');
   dlmwrite('peak.txt',peak','delimiter','\t','newline','pc');
-  dlmwrite('rise.txt',rise,'delimiter','\t','newline','pc');
-  dlmwrite('decay.txt',decay,'delimiter','\t','newline','pc');
+  %dlmwrite('rise.txt',rise,'delimiter','\t','newline','pc');
+  %dlmwrite('decay.txt',decay,'delimiter','\t','newline','pc');
   dlmwrite('IEI.txt',IEI,'delimiter','\t','newline','pc');
   dlmwrite('features.txt',features,'delimiter','\t','newline','pc');
   cd ..
@@ -1519,8 +1525,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     cd('txt')
     dlmwrite('IEI.txt',IEI,'delimiter','\t','newline','pc');
     dlmwrite('peak.txt',peak,'delimiter','\t','newline','pc');
-    dlmwrite('rise.txt',rise,'delimiter','\t','newline','pc');
-    dlmwrite('decay.txt',decay,'delimiter','\t','newline','pc');
+    %dlmwrite('rise.txt',rise,'delimiter','\t','newline','pc');
+    %dlmwrite('decay.txt',decay,'delimiter','\t','newline','pc');
     if exist('features','var')
       dlmwrite('features.txt',features,'delimiter','\t','newline','pc');
     end
@@ -1563,4 +1569,3 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
   chdir(cwd);
 
 end
-
