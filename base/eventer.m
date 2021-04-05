@@ -812,9 +812,9 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     end
     for i=1:n    
       peakidx = min(find(y_chebyfits(:,i) == peak(i)));
-      tpeak(i) = t_fit(peakidx,1);
+      tpeak(i) = t_fit(peakidx,1);  % correct peak time from Chebyshev fit
     end
-    peak = peak - y_baseline;
+    peak = peak - y_baseline;  % subtract baseline from peak amplitudes
     y_events = y_events-ones(length(t_events),1)*y_baseline;
                
   end
@@ -1566,4 +1566,3 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
   chdir(cwd);
 
 end
-
