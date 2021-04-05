@@ -806,10 +806,15 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     % Calculate event baseline and peak amplitude
     y_baseline = median(y_fit(1:tzero-1,:));
     if s=='+'
-      peak = max(y_chebyfits)-y_baseline;
+      peak = max(y_chebyfits);
     elseif s=='-'
-      peak = min(y_chebyfits)-y_baseline;
+      peak = min(y_chebyfits);
     end
+    for i=1:n    
+      peakidx = min(find(y_chebyfits(:,i) == peak(i)));
+      tpeak(i) = t_fit(peakidx,1);
+    end
+    peak = peak - y_baseline;
     y_events = y_events-ones(length(t_events),1)*y_baseline;
                
   end
@@ -1561,3 +1566,4 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
   chdir(cwd);
 
 end
+
