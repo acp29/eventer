@@ -577,7 +577,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                             return
                         end
                         if (app.S.xdiff == 0)
-                            errMsg = 'The data must have been sampled at even intervals.';
+                            errMsg = 'The data must be sampled at even intervals.';
                             f = errordlg(errMsg,'Error');
                             set(f,'WindowStyle','modal');
                             uiwait(f);
@@ -590,7 +590,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         app.S.xdiff = app.S.xdiff*app.xSF;
                         [app.S.array(:,2:end),app.S.yunit, app.ySF] = app.scale_units(app.S.array(:,2:end),app.S.yunit);
                         if ~any(strcmp(app.S.yunit,{'A','V','au',''}))
-                            errMsg = 'Base units not recognised. If specified, units must be A, V or au';
+                            errMsg = 'Base units not recognised. If specified, units must be A, V or au.';
                             f = errordlg(errMsg,'Error');
                             set(f,'WindowStyle','modal');
                             uiwait(f);
@@ -3441,7 +3441,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.1.1",...
+                   "\fontsize{12}\color{black}v1.2.0",...
                    "\fontsize{10}Compiled for Matlab 2020b (9.9) Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
