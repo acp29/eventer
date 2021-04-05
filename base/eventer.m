@@ -1362,8 +1362,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     y = cell2mat(data);
     IEI = cell2mat(IEI);
     peak = cell2mat(peak);
-    rise = cell2mat(rise);
-    decay = cell2mat(decay);
+    %rise = cell2mat(rise);
+    %decay = cell2mat(decay);
     if exist('features','var')
       features = cell2mat(features);
     end
