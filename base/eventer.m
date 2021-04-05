@@ -1330,8 +1330,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
         cd txt
         IEI{i,1} = load('-ascii','IEI.txt');
         peak{i,1} = load('-ascii','peak.txt');
-        rise{i,1} = load('-ascii','rise.txt');
-        decay{i,1} = load('-ascii','decay.txt');
+        %rise{i,1} = load('-ascii','rise.txt');
+        %decay{i,1} = load('-ascii','decay.txt');
         if exist('features.txt','file')
           features{i,1} = load('-ascii','features.txt');
         end
