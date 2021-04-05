@@ -553,7 +553,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         % Enter units for raw text files if they are not
                         % defined in a header
                         prompt = {'Enter the units for x (e.g. ms):','Enter the units for y (e.g. pA):'};
-                        app.confirmedUnits = inputdlg(prompt,'Data units',1,{'s'});
+                        app.confirmedUnits = inputdlg(prompt,'Data units',1,{'s','A'});
                         if isempty(app.confirmedUnits)
                             f = uifigure('Visible','off'); % create invisible figure handle
                             app.fullpathlist(end)=[];
@@ -567,6 +567,17 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         [app.S.array(:,1), app.S.xunit, app.xSF] = app.scale_units(app.S.array(:,1),app.S.xunit);
                         if ~strcmp(app.S.xunit,'s')
                             errMsg = 'Base units for time not recognised. Units must be s';
+                            f = errordlg(errMsg,'Error');
+                            set(f,'WindowStyle','modal');
+                            uiwait(f);
+                            app.fullpathlist(end)=[];
+                            app.refpathlist(end)=[];
+                            app.FullPathNameBox.Items = app.fullpathlist;
+                            app.S = {};
+                            return
+                        end
+                        if (app.S.xdiff == 0)
+                            errMsg = 'The data must have been sampled at even intervals.';
                             f = errordlg(errMsg,'Error');
                             set(f,'WindowStyle','modal');
                             uiwait(f);
