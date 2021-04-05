@@ -1566,3 +1566,4 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
   chdir(cwd);
 
 end
+
