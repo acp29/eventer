@@ -726,7 +726,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
       y_template(:,i) = SCALE(i)*A(:,2)+OFFSET(i);
       r(i) = corr(y_template(1:k(i),i),y_fit(1:k(i),i),'type',coeff);
       residuals = y_fit(1:k(i),i) - y_template(1:k(i),i);
-      [tpeak(i), t50(i), tdecay(i), auc(i), skew(i)] = shape(t_fit(tzero:k(i)),y_fit(tzero:k(i),i),OFFSET(i),sample_rate,s,base);
+      [tpeak(i), t50(i), tdecay(i), auc(i), skew(i)] = shape(t_fit(tzero:k(i)),y_fit(tzero:k(i),i),OFFSET(i),sample_rate,s);
       rstdev(i) = std(residuals);
       rskew(i) = skewness(residuals);
       after(i) = (k(i) - numelBase)/sample_rate; % Truncated time to next event
@@ -1231,7 +1231,7 @@ end
 
 %----------------------------------------------------------------------
 
-function [tpeak, t50, tdecay, auc, skew] = shape (t, y, offset, Fs, s, base)
+function [tpeak, t50, tdecay, auc, skew] = shape (t, y, offset, Fs, s)
 
   % Calculate quick and dirty estimate of full-width half-maximum (t50)
   % and time-to-peak (tpeak) for the event
@@ -1252,7 +1252,7 @@ function [tpeak, t50, tdecay, auc, skew] = shape (t, y, offset, Fs, s, base)
   % Approximate time-to-peak by finding the point of maximum deviation from the baseline
   ypeak = max(y);
   ipeak = find(y==ypeak);
-  tpeak = sum(t<mean(t(ipeak)))/Fs - base;
+  tpeak = sum(t<mean(t(ipeak)))/Fs;
 
   % Approximate decay half-life by calculating the duration of the event post-peak spent at > half-maximal amplitude
   tdecay = sum((y>y50) & (t>mean(t(ipeak))))/Fs;
