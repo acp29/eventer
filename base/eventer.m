@@ -795,7 +795,8 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     for i=1:n
       m = min(Event_idx(i)+(l-1),N);
       [y_chebyfits(tzero:k(i),i), stats{i}] = chebexp(t_fit(tzero:k(i)), y_fit(tzero:k(i),i),2);
-      FITtrace(Event_idx(i):m) = y_chebyfits(tzero:tzero+m-Event_idx(i),i);
+      %FITtrace(Event_idx(i):m) = y_chebyfits(tzero:tzero+m-Event_idx(i),i); % Use Chebyshev fits in Figure 5 plot
+      FITtrace(Event_idx(i):m) = y_template(tzero:tzero+m-Event_idx(i),i);   % Use Template fits in Figure 5 plot
       FITtrace(Event_idx(i)-1) = NaN;
       if isreal(stats{i}.tau) && all(stats{i}.tau>0) && diff(stats{i}.tau)>0 
         rise(i) = stats{i}.tau(1);
@@ -809,10 +810,6 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
       peak = max(y_chebyfits);
     elseif s=='-'
       peak = min(y_chebyfits);
-    end
-    for i=1:n    
-      peakidx = min(find(y_chebyfits(:,i) == peak(i)));
-      tpeak(i) = t_fit(peakidx,1);  % peak time correction using Chebyshev fit
     end
     peak = peak - y_baseline;  % subtract baseline from peak amplitudes
     y_events = y_events-ones(length(t_events),1)*y_baseline;
@@ -1059,7 +1056,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     plot(t,FITtrace,'-r');
   end
   plot(Event_time,y_baseline,'+g');
-  plot(Event_time+tpeak,peak+y_baseline,'+b');
+  plot(Event_time+time2peak,peak+y_baseline,'+b');
   hold off;
   xlim([min(t),max(t)]);
   ylim([ylimits(1), ylimits(2)]);
