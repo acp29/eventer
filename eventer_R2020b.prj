@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="4286037071" file="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master/eventer_R2020b.prj" location="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master" name="eventer_R2020b" preferred-package-location="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master/eventerGUI/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="1604214024" file="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b.prj" location="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2" name="eventer_R2020b" preferred-package-location="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>Eventer</param.appname>
     <param.icon>${PROJECT_ROOT}/eventer_R2020b_resources/icon.icns</param.icon>
     <param.icons>
@@ -12,7 +12,7 @@
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
     <param.email>eventer.neuroscience@gmail.com</param.email>
     <param.company />
-    <param.summary>Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.</param.summary>
+    <param.summary>Eventer is software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}/misc/logo.png</param.screenshot>
     <param.guid />
@@ -40,7 +40,7 @@ ${DYLD_LIBRARY_PATH}:MR/v99/runtime/maci64:MR/v99/sys/os/maci64:MR/v99/bin/maci6
     <param.web.mcr>true</param.web.mcr>
     <param.package.mcr>false</param.package.mcr>
     <param.no.mcr>false</param.no.mcr>
-    <param.web.mcr.name>Eventer_v1.1.0-MacOSX_Catalina-R2020b</param.web.mcr.name>
+    <param.web.mcr.name>Eventer_v1.1.2-MacOSX_Catalina-R2020b</param.web.mcr.name>
     <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
     <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
     <param.windows.command.prompt>false</param.windows.command.prompt>
@@ -141,13 +141,12 @@ ${DYLD_LIBRARY_PATH}:MR/v99/runtime/maci64:MR/v99/sys/os/maci64:MR/v99/bin/maci6
       <file>${PROJECT_ROOT}/third_party/wavesurfer/loadDataFile.m</file>
       <file>${PROJECT_ROOT}/third_party/wavesurfer/scaledSingleAnalogDataFromRaw.m</file>
       <file>${PROJECT_ROOT}/third_party/wcp_import/import_wcp.m</file>
-      <file>/Users/andrewcpenn/acp29_mac2020/Downloads/filepaths.txt</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="splash.png" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master/eventer_R2020b/for_testing/splash.png</file>
-      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="Eventer.app" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master/eventer_R2020b/for_testing/Eventer.app</file>
-      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="run_Eventer.sh" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master/eventer_R2020b/for_testing/run_Eventer.sh</file>
-      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="readme.txt" optional="true">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-master/eventer_R2020b/for_testing/readme.txt</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="readme.txt" optional="true">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b/for_testing/readme.txt</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="run_Eventer.sh" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b/for_testing/run_Eventer.sh</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="Eventer.app" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b/for_testing/Eventer.app</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="splash.png" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b/for_testing/splash.png</file>
     </build-deliverables>
     <workflow />
     <matlab>
