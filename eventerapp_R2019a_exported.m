@@ -553,7 +553,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                         % Enter units for raw text files if they are not
                         % defined in a header
                         prompt = {'Enter the units for x (e.g. ms):','Enter the units for y (e.g. pA):'};
-                        app.confirmedUnits = inputdlg(prompt,'Data units',1,{'s'});
+                        app.confirmedUnits = inputdlg(prompt,'Data units',1,{'s','A'});
                         if isempty(app.confirmedUnits)
                             f = uifigure('Visible','off'); % create invisible figure handle
                             app.fullpathlist(end)=[];
@@ -575,6 +575,16 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                             app.FullPathNameBox.Items = app.fullpathlist;
                             app.S = {};
                             return
+                        end
+                        if (app.S.xdiff == 0)
+                            errMsg = 'The data must be sampled at even intervals.';
+                            f = errordlg(errMsg,'Error');
+                            set(f,'WindowStyle','modal');
+                            uiwait(f);
+                            app.fullpathlist(end)=[];
+                            app.refpathlist(end)=[];
+                            app.FullPathNameBox.Items = app.fullpathlist;
+                            app.S = {};
                         end
                         app.S.xdiff = app.S.xdiff*app.xSF;
                         [app.S.array(:,2:end),app.S.yunit, app.ySF] = app.scale_units(app.S.array(:,2:end),app.S.yunit);
@@ -3429,7 +3439,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.1.1",...
+                   "\fontsize{12}\color{black}v1.2.0",...
                    "\fontsize{10}Compiled for Matlab 2019a (9.6) Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
