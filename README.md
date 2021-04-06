@@ -83,7 +83,7 @@ United Kingdom.
 
 **v1.1.2** Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
 
-- Fixed bug that prevented the opening of raw text files  
+- Fixed bug that prevented the opening of raw text data files  
 
 ## Development roadmap  
 
