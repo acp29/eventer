@@ -81,6 +81,10 @@ United Kingdom.
 - Changed wave dropdown menu interuption setting from cancel to queue  
 - exported the appdesigner to .m file to simplify requesting changes to the source code via GitHub  
 
+**v1.1.2** Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
+
+- Fixed bug that prevented the opening of raw text files  
+
 ## Development roadmap  
 
 - Reduce memory footprint of eventer  
