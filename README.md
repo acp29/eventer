@@ -28,7 +28,7 @@ Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: 
 - **parfor_progressbar**, version 2.13.0.0 Copyright © 2016, Daniel Terry  
 - **Plot (Big)**, version 1.6.0.0, Copyright © 2015 Tucker  
 - **abfload**, version 4 Dec 2017, Copyright © 2009, Forrest Collman, 2004, Harald Hentschke 1998, U. Egert  
-- **readMeta** (from ACQ4), version 24 Dec 2013","Copyright © 2013 Luke Campagnola   
+- **readMeta** (from ACQ4), version 24 Dec 2013, Copyright © 2013 Luke Campagnola   
 - **IBWread**, version 1.0.0.0, Copyright © 2009, Jakub Bialek  
 - **importaxo**, version 4 June 2015, Marco Russo, Modified from BJ/AM <importaxo.m>  
 - **ImportHEKA** (fromsigTOOL), version 02 Sep 2012, Copyright © Malcolm Lidierth & King's College London 2009-  
