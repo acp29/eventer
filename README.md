@@ -85,6 +85,15 @@ United Kingdom.
 
 - Fixed bug that prevented the opening of raw text data files  
 
+**v1.1.3** Release version (source code in two versions associated with MATLAB R2019a and 2020b versions)  
+
+- Fixed bug that caused no dialog to appear asking whether to apply extra exclusion zone (from presets file) to all waves  
+- Fixed bug introduced in recent 1.1.X version that prevented opening of model files  
+- Fixed bug that prevented waitbar showing progress (relates to store-all-waves functionality)  
+- Corrected tooltip for 'Apply to all waves' button on the Template tab panel  
+- Minor changes and clarification in tooltips  
+- Various minor changes to stream-line the process of applying presets  
+
 ## Development roadmap  
 
 - Reduce memory footprint of eventer  
