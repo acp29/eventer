@@ -332,10 +332,10 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             filter_waitbar = waitbar(0,'Please wait while we apply filter settings to all the waves...');
             n = size(app.ref_array,2);
             for i=2:size(app.ref_array,2)
-              waitbar((i-1)/(n-1),filter_waitbar)
+              waitbar((i-1)/(n-1),filter_waitbar);
               app.array(:,i) = filter1 (app.ref_array(:,i), app.array(:,1), app.HighpassPreFilterCutOffSpinner.Value, app.LowpassPreFilterCutOffSpinner.Value, app.HighpassPreFiltermethodDropDown.Value); 
             end
-            close(filter_waitbar)
+            close(filter_waitbar);
         end
         
         function UpdateWavePreview(app)
@@ -530,7 +530,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 if strcmp(app.fullpathlist{i},app.refpathlist{i})
                     continue
                     if strcmpi(app.file.baseName(end-3:end),'.evt')
-                        waitbar(i/numel(app.nFiles));
+                        waitbar(i/numel(app.nFiles),app.h);
                     end
                 end
                 if i==1
@@ -566,7 +566,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                         app.S.yunit = app.confirmedUnits{2};
                         [app.S.array(:,1), app.S.xunit, app.xSF] = app.scale_units(app.S.array(:,1),app.S.xunit);
                         if ~strcmp(app.S.xunit,'s')
-                            errMsg = 'Base units for time not recognised. Units must be s.';
+                            errMsg = 'Base units for time not recognised. Units must be s';
                             f = errordlg(errMsg,'Error');
                             set(f,'WindowStyle','modal');
                             uiwait(f);
@@ -585,11 +585,12 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                             app.refpathlist(end)=[];
                             app.FullPathNameBox.Items = app.fullpathlist;
                             app.S = {};
+                            return
                         end
                         app.S.xdiff = app.S.xdiff*app.xSF;
                         [app.S.array(:,2:end),app.S.yunit, app.ySF] = app.scale_units(app.S.array(:,2:end),app.S.yunit);
                         if ~any(strcmp(app.S.yunit,{'A','V','au',''}))
-                            errMsg = 'Base units not recognised. If specified, units must be A, V or au';
+                            errMsg = 'Base units not recognised. If specified, units must be A, V or au.';
                             f = errordlg(errMsg,'Error');
                             set(f,'WindowStyle','modal');
                             uiwait(f);
@@ -715,7 +716,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                             uiwait(f);
                             return                            
                         end
-                    end              
+                    end
                     if abs(app.S.xdiff-app.xdiff) > eps('single')
                         try
                             error(sprintf('inconsistent sampling interval encountered at file:\n%s',app.fullpathlist{i}))
@@ -776,7 +777,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 end
                 app.wavefileidx = [app.wavefileidx; i*ones(size(app.S.array,2)-1,1)];
                 if strcmpi(app.file.baseName(end-3:end),'.evt')
-                    waitbar(i/numel(app.nFiles));
+                    waitbar(i/numel(app.nFiles),app.h);
                 end
             end
             app.settings{app.nWaves+1}.xexclusion{1} = sprintf('[%.6g %.6g]',app.split_excl(1),app.split_excl(2));
@@ -1087,7 +1088,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.selectall_btn.Tooltip = {'Toggle select or reject all events'};
             
             % plot data
-            app.event_plot = uiaxes(app.train_dlg); app.event_plot.Position = [25 50 450 425]; 
+            app.event_plot = uiaxes(app.train_dlg); app.event_plot.Position = [25 50 450 425];
 
             % initialize event list
             app.event_class = zeros(N,1); % default is event not selected
@@ -1133,6 +1134,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 chdir(app.path);
                 % Train eventer
                 app.h = waitbar(0,'Please wait...');
+                frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
                 n = size(app.event_features,2);
                 N = sum(app.event_class);
                 app.model = TreeBagger(128,app.event_features,app.event_class,...
@@ -1141,6 +1143,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                                        'NumPredictorsToSample',ceil(sqrt(n)),...
                                        'OOBPrediction','on',...
                                        'OOBPredictorImportance','on'); 
+                waitbar(1,app.h);
                 % Mdl =load('path/to/model.mlm','-mat')
                 % Mdl.model.OOBPermutedPredictorDeltaError
                 close(app.h);
@@ -1244,7 +1247,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
               % do nothing
             end
             
-        end    
+        end
         
     end
     
@@ -1276,10 +1279,9 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         function LoadButtonPushed(app, event)
             close all % close all existing figures
             % Create invisible dummy figure (disguised as a wait bar/message) 
-            % and bring it in to focus then hide it. Required for File Open dialogue to be on top.
-            f = figure('Units','normalized','Position',[0.4,0.5,0.2,0.02],'NumberTitle', 'off', 'Name','Loading file open dialogue...','Toolbar','None','MenuBar','None'); 
-            drawnow;
-            f.Visible = 'off'; 
+            % and bring it in to focus then hide it. Required for File Open dialogue to be on top (on macOS and linux platforms).
+            f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading file open dialogue...','Toolbar','None','MenuBar','None');
+            f.Visible = 'off';
             %User selection of file & display of file name
             [file.baseName, file.Path] = uigetfile(...
                 {'*.abf;*.axgx;*.axgd;*.dat;*.cfs;*.smr;*.tdms;*.wcp;*.EDR;*.pxp;*.ibw;*.bwav;*.ma;*.h5;*.mat;*.phy;*.itx;*.awav;*.atf;*.txt;*.csv;*.evt','All Types';...
@@ -1304,8 +1306,6 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 '*.csv','Comma-separated values text files (*.csv)';...
                 '*.evt','Eventer analysis (*.evt)'},...
                 'Select file(s)','Multiselect','on');
-            % Force Matlab to flush EDT's event queue and stop system hanging
-            drawnow; pause(0.05);
             % delete dummy figure
             delete(f);
             if iscell(file.baseName) 
@@ -1318,6 +1318,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 end
             end
             app.h = waitbar(0,'Please wait while we load the data...');
+            frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1);
             app.file.Path = file.Path;
             if iscell(file.baseName)
                 for i=1:numel(file.baseName)
@@ -1336,7 +1337,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                         close(app.h);
                         return
                     end    
-                    waitbar(i/numel(file.baseName));
+                    waitbar(i/numel(file.baseName),app.h);
                 end
             elseif ischar(file.baseName)
                 app.file.baseName = file.baseName;
@@ -1366,7 +1367,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                     close(app.h);
                     return
                 end  
-                waitbar(1);
+                waitbar(1,app.h);
             end
             close(app.h);
             figure(app.Eventer);
@@ -1449,8 +1450,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 S.names = {}; 
                 S.notes = app.S.notes; 
                 h = waitbar(0,'Please wait for the analysis to complete...','windowstyle','modal');
-                frames = java.awt.Frame.getFrames();
-                frames(end).setAlwaysOnTop(1);
+                frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
                 %retrieval of saved settings for current wave to send to eventer command line
                 wave = app.current_wave;
                 s = app.settings{1}.s;
@@ -1514,7 +1514,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                     eventer(S,[time_constant1 time_constant2],s,scalefactor,'rmin',rmin,'win',win,'hpf',hpf,'lpf',lpf,...
                         'taus',taus,'baseline',baseline,'config',config,'average',average,'exclude',exclude,'wave',1,...
                         'lambda',lambda,'exmode',exmode,'figure',format,'export',export,'criterion',criterion,'threshold',threshold);
-                    waitbar(1);
+                    waitbar(1,h);
                 catch
                     if exist('h','var')
                         close(h);
@@ -1659,8 +1659,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                     lasterr('');
                     try
                         h = waitbar(0,'Please wait for the analysis to complete...','windowstyle','modal');
-                        frames = java.awt.Frame.getFrames();
-                        frames(end).setAlwaysOnTop(1);
+                        frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
                         for i = 1:n-1
                             h = waitbar((i-1)/n,h,sprintf('Processing wave %d. Please wait... ', wavelist(i)));
                             S.array = [app.array(:,1) app.array(:,wavelist(i)+1)];
@@ -1835,10 +1834,13 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
 
         % Button pushed function: ApplypresetsButton
         function ApplypresetsButtonPushed(app, event)
+            h_presets = waitbar(0,'Please wait for the settings to be applied...');
+            frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             app.OnOffCheckBoxHPF.Value = 1;
             app.HighpassPreFilterCutOffSpinner.Enable = 'on';
             app.OnOffCheckBoxLPF.Value = 1;
             app.LowpassPreFilterCutOffSpinner.Enable = 'on';
+            new_prefilter_settings_flag = 0;
             if app.presetsFile_flag == 1
                 % Load the presets file
                 lasterr('');
@@ -1847,10 +1849,21 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 try
                     fid=fopen([app.presets_path,'/',app.presets_file],'r');
                     temp = fgetl(fid);
-                    count = 1;
+                    count = 1;                    
                     while ischar(temp)
                         if isnumeric(temp) % temp will be -1
                             break
+                        end
+                        temp_cell = split(temp,{' = ',';'});
+                        if strcmp(temp_cell{1},'app.HighpassPreFilterCutOffSpinner.Value')
+                            if eval(temp_cell{2}) ~= app.HighpassPreFilterCutOffSpinner.Value
+                                 new_prefilter_settings_flag = 1;
+                            end
+                        end
+                        if strcmp(temp_cell{1},'app.LowpassPreFilterCutOffSpinner.Value')
+                            if eval(temp_cell{2}) ~= app.LowpassPreFilterCutOffSpinner.Value
+                                 new_prefilter_settings_flag = 1;
+                            end
                         end
                         eval(temp);
                         temp = fgetl(fid);
@@ -1878,11 +1891,17 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 app.SignoftheEventsSwitch.Value = app.sign_default;
                 app.ThresholdSpinner.Value = app.scalefactor_default;
                 app.CriterionDropDown.Value = 'Pearson';             
-                app.CorrelationCoefficientSpinner.Value = 0.4;        
-                app.HighpassFilterCutOffSpinner.Value = app.hpf_default;
-                app.LowpassFilterCutOffSpinner.Value = app.lpf_default;
+                app.CorrelationCoefficientSpinner.Value = 0.4; 
+                if app.phpf_default ~= app.HighpassPreFilterCutOffSpinner.Value
+                    new_prefilter_settings_flag = 1;
+                end
+                if app.plpf_default ~= app.LowpassPreFilterCutOffSpinner.Value
+                    new_prefilter_settings_flag = 1;
+                end
                 app.HighpassPreFilterCutOffSpinner.Value = app.phpf_default;
                 app.LowpassPreFilterCutOffSpinner.Value = app.plpf_default;
+                app.HighpassFilterCutOffSpinner.Value = app.hpf_default;
+                app.LowpassFilterCutOffSpinner.Value = app.lpf_default;
                 app.NoofTausSpinner.Value = app.taus_default;
                 app.BaselineTimeSpinner.Value = app.base_line_default;
                 app.ExmodeDropDown.Value = app.exmode_default;
@@ -1891,12 +1910,13 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 app.MedianButton.Value = 1;
                 app.MinWindowSpinner.Value = -0.01;
                 app.MaxWindowSpinner.Value = +0.04;
-                app.WaveFormatDropDown.Value = 'mat';
+                app.WaveFormatDropDown.Value = 'phy';
                 app.GNUZipCompressionCheckBox.Value = 0;
                 app.SplitSpinner.Value = 0;
                 app.ThresholdAbsoluteEditField.Value = 0;
                 app.FigureFormatDropDown.Value = 'fig';
                 app.outdir = {''};
+                app.ExtraExclusions.Value={'[0, 0]'};
             end
             app.outdirLabel.Text = app.outdir{1};
             if app.HighpassPreFilterCutOffSpinner.Value == 0
@@ -1907,34 +1927,28 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                 app.LowpassPreFilterCutOffSpinner.Enable = 'off';
                 app.OnOffCheckBoxLPF.Value = 0;
             end
-            if ~isempty(app.fullpathlist) 
-                app.LambdaDispValueChanged;
-                app.ConfigurationDropDownValueChanged;
-                app.PreFilterCutOffSpinnerValueChanged;
-                app.cell_one.Value = 0;
-                app.cell_two.Value = 0;
-                app.cell_two.BackgroundColor = [1 1 1];
-                app.cell_three.Value = 0;
-                app.cell_four.Value = 0;
-                app.cell_four.BackgroundColor = [1 1 1];
-                app.cell_five.Value = 0;
-                app.cell_six.Value = 0;
-                app.cell_six.BackgroundColor = [1 1 1];  
-                app.cell_seven.Value = 0;
-                app.cell_eight.Value = 0;
-                app.cell_eight.BackgroundColor = [1 1 1];
-                app.cell_nine.Value = 0;
-                app.cell_ten.Value = 0;
-                app.cell_ten.BackgroundColor = [1 1 1];
-                app.cell_eleven.Value = 0;
-                app.cell_twelve.Value = 0;
-                app.cell_twelve.BackgroundColor = [1 1 1];                
-                app.ExtraExclusions.Value = {'[0 0]'};
-                app.ApplyToAllButtonTemplatePushed()
-            end
             app.CriterionDropDownValueChanged;
             app.SignoftheEventsSwitchValueChanged;
             app.ThresholdAbsoluteEditFieldValueChanged;
+            if ~isempty(app.fullpathlist) 
+                app.LambdaDispValueChanged;
+                app.ConfigurationDropDownValueChanged;
+                waitbar(1,h_presets);
+                close(h_presets);  
+                app.TabGroupEventer.SelectedTab = app.TemplateTab;
+                app.TabGroupEventerSelectionChanged;       
+                app.ApplyToAllButtonTemplatePushed();
+                app.TabGroupEventer.SelectedTab = app.ExcludeTab;
+                app.TabGroupEventerSelectionChanged;
+                app.settings{app.current_wave+1}.xexclusion = app.ExtraExclusions.Value;
+                app.ApplyToAllButtonPushed_xexclusion();
+                if new_prefilter_settings_flag == 1
+                    app.PreFilterCutOffSpinnerValueChanged;
+                end
+            else
+                waitbar(1,h_presets);
+                close(h_presets);
+            end
         end
 
         % Value changed function: LambdaDisp
@@ -2893,7 +2907,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                end
             end
             % Create load/save dialog box
-            dlg = uifigure; dlg.Position = [680 558 220 75]; dlg.Name = 'Presets file';
+            dlg = uifigure; dlg.Position = [680 558 225 75]; dlg.Name = 'Presets file';
             app.prefield = uieditfield(dlg); app.prefield.Position = [20 40 180 22];
             if app.presetsFile_flag == 1
                 app.prefield.Value = fullfile(app.presets_path,app.presets_file);
@@ -2913,6 +2927,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Value changed function: ParallelCheckBox
         function ParallelCheckBoxValueChanged(app, event)
             h = waitbar(0,'This may take some time to initialize. Please wait...');
+            frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             try
                 gcp('nocreate');
             catch
@@ -2941,22 +2956,26 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
 
         % Button pushed function: ClosefiguresButton
         function ClosefiguresButtonPushed(app, event)
-                close all;
+            close all;
         end
 
         % Selection change function: TabGroupEventer
         function TabGroupEventerSelectionChanged(app, event)
-                % Nothing to do
+            if strcmp(app.TabGroupEventer.SelectedTab.Title,'Preview')
+                if ~isempty(app.fullpathlist) 
+                    app.UpdateWavePreview;
+                end
+            end
         end
 
         % Callback function
         function TabGroupMainSelectionChanged(app, event)
-                % Nothing to do
+            % Nothing to do
         end
 
         % Value changed function: ChannelSpinner
         function ChannelSpinnerValueChanged(app, event)
-                % Nothing to do
+            % Nothing to do
         end
 
         % Value changed function: ExtraExclusions
@@ -3120,8 +3139,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButton_ex_1
         function ApplyToAllButtonPushed_ex1(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 1 setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.cell_one = app.cell_one.Value;
                     app.settings{i,1}.cell_two = app.cell_two.Value;
@@ -3132,9 +3151,9 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
 
         % Button pushed function: ApplyToAllButton_ex_2
         function ApplyToAllButtonPushed_ex_2(app, event)
-            selection = uiconfirm(app.Eventer,'Apply this exclusion zone 2 setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+            selection = uiconfirm(app.Eventer,'Apply these exclusion zone 2 setting to all waves?','Confirm apply to all',...
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.cell_three = app.cell_three.Value;
                     app.settings{i,1}.cell_four = app.cell_four.Value;
@@ -3146,8 +3165,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButton_ex_3
         function ApplyToAllButtonPushed_ex_3(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 3 setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.cell_five = app.cell_five.Value;
                     app.settings{i,1}.cell_six = app.cell_six.Value;
@@ -3159,8 +3178,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButton_ex_4
         function ApplyToAllButtonPushed_ex_4(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 4 setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.cell_seven = app.cell_seven.Value;
                     app.settings{i,1}.cell_eight = app.cell_eight.Value;
@@ -3172,8 +3191,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButton_ex_5
         function ApplyToAllButtonPushed_ex_5(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 5 setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.cell_nine = app.cell_nine.Value;
                     app.settings{i,1}.cell_ten = app.cell_ten.Value;
@@ -3185,8 +3204,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButton_ex_6
         function ApplyToAllButtonPushed_ex_6(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 6 setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.cell_eleven = app.cell_eleven.Value;
                     app.settings{i,1}.cell_twelve = app.cell_twelve.Value;
@@ -3198,8 +3217,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButton_xexclusion
         function ApplyToAllButtonPushed_xexclusion(app, event)
             selection = uiconfirm(app.Eventer,'Apply this extra exclusion zone setting to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.xexclusion = app.ExtraExclusions.Value;
                 end
@@ -3244,12 +3263,14 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
               state = 0;
               app.StoreAllWavesButton.Text = 'Store all waves';
             end
-            h = waitbar(0,'Please wait while we store all wave settings...');
+            h = waitbar(0,'Please wait while we store/unstore all wave settings...');
+            frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             for i=1:app.nWaves
               app.WaveDropDown.Value = num2str(i);
               app.WaveDropDownValueChanged;
               app.CurrentWaveStoredBox.Value = state;
               app.CurrentWaveStoredBoxValueChanged
+              waitbar(i/app.nWaves,h);
             end
             app.WaveDropDown.Value = value;
             app.WaveDropDownValueChanged;
@@ -3265,8 +3286,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: ApplyToAllButtonTemplate
         function ApplyToAllButtonTemplatePushed(app, event)
             selection = uiconfirm(app.Eventer,'Apply these template settings to all waves?','Confirm apply to all',...
-                        'Icon','warning');
-            if strcmpi(selection,'OK')
+                        'Icon','warning','Options',{'Yes','No'});
+            if strcmpi(selection,'Yes')
                 for i=1:app.nWaves+1
                     app.settings{i,1}.TC1 = app.TimeConstantsEditField1.Value/1000;
                     app.settings{i,1}.TC2 = app.TimeConstantsEditField2.Value/1000;
@@ -3329,18 +3350,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
 
         % Button pushed function: LoadmodelButton
         function LoadmodelButtonPushed(app, event)
-            % Create invisible dummy figure (disguised as a wait bar/message) 
-            % and bring it in to focus then hide it. Required for File Open dialogue to be on top.
-            f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading model file open dialogue...','Toolbar','None','MenuBar','None'); 
-            drawnow;
-            f.Visible = 'off'; 
-            [app.model_file, app.model_path] = uigetfile(...
-                {'*.mlm','Machine learning model (*.mlm)'},...
-                'Load trained model');
-            % Force Matlab to flush EDT's event queue and stop system hanging
-            drawnow; pause(0.05);
-            % delete dummy figure
-            delete(f);
+            %  Check if a model is already loaded
             if app.model_file ~= 0
                 selection = uiconfirm(app.Eventer,'Close current model?','Close model',...
                         'Options',{'Close','Cancel'},'DefaultOption',2,'CancelOption',2,'Icon','warning');
@@ -3349,20 +3359,39 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
                     app.model_file = 0;
                     app.model_path = '';
                     app.ModelfileEditFieldValueChanged;
+                elseif strcmpi(selection,'Cancel')
+                    return
                 end
-                return
-            else
-                return
             end
+            % Create invisible dummy figure (disguised as a wait bar/message) 
+            % and bring it in to focus then hide it. Required for File Open dialogue to be on top (on macOS and Linux).
+            f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading model file open dialogue...','Toolbar','None','MenuBar','None'); 
+            f.Visible = 'off'; 
+            [app.model_file, app.model_path] = uigetfile(...
+                {'*.mlm','Machine learning model (*.mlm)'},...
+                'Load trained model');
+            % delete dummy figure
+            delete(f);
+            if app.model_file == 0
+               return
+            end
+            % Load model
+            h_model = waitbar(0,'Please wait while the machine learning model file loads...');
+            frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             load(fullfile(app.model_path,app.model_file),'-mat')
             app.model = model;   
             app.ModelfileEditFieldValueChanged;
+            waitbar(1,h_model);
+            close(h_model);
             % Load model settings
             app.predlg;
             app.presets_path = app.model_path;
             [~,fname] = fileparts(app.model_file);
             app.presets_file = [fname '.m'];
             app.presetsFile_flag = 1;
+            if ~isstruct(app.prefield)
+                app.prefield = struct;
+            end
             app.prefield.Value = fullfile(app.presets_path,app.presets_file);
             app.ApplypresetsButtonPushed;
             delete(app.predlg);
@@ -3439,7 +3468,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.1.2",...
+                   "\fontsize{12}\color{black}v1.1.3",...
                    "\fontsize{10}Compiled for Matlab 2019a (9.6) Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
@@ -3719,7 +3748,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.ApplyToAllButtonTemplate = uibutton(app.TimeconstantsPanel, 'push');
             app.ApplyToAllButtonTemplate.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonTemplatePushed, true);
             app.ApplyToAllButtonTemplate.BusyAction = 'cancel';
-            app.ApplyToAllButtonTemplate.Tooltip = {'Apply this exclusion zone 1 setting to all waves'};
+            app.ApplyToAllButtonTemplate.Tooltip = {'Apply these template settings to all waves'};
             app.ApplyToAllButtonTemplate.Position = [6 8 113 22];
             app.ApplyToAllButtonTemplate.Text = 'Apply to all waves';
 
@@ -4078,12 +4107,12 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
 
             % Create stdevLabel
             app.stdevLabel = uilabel(app.DetectionTab);
-            app.stdevLabel.Position = [241 196 35 22];
+            app.stdevLabel.Position = [240 196 35 22];
             app.stdevLabel.Text = 'stdev';
 
             % Create ThresholdSpinnerLabel
             app.ThresholdSpinnerLabel = uilabel(app.DetectionTab);
-            app.ThresholdSpinnerLabel.Position = [28 195 106 22];
+            app.ThresholdSpinnerLabel.Position = [27 195 106 22];
             app.ThresholdSpinnerLabel.Text = 'Threshold (relative)';
 
             % Create ThresholdSpinner
@@ -4091,13 +4120,13 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.ThresholdSpinner.Step = 0.1;
             app.ThresholdSpinner.ValueChangedFcn = createCallbackFcn(app, @ThresholdSpinnerValueChanged, true);
             app.ThresholdSpinner.Tooltip = {'Tells eventer to set the threshold for event detection at this number times the standard deviation of the noise of the deconvoluted wave.'};
-            app.ThresholdSpinner.Position = [164 196 69 22];
+            app.ThresholdSpinner.Position = [167 196 69 22];
             app.ThresholdSpinner.Value = 4;
 
             % Create FilterWavesPanel
             app.FilterWavesPanel = uipanel(app.DetectionTab);
             app.FilterWavesPanel.Title = 'Filter Waves';
-            app.FilterWavesPanel.Position = [26 21 492 127];
+            app.FilterWavesPanel.Position = [28 21 490 127];
 
             % Create HzLabel
             app.HzLabel = uilabel(app.FilterWavesPanel);
@@ -4112,8 +4141,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             % Create HighpassFilterCutOffSpinnerLabel
             app.HighpassFilterCutOffSpinnerLabel = uilabel(app.FilterWavesPanel);
             app.HighpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
-            app.HighpassFilterCutOffSpinnerLabel.Position = [8 41 137 22];
-            app.HighpassFilterCutOffSpinnerLabel.Text = 'High-pass Filter Cut-Off:';
+            app.HighpassFilterCutOffSpinnerLabel.Position = [17 41 128 22];
+            app.HighpassFilterCutOffSpinnerLabel.Text = 'High-pass filter cut-off:';
 
             % Create HighpassPreFilterCutOffSpinner
             app.HighpassPreFilterCutOffSpinner = uispinner(app.FilterWavesPanel);
@@ -4127,8 +4156,8 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             % Create LowpassFilterCutOffSpinnerLabel
             app.LowpassFilterCutOffSpinnerLabel = uilabel(app.FilterWavesPanel);
             app.LowpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
-            app.LowpassFilterCutOffSpinnerLabel.Position = [8 7 135 22];
-            app.LowpassFilterCutOffSpinnerLabel.Text = 'Low-pass Filter Cut-Off:';
+            app.LowpassFilterCutOffSpinnerLabel.Position = [18 7 125 22];
+            app.LowpassFilterCutOffSpinnerLabel.Text = 'Low-pass filter cut-off:';
 
             % Create LowpassPreFilterCutOffSpinner
             app.LowpassPreFilterCutOffSpinner = uispinner(app.FilterWavesPanel);
@@ -4159,7 +4188,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             % Create HighpassfiltermethodDropDownLabel
             app.HighpassfiltermethodDropDownLabel = uilabel(app.FilterWavesPanel);
             app.HighpassfiltermethodDropDownLabel.HorizontalAlignment = 'right';
-            app.HighpassfiltermethodDropDownLabel.Position = [7 76 135 22];
+            app.HighpassfiltermethodDropDownLabel.Position = [9 76 135 22];
             app.HighpassfiltermethodDropDownLabel.Text = 'High-pass filter method:';
 
             % Create HighpassPreFiltermethodDropDown
@@ -4184,19 +4213,19 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.SignoftheEventsSwitch.Tooltip = {'Select the sign of the event deflections'};
             app.SignoftheEventsSwitch.FontSize = 15;
             app.SignoftheEventsSwitch.FontAngle = 'italic';
-            app.SignoftheEventsSwitch.Position = [177 232 41 18];
+            app.SignoftheEventsSwitch.Position = [180 232 41 18];
             app.SignoftheEventsSwitch.Value = '-';
 
             % Create CriterionDropDown
             app.CriterionDropDown = uidropdown(app.DetectionTab);
             app.CriterionDropDown.Items = {'Pearson', 'Machine learning'};
             app.CriterionDropDown.ValueChangedFcn = createCallbackFcn(app, @CriterionDropDownValueChanged, true);
-            app.CriterionDropDown.Position = [395 262 123 22];
+            app.CriterionDropDown.Position = [384 262 134 22];
             app.CriterionDropDown.Value = 'Pearson';
 
             % Create CorrelationCoefficientLabel
             app.CorrelationCoefficientLabel = uilabel(app.DetectionTab);
-            app.CorrelationCoefficientLabel.Position = [307 228 125 22];
+            app.CorrelationCoefficientLabel.Position = [297 228 134 22];
             app.CorrelationCoefficientLabel.Text = 'Correlation Coefficient';
 
             % Create CorrelationCoefficientSpinner
@@ -4209,7 +4238,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
 
             % Create EventCriterionLabel
             app.EventCriterionLabel = uilabel(app.DetectionTab);
-            app.EventCriterionLabel.Position = [308 262 85 22];
+            app.EventCriterionLabel.Position = [297 262 85 22];
             app.EventCriterionLabel.Text = 'Event Criterion';
 
             % Create ConfigurationDropDownLabel
@@ -4224,36 +4253,36 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.ConfigurationDropDown.ValueChangedFcn = createCallbackFcn(app, @ConfigurationDropDownValueChanged, true);
             app.ConfigurationDropDown.Tooltip = {'Select the damping factor used in the Levenberg-Marquardt ordinary non-linear least-squares fitting procedures.'};
             app.ConfigurationDropDown.BackgroundColor = [1 1 1];
-            app.ConfigurationDropDown.Position = [118 262 115 22];
+            app.ConfigurationDropDown.Position = [121 262 115 22];
             app.ConfigurationDropDown.Value = 'VC';
 
             % Create LoadmodelButton
             app.LoadmodelButton = uibutton(app.DetectionTab, 'push');
             app.LoadmodelButton.ButtonPushedFcn = createCallbackFcn(app, @LoadmodelButtonPushed, true);
-            app.LoadmodelButton.Position = [428 194 90 22];
+            app.LoadmodelButton.Position = [417 194 101 22];
             app.LoadmodelButton.Text = 'Load model';
 
             % Create TrainingmodeCheckBox
             app.TrainingmodeCheckBox = uicheckbox(app.DetectionTab);
             app.TrainingmodeCheckBox.ValueChangedFcn = createCallbackFcn(app, @TrainingmodeCheckBoxValueChanged, true);
             app.TrainingmodeCheckBox.Text = ' Training mode';
-            app.TrainingmodeCheckBox.Position = [307 194 103 22];
+            app.TrainingmodeCheckBox.Position = [297 194 103 22];
 
             % Create ModelfileEditFieldLabel
             app.ModelfileEditFieldLabel = uilabel(app.DetectionTab);
             app.ModelfileEditFieldLabel.HorizontalAlignment = 'right';
-            app.ModelfileEditFieldLabel.Position = [301 160 58 22];
+            app.ModelfileEditFieldLabel.Position = [290 160 58 22];
             app.ModelfileEditFieldLabel.Text = 'Model file';
 
             % Create ModelfileEditField
             app.ModelfileEditField = uieditfield(app.DetectionTab, 'text');
             app.ModelfileEditField.ValueChangedFcn = createCallbackFcn(app, @ModelfileEditFieldValueChanged, true);
-            app.ModelfileEditField.Position = [368 160 150 22];
+            app.ModelfileEditField.Position = [361 160 157 22];
 
             % Create ThresholdabsoluteEditFieldLabel
             app.ThresholdabsoluteEditFieldLabel = uilabel(app.DetectionTab);
             app.ThresholdabsoluteEditFieldLabel.HorizontalAlignment = 'right';
-            app.ThresholdabsoluteEditFieldLabel.Position = [22 163 114 22];
+            app.ThresholdabsoluteEditFieldLabel.Position = [14 163 123 22];
             app.ThresholdabsoluteEditFieldLabel.Text = 'Threshold (absolute)';
 
             % Create ThresholdAbsoluteEditField
@@ -4261,7 +4290,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.ThresholdAbsoluteEditField.Limits = [0 Inf];
             app.ThresholdAbsoluteEditField.ValueChangedFcn = createCallbackFcn(app, @ThresholdAbsoluteEditFieldValueChanged, true);
             app.ThresholdAbsoluteEditField.Tooltip = {'Absolute threshold in the original units of the deconvoluted wave. When this value is > 0 it overides the relative threshold setting.'};
-            app.ThresholdAbsoluteEditField.Position = [164 165 66 21];
+            app.ThresholdAbsoluteEditField.Position = [167 165 66 21];
 
             % Create AdvancedTab
             app.AdvancedTab = uitab(app.TabGroupEventer);
@@ -4278,7 +4307,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.NoofTausSpinner = uispinner(app.AdvancedTab);
             app.NoofTausSpinner.Step = 0.1;
             app.NoofTausSpinner.ValueChangedFcn = createCallbackFcn(app, @NoofTausSpinnerValueChanged, true);
-            app.NoofTausSpinner.Tooltip = {'Sets the number of time constants after the peak of the template to use when fitting the template to the detected events.'};
+            app.NoofTausSpinner.Tooltip = {'Sets the number of decay time constants after the peak of the template to use when fitting the template to the detected events.'};
             app.NoofTausSpinner.Position = [108 246 98 22];
             app.NoofTausSpinner.Value = 2;
 
@@ -4660,7 +4689,7 @@ classdef eventerapp_R2019a_exported < matlab.apps.AppBase
             app.StoreCurrentWaveButton = uibutton(app.StorePanel, 'push');
             app.StoreCurrentWaveButton.ButtonPushedFcn = createCallbackFcn(app, @StoreCurrentWaveButtonPushed, true);
             app.StoreCurrentWaveButton.Interruptible = 'off';
-            app.StoreCurrentWaveButton.Tooltip = {'Store current wave settings. Key: s'};
+            app.StoreCurrentWaveButton.Tooltip = {'Select and store current wave settings for analysis. Key: s'};
             app.StoreCurrentWaveButton.Position = [102 5 55 22];
             app.StoreCurrentWaveButton.Text = 'Store';
 
