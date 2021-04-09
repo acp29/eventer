@@ -636,7 +636,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                             end
                         end
                         app.S.array(:,2:end) = app.S.array(:,2:end) * app.ySF;
-                    end                   
+                    end
                     [warnMsg] = lastwarn;
                     if ~isempty(warnMsg)
                         f = errordlg(warnMsg,'Warning');
@@ -716,7 +716,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                             uiwait(f);
                             return                            
                         end
-                    end  
+                    end
                     if abs(app.S.xdiff-app.xdiff) > eps('single')
                         try
                             error(sprintf('inconsistent sampling interval encountered at file:\n%s',app.fullpathlist{i}))
@@ -1281,7 +1281,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             close all % close all existing figures
             % Create invisible dummy figure (disguised as a wait bar/message) 
             % and bring it in to focus then hide it. Required for File Open dialogue to be on top (on macOS and linux platforms).
-            f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading file open dialogue...','Toolbar','None','MenuBar','None'); 
+            f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading file open dialogue...','Toolbar','None','MenuBar','None');
+            f.Visible = 'off';
             %User selection of file & display of file name
             [file.baseName, file.Path] = uigetfile(...
                 {'*.abf;*.axgx;*.axgd;*.dat;*.cfs;*.smr;*.tdms;*.wcp;*.EDR;*.pxp;*.ibw;*.bwav;*.ma;*.h5;*.mat;*.phy;*.itx;*.awav;*.atf;*.txt;*.csv;*.evt','All Types';...
@@ -1305,7 +1306,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 '*.txt','Tab-delimited text files (*.txt)';...
                 '*.csv','Comma-separated values text files (*.csv)';...
                 '*.evt','Eventer analysis (*.evt)'},...
-                'Select file(s)','Multiselect','on'); 
+                'Select file(s)','Multiselect','on');
             % delete dummy figure
             delete(f);
             if iscell(file.baseName) 
@@ -4271,7 +4272,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             % Create ModelfileEditFieldLabel
             app.ModelfileEditFieldLabel = uilabel(app.DetectionTab);
             app.ModelfileEditFieldLabel.HorizontalAlignment = 'right';
-            app.ModelfileEditFieldLabel.Position = [291 160 58 22];
+            app.ModelfileEditFieldLabel.Position = [290 160 58 22];
             app.ModelfileEditFieldLabel.Text = 'Model file';
 
             % Create ModelfileEditField
@@ -4689,7 +4690,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.StoreCurrentWaveButton = uibutton(app.StorePanel, 'push');
             app.StoreCurrentWaveButton.ButtonPushedFcn = createCallbackFcn(app, @StoreCurrentWaveButtonPushed, true);
             app.StoreCurrentWaveButton.Interruptible = 'off';
-            app.StoreCurrentWaveButton.Tooltip = {'Select  and store current wave settings for analysis. Key: s'};
+            app.StoreCurrentWaveButton.Tooltip = {'Select and store current wave settings for analysis. Key: s'};
             app.StoreCurrentWaveButton.Position = [102 5 55 22];
             app.StoreCurrentWaveButton.Text = 'Store';
 
