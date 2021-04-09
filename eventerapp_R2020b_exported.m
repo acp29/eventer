@@ -826,9 +826,14 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             if app.presets_file ~= 0
                 chdir(app.presets_path)
             end
+            f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading presets file open dialogue...','Toolbar','None','MenuBar','None'); 
+            drawnow;
+            f.Visible = 'off';
             [app.presets_file, app.presets_path] = uigetfile(...
                 {'*.m','MATLAB script file (*.m)'},...
                 'Load file');
+            % delete dummy figure
+            delete(f);
             chdir(cwd);
             if app.presets_file ~= 0
                 app.presetsFile_flag = 1;
@@ -1282,6 +1287,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             % Create invisible dummy figure (disguised as a wait bar/message) 
             % and bring it in to focus then hide it. Required for File Open dialogue to be on top (on macOS and linux platforms).
             f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading file open dialogue...','Toolbar','None','MenuBar','None');
+            drawnow;
             f.Visible = 'off';
             %User selection of file & display of file name
             [file.baseName, file.Path] = uigetfile(...
@@ -3367,6 +3373,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             % Create invisible dummy figure (disguised as a wait bar/message) 
             % and bring it in to focus then hide it. Required for File Open dialogue to be on top (on macOS and Linux).
             f = figure('Units','normalized','Position',[0.4,0.5,0.25,0.02],'NumberTitle', 'off', 'Name','Loading model file open dialogue...','Toolbar','None','MenuBar','None'); 
+            drawnow;
             f.Visible = 'off'; 
             [app.model_file, app.model_path] = uigetfile(...
                 {'*.mlm','Machine learning model (*.mlm)'},...
