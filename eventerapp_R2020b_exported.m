@@ -332,10 +332,10 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             filter_waitbar = waitbar(0,'Please wait while we apply filter settings to all the waves...');
             n = size(app.ref_array,2);
             for i=2:size(app.ref_array,2)
-              waitbar((i-1)/(n-1),filter_waitbar)
+              waitbar((i-1)/(n-1),filter_waitbar);
               app.array(:,i) = filter1 (app.ref_array(:,i), app.array(:,1), app.HighpassPreFilterCutOffSpinner.Value, app.LowpassPreFilterCutOffSpinner.Value, app.HighpassPreFiltermethodDropDown.Value); 
             end
-            close(filter_waitbar)
+            close(filter_waitbar);
         end
         
         function UpdateWavePreview(app)
@@ -1143,7 +1143,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                                        'NumPredictorsToSample',ceil(sqrt(n)),...
                                        'OOBPrediction','on',...
                                        'OOBPredictorImportance','on'); 
-                waitbar(1,app.h)
+                waitbar(1,app.h);
                 % Mdl =load('path/to/model.mlm','-mat')
                 % Mdl.model.OOBPermutedPredictorDeltaError
                 close(app.h);
@@ -1916,6 +1916,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.ThresholdAbsoluteEditField.Value = 0;
                 app.FigureFormatDropDown.Value = 'fig';
                 app.outdir = {''};
+                app.ExtraExclusions.Value={'[0, 0]'};
             end
             app.outdirLabel.Text = app.outdir{1};
             if app.HighpassPreFilterCutOffSpinner.Value == 0
@@ -1932,22 +1933,20 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             if ~isempty(app.fullpathlist) 
                 app.LambdaDispValueChanged;
                 app.ConfigurationDropDownValueChanged;
+                waitbar(1,h_presets);
+                close(h_presets);  
                 app.TabGroupEventer.SelectedTab = app.TemplateTab;
-                app.TabGroupEventerSelectionChanged
-                app.ApplyToAllButtonTemplatePushed()
-                if any(any(eval(app.ExtraExclusions.Value{1})))
-                    app.TabGroupEventer.SelectedTab = app.ExcludeTab;
-                    app.TabGroupEventerSelectionChanged
-                    app.settings{app.current_wave+1}.xexclusion = app.ExtraExclusions.Value;
-                    app.ApplyToAllButtonPushed_xexclusion()
-                end
-                waitbar(1,h_presets)
-                close(h_presets);
+                app.TabGroupEventerSelectionChanged;       
+                app.ApplyToAllButtonTemplatePushed();
+                app.TabGroupEventer.SelectedTab = app.ExcludeTab;
+                app.TabGroupEventerSelectionChanged;
+                app.settings{app.current_wave+1}.xexclusion = app.ExtraExclusions.Value;
+                app.ApplyToAllButtonPushed_xexclusion();
                 if new_prefilter_settings_flag == 1
                     app.PreFilterCutOffSpinnerValueChanged;
                 end
             else
-                waitbar(1,h_presets)
+                waitbar(1,h_presets);
                 close(h_presets);
             end
         end
@@ -3264,7 +3263,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
               state = 0;
               app.StoreAllWavesButton.Text = 'Store all waves';
             end
-            h = waitbar(0,'Please wait while we store all wave settings...');
+            h = waitbar(0,'Please wait while we store/unstore all wave settings...');
             frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             for i=1:app.nWaves
               app.WaveDropDown.Value = num2str(i);
