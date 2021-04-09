@@ -93,7 +93,7 @@ United Kingdom.
 - Corrected tooltip for 'Apply to all waves' button on the Template tab panel  
 - Minor changes and clarification in tooltips  
 - Various minor changes to stream-line the process of applying presets  
-- Fixed bug that prevented some wait/progress bars from staing on-top of other windows
+- Fixed bug that prevented some wait/progress bars from staying on-top of other windows
 - Added Eventer icon to title bar in uifigures of R2020b version (only visible in Windows version)
 
 ## Development roadmap  
