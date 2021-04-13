@@ -98,7 +98,8 @@ United Kingdom.
 
 ## Development roadmap  
 
-- Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)
+- Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)  
+- Fix bug that prevents multiple files loading from the load open file dialogue
 - Reduce memory footprint of eventer  
 - Enable GPU-accelerated ploting of graphs
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
