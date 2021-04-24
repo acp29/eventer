@@ -31,7 +31,7 @@ Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: 
 - **readMeta** (from ACQ4), version 24 Dec 2013, Copyright © 2013 Luke Campagnola   
 - **IBWread**, version 1.0.0.0, Copyright © 2009, Jakub Bialek  
 - **importaxo**, version 4 June 2015, Marco Russo, Modified from BJ/AM <importaxo.m>  
-- **ImportHEKA** (fromsigTOOL), version 02 Sep 2012, Copyright © Malcolm Lidierth & King's College London 2009-  
+- **ImportHEKA** (from sigTOOL), version 02 Sep 2012, Copyright © Malcolm Lidierth & King's College London 2009-  
 - **mat64c**, version 2014, Jim Colebatch  
 - **TDMS DAQmx Raw data reader**, version 24 Mar 2014, Copyright © CAS Key Laboratory of Basic Plasma Physics, USTC 1958-2014, Author: Tao Lan  
 - **SON2** (from sigTOOL version 0.95), Copyright © Malcolm Lidierth & King's College London 2009-  
