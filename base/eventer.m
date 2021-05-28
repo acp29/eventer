@@ -1515,6 +1515,7 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
       fprintf(fid,'Decay time constant of the model PSC fit (ms): %.3g\n',p(3)*1e+03);
     elseif strcmp(yunit,'V')
       fprintf(fid,'Amplitude of the model PSP fit (mV): %.3g\n',fitAmplitude*1e+03);
+      fprintf(fid,'Integral of the model PSP fit (mV.ms): %.4g\n',fitIntegral*1e+06);
       fprintf(fid,'Rise time constant of the model PSP fit (ms): %.3g\n',p(2)*1e+03);
       fprintf(fid,'Decay time constant of the model PSP fit (ms): %.3g\n',p(3)*1e+03);
     else
