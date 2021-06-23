@@ -230,7 +230,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     %filename = D(idx(1)).name;
     pat = ['(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.abf)*'...
            '(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
-    if isempty(regexpi(filename(end-4:end),pat))
+    if isempty(regexpi(filename(end-min(length(filename)-1,4):end),pat))
       error('unsupported filetype for load')
     end
   end
@@ -338,7 +338,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
       [array,xdiff,xunit,yunit,names,notes] = TXTread (filename,'\t');
     elseif strcmpi(filename(end-3:end),'.csv')
       [array,xdiff,xunit,yunit,names,notes] = TXTread (filename,',');
-    elseif strcmpi(filename(end-3:end),'.itx') || strcmpi(filename(end-4:end),'.awav')
+    elseif strcmpi(filename(end-3:end),'.itx') || strcmpi(filename(end-min(length(filename)-1,4):end),'.awav')
       [array,xdiff,xunit,yunit,names,notes] = ITXread (filename);
     elseif strcmpi(filename(end-3:end),'.atf')
       [array,xdiff,xunit,yunit,names,notes] = ATFread (filename);
