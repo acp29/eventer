@@ -98,6 +98,7 @@ United Kingdom.
 
 ## Development roadmap  
 
+- Add error message to notify uses if required toolboxes are not installed (relevant only to Matlab app version of Eventer)  
 - Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)  
 - Fix bug that prevents multiple files loading from the load open file dialogue in some contexts 
 - Add pop-up message to warn users that Eventer cannot load multiple .evt files  
