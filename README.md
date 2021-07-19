@@ -98,6 +98,7 @@ United Kingdom.
 
 ## Development roadmap  
 
+- Add option to apply median filter method for low-pass filtering in the filter waves section
 - Add error message to notify uses if required toolboxes are not installed (relevant only to Matlab app version of Eventer)  
 - Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)  
 - Fix bug that prevents multiple files loading from the load open file dialogue in some contexts 
