@@ -1,12 +1,12 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1191410151" file="C:\Users\Andrew Penn\Documents\MATLAB\eventer-1.1.3\eventer_R2020b.prj" location="C:\Users\Andrew Penn\Documents\MATLAB\eventer-1.1.3" name="eventer_R2020b" preferred-package-location="C:\Users\Andrew Penn\Documents\MATLAB\eventer-1.1.3\eventer_R2020b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="1604214024" file="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.4/eventer_R2020b.prj" location="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.4" name="eventer_R2020b" preferred-package-location="/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.2/eventer_R2020b/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>Eventer</param.appname>
-    <param.icon>${PROJECT_ROOT}\eventer_R2020b_resources\icon.ico</param.icon>
+    <param.icon>${PROJECT_ROOT}/eventer_R2020b_resources/icon.icns</param.icon>
     <param.icons>
-      <file>${PROJECT_ROOT}\eventer_R2020b_resources\icon_48.png</file>
-      <file>${PROJECT_ROOT}\eventer_R2020b_resources\icon_32.png</file>
-      <file>${PROJECT_ROOT}\eventer_R2020b_resources\icon_24.png</file>
-      <file>${PROJECT_ROOT}\eventer_R2020b_resources\icon_16.png</file>
+      <file>${PROJECT_ROOT}/eventer_R2020b_resources/icon_48.png</file>
+      <file>${PROJECT_ROOT}/eventer_R2020b_resources/icon_32.png</file>
+      <file>${PROJECT_ROOT}/eventer_R2020b_resources/icon_24.png</file>
+      <file>${PROJECT_ROOT}/eventer_R2020b_resources/icon_16.png</file>
     </param.icons>
     <param.version>1.1</param.version>
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
@@ -14,17 +14,25 @@
     <param.company />
     <param.summary>Eventer is software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.</param.summary>
     <param.description />
-    <param.screenshot>${PROJECT_ROOT}\misc\eventer_logo.png</param.screenshot>
+    <param.screenshot>${PROJECT_ROOT}/misc/eventer_logo.png</param.screenshot>
     <param.guid />
-    <param.installpath.string>\Eventer\</param.installpath.string>
-    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.installpath.string>/Eventer/</param.installpath.string>
+    <param.installpath.combo>option.installpath.systemwideapp</param.installpath.combo>
     <param.logo />
     <param.install.notes />
-    <param.target.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\eventer_R2020b\for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}\eventer_R2020b\for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}\eventer_R2020b\for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}\eventer_R2020b</param.logdir>
+    <param.target.install.notes>In the following directions, replace MR/v99 by the directory on the target machine where MATLAB is installed, or MR by the directory where the MATLAB Runtime is installed.
+
+If the environment variable DYLD_LIBRARY_PATH is undefined, set it to the following string:
+
+MR/v99/runtime/maci64:MR/v99/sys/os/maci64:MR/v99/bin/maci64
+
+If it is defined, set it to the following:
+
+${DYLD_LIBRARY_PATH}:MR/v99/runtime/maci64:MR/v99/sys/os/maci64:MR/v99/bin/maci64</param.target.install.notes>
+    <param.intermediate>${PROJECT_ROOT}/eventer_R2020b/for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}/eventer_R2020b/for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}/eventer_R2020b/for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}/eventer_R2020b</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -32,10 +40,10 @@
     <param.web.mcr>true</param.web.mcr>
     <param.package.mcr>false</param.package.mcr>
     <param.no.mcr>false</param.no.mcr>
-    <param.web.mcr.name>Eventer-v1.1.3-Win64-R2020b</param.web.mcr.name>
+    <param.web.mcr.name>Eventer-v1.1.4-macOS-10.15+-R2020b</param.web.mcr.name>
     <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
     <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
-    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.windows.command.prompt>false</param.windows.command.prompt>
     <param.create.log>false</param.create.log>
     <param.log.file />
     <param.native.matlab>false</param.native.matlab>
@@ -55,7 +63,6 @@
       <param.installpath.combo />
       <param.logo />
       <param.install.notes />
-      <param.target.install.notes />
       <param.intermediate />
       <param.files.only />
       <param.output />
@@ -77,78 +84,74 @@
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\eventerapp_R2020b.mlapp</file>
+      <file>${PROJECT_ROOT}/eventerapp_R2020b.mlapp</file>
     </fileset.main>
-    <fileset.resources>
-      <file>${PROJECT_ROOT}\third_party\matcfs64c\CFS64c.dll</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs64c\cfsRead64c.m</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs64c\cfsWriteRL64c.m</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs64c\matcfs64c.mexw64</file>
-    </fileset.resources>
+    <fileset.resources />
     <fileset.package />
     <fileset.depfun>
-      <file>${PROJECT_ROOT}\base\binomialf.m</file>
-      <file>${PROJECT_ROOT}\base\bounce.m</file>
-      <file>${PROJECT_ROOT}\base\ephysIO.m</file>
-      <file>${PROJECT_ROOT}\base\eventer.m</file>
-      <file>${PROJECT_ROOT}\base\filter1.m</file>
-      <file>${PROJECT_ROOT}\base\gaussianf.m</file>
-      <file>${PROJECT_ROOT}\base\hpfilter.m</file>
-      <file>${PROJECT_ROOT}\base\lsqfit.m</file>
-      <file>${PROJECT_ROOT}\base\medianf.m</file>
-      <file>${PROJECT_ROOT}\base\mex\medianf_mex_win64.mexw64</file>
-      <file>${PROJECT_ROOT}\base\reduce_data.m</file>
-      <file>${PROJECT_ROOT}\base\sinv.m</file>
-      <file>${PROJECT_ROOT}\misc\copy.png</file>
-      <file>${PROJECT_ROOT}\misc\cursor-23231_1280.png</file>
-      <file>${PROJECT_ROOT}\misc\eventer_logo.png</file>
-      <file>${PROJECT_ROOT}\third_party\abfload\abfload.m</file>
-      <file>${PROJECT_ROOT}\third_party\acq4\readMeta.m</file>
-      <file>${PROJECT_ROOT}\third_party\ibwread\IBWread.m</file>
-      <file>${PROJECT_ROOT}\third_party\ibwread\readIBWbinheader.m</file>
-      <file>${PROJECT_ROOT}\third_party\ibwread\readIBWheaders.m</file>
-      <file>${PROJECT_ROOT}\third_party\importaxo\importaxo.m</file>
-      <file>${PROJECT_ROOT}\third_party\ImportHEKA\ImportHEKA.m</file>
-      <file>${PROJECT_ROOT}\third_party\parfor_progressbar\parfor_progressbar.m</file>
-      <file>${PROJECT_ROOT}\third_party\relativepath\relativepath.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\MakeMATFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\OpenMATFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\progressbar.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\scverLessThan.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONADCToDouble.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONChanList.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONChannelInfo.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONFileHeader.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetADCChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetADCMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetBlockHeaders.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetEventChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetRealMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetRealWaveChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetSampleInterval.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetTextMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONTicksToSeconds.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONVersion.m</file>
-      <file>${PROJECT_ROOT}\third_party\tdmsreader\tdmsinfo.m</file>
-      <file>${PROJECT_ROOT}\third_party\tdmsreader\tdmsreader.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\get_axes_width.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\LinePlotReducer.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\reduce_plot.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\reduce_to_width.m</file>
-      <file>${PROJECT_ROOT}\third_party\wavesurfer\loadDataFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\wavesurfer\scaledSingleAnalogDataFromRaw.m</file>
-      <file>${PROJECT_ROOT}\third_party\wcp_import\import_wcp.m</file>
+      <file>${PROJECT_ROOT}/base/binomialf.m</file>
+      <file>${PROJECT_ROOT}/base/bounce.m</file>
+      <file>${PROJECT_ROOT}/base/ephysIO.m</file>
+      <file>${PROJECT_ROOT}/base/eventer.m</file>
+      <file>${PROJECT_ROOT}/base/filter1.m</file>
+      <file>${PROJECT_ROOT}/base/gaussianf.m</file>
+      <file>${PROJECT_ROOT}/base/hpfilter.m</file>
+      <file>${PROJECT_ROOT}/base/lsqfit.m</file>
+      <file>${PROJECT_ROOT}/base/medianf.m</file>
+      <file>${PROJECT_ROOT}/base/mex/medianf_mex_maci64.mexmaci64</file>
+      <file>${PROJECT_ROOT}/base/reduce_data.m</file>
+      <file>${PROJECT_ROOT}/base/sinv.m</file>
+      <file>${PROJECT_ROOT}/misc/copy.png</file>
+      <file>${PROJECT_ROOT}/misc/cursor-23231_1280.png</file>
+      <file>${PROJECT_ROOT}/misc/eventer_logo.png</file>
+      <file>${PROJECT_ROOT}/third_party/ImportHEKA/ImportHEKA.m</file>
+      <file>${PROJECT_ROOT}/third_party/abfload/abfload.m</file>
+      <file>${PROJECT_ROOT}/third_party/acq4/readMeta.m</file>
+      <file>${PROJECT_ROOT}/third_party/ibwread/IBWread.m</file>
+      <file>${PROJECT_ROOT}/third_party/ibwread/readIBWbinheader.m</file>
+      <file>${PROJECT_ROOT}/third_party/ibwread/readIBWheaders.m</file>
+      <file>${PROJECT_ROOT}/third_party/importaxo/importaxo.m</file>
+      <file>${PROJECT_ROOT}/third_party/parfor_progressbar/parfor_progressbar.m</file>
+      <file>${PROJECT_ROOT}/third_party/relativepath/relativepath.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/MakeMATFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/OpenMATFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONADCToDouble.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONChanList.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONChannelInfo.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONFileHeader.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetADCChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetADCMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetBlockHeaders.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetEventChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetRealMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetRealWaveChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetSampleInterval.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetTextMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONTicksToSeconds.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONVersion.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/progressbar.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/scverLessThan.m</file>
+      <file>${PROJECT_ROOT}/third_party/tdmsreader/tdmsinfo.m</file>
+      <file>${PROJECT_ROOT}/third_party/tdmsreader/tdmsreader.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big-6e92329/LinePlotReducer.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big-6e92329/get_axes_width.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big-6e92329/reduce_plot.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big-6e92329/reduce_to_width.m</file>
+      <file>${PROJECT_ROOT}/third_party/wavesurfer/loadDataFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/wavesurfer/scaledSingleAnalogDataFromRaw.m</file>
+      <file>${PROJECT_ROOT}/third_party/wcp_import/import_wcp.m</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\eventer_R2020b\for_testing" name="splash.png" optional="false">C:\Users\Andrew Penn\Documents\MATLAB\eventer-1.1.3\eventer_R2020b\for_testing\splash.png</file>
-      <file location="${PROJECT_ROOT}\eventer_R2020b\for_testing" name="Eventer.exe" optional="false">C:\Users\Andrew Penn\Documents\MATLAB\eventer-1.1.3\eventer_R2020b\for_testing\Eventer.exe</file>
-      <file location="${PROJECT_ROOT}\eventer_R2020b\for_testing" name="readme.txt" optional="true">C:\Users\Andrew Penn\Documents\MATLAB\eventer-1.1.3\eventer_R2020b\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="readme.txt" optional="true">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.4/eventer_R2020b/for_testing/readme.txt</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="splash.png" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.4/eventer_R2020b/for_testing/splash.png</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="Eventer.app" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.4/eventer_R2020b/for_testing/Eventer.app</file>
+      <file location="${PROJECT_ROOT}/eventer_R2020b/for_testing" name="run_Eventer.sh" optional="false">/Users/andrewcpenn/acp29_mac2020/Code/mfiles/eventer-1.1.4/eventer_R2020b/for_testing/run_Eventer.sh</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2020b</root>
+      <root>/Applications/MATLAB_R2020b.app</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
       </toolboxes>
@@ -159,18 +162,18 @@
       </toolbox>
     </matlab>
     <platform>
-      <unix>false</unix>
-      <mac>false</mac>
-      <windows>true</windows>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
       <win2k>false</win2k>
       <winxp>false</winxp>
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>10.0</osver>
+      <osver>10.15.7</osver>
       <os32>false</os32>
       <os64>true</os64>
-      <arch>win64</arch>
+      <arch>maci64</arch>
       <matlab>true</matlab>
     </platform>
   </configuration>

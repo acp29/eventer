@@ -549,7 +549,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         uiwait(f);
                         return
                     end
-                    if any(strcmpi(app.file.baseName(end-3:end),{'.csv','.txt'}))
+                    if any(strcmpi(app.fullpathlist{i}(end-3:end),{'.csv','.txt'}))
                         % Enter units for raw text files if they are not
                         % defined in a header
                         prompt = {'Enter the units for x (e.g. ms):','Enter the units for y (e.g. pA):'};
@@ -781,6 +781,17 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 end
             end
             app.settings{app.nWaves+1}.xexclusion{1} = sprintf('[%.6g %.6g]',app.split_excl(1),app.split_excl(2));
+            if size(app.settings,1)-1 == app.nWaves+1
+                % Code for compatibility of v1.1.4 with evt files from 
+                % v1.1.3 and earlier where split is not exact multiple 
+                % of the recording length
+                app.settings(app.nWaves+1) = []; % remove settings from incomplete wave
+                warning(sprintf('Note that the final wave is not full length and so was discarded'))
+                [warnMsg] = lastwarn;
+                f = errordlg(warnMsg,'Warning');
+                set(f,'WindowStyle','modal');
+                uiwait(f);
+            end
             if app.nWaves ~= size(app.settings,1)-1
                 app.fullpathlist(end)=[];
                 app.refpathlist(end)=[];
@@ -812,6 +823,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.WaveDropDown.Value = num2str(app.nWaves);
             end
             app.WaveDropDownValueChanged;
+            app.ConfigurationDropDownValueChanged;
             
             % Store a reference list of current file paths
             app.refpathlist = app.fullpathlist;
@@ -945,20 +957,23 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             temp = app.S.array(:,2:end);
             temp = temp(:);
             n = round(app.SplitSpinner.Value/app.S.xdiff);
-            l = ceil(size(temp,1)/n);
+            l = floor(size(temp,1)/n);
             app.S.array = NaN([n,l+1]);
             app.S.array(:,1) = app.S.xdiff*[1:n]';
             for i = 1:l
-                if i < l
-                    app.S.array(:,i+1) = temp((i-1)*n+1:i*n);
-                else
-                    app.S.array(:,l+1) = temp(end);
-                    m = numel(temp((l-1)*n+1:end));
-                    app.S.array(1:m,l+1) = temp((l-1)*n+1:end);
-                    if size(app.S.array,1)-m ~= 0
-                        app.split_excl = [app.S.array(m+1,1) app.S.array(end,1)];
-                    end
-                end
+                % floor
+                app.S.array(:,i+1) = temp((i-1)*n+1:i*n);
+                % ceil
+                %if i < l
+                %   app.S.array(:,i+1) = temp((i-1)*n+1:i*n);
+                %else
+                %    app.S.array(:,l+1) = temp(end);
+                %    m = numel(temp((l-1)*n+1:end));
+                %    app.S.array(1:m,l+1) = temp((l-1)*n+1:end);
+                %    if size(app.S.array,1)-m ~= 0
+                %        app.split_excl = [app.S.array(m+1,1) app.S.array(end,1)];
+                %    end
+                %end
             end
         end
         
@@ -1070,7 +1085,11 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             N = size(app.training_data.array,2)-1;
             chdir(app.path); 
             % create event classification user dialog
-            app.train_dlg = uifigure; app.train_dlg.Icon = 'eventer_logo.png'; app.train_dlg.Position = [0 0 500 500]; app.train_dlg.Name = 'Classify events'; 
+            app.train_dlg = uifigure; 
+            if isprop(app.train_dlg,'Icon')
+                app.train_dlg.Icon = 'eventer_logo.png'; 
+            end
+            app.train_dlg.Position = [0 0 500 500]; app.train_dlg.Name = 'Classify events'; 
             app.event_checkbox = uicheckbox(app.train_dlg); app.event_checkbox.Position = [45 15 80 22]; app.event_checkbox.Text = ' Select?'; app.event_checkbox.Enable = 'off';
             app.event_spinner = uispinner(app.train_dlg); app.event_spinner.Position = [145 15 80 22]; app.event_spinner.Step = 1; app.event_spinner.Limits = [1 N]; app.event_spinner.Enable = 'off';
             %app.event_time = uieditfield(app.train_dlg,'numeric'); app.event_time.Position = [260 15 80 22];
@@ -1456,7 +1475,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 S.yunit = app.S.yunit; 
                 S.names = {}; 
                 S.notes = app.S.notes; 
-                h = waitbar(0,'Please wait for the analysis to complete...','windowstyle','modal');
+                h = waitbar(0,'Please wait for the analysis to complete...');
+                %h = waitbar(0,'Please wait for the analysis to complete...','windowstyle','modal');
                 frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
                 %retrieval of saved settings for current wave to send to eventer command line
                 wave = app.current_wave;
@@ -1510,7 +1530,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 end
                 export = app.settings{1}.export;
                 if app.settings{1}.gz == 1
-                    export = strcmp(export,'.gz');
+                    export = strcat(export,'.gz');
                 end
                 
                 %adding settings to eventer command line
@@ -1645,6 +1665,9 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                     format = app.settings{1}.format;
                     exmode = str2double(app.settings{1}.exmode);
                     export = app.settings{1}.export;
+                    if app.settings{1}.gz == 1
+                        export = strcat(export,'.gz');
+                    end
                     exclude = cell(app.nWaves,1);
                     %apply exclusion zones
                     for wave=1:app.nWaves
@@ -1665,7 +1688,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                     end
                     lasterr('');
                     try
-                        h = waitbar(0,'Please wait for the analysis to complete...','windowstyle','modal');
+                        h = waitbar(0,'Please wait for the analysis to complete...');
+                        %h = waitbar(0,'Please wait for the analysis to complete...','windowstyle','modal');
                         frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
                         for i = 1:n-1
                             h = waitbar((i-1)/n,h,sprintf('Processing wave %d. Please wait... ', wavelist(i)));
@@ -1734,7 +1758,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                             if app.TrainingmodeCheckBox.Value > 0
                                 criterion = 'Pearson';
                             else
-                                errMsg = 'Create or train a model before running eventer';
+                                errMsg = 'Train or load a model before running eventer';
                                 f = errordlg(errMsg,'Error');
                                 set(f,'WindowStyle','modal');
                                 uiwait(f);
@@ -1754,6 +1778,9 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                     format = app.settings{1}.format;
                     exmode = str2double(app.settings{1}.exmode);
                     export = app.settings{1}.export;
+                    if app.settings{1}.gz == 1
+                        export = strcat(export,'.gz');
+                    end
                     exclude = cell(app.nWaves+1,1);
                     %apply exclusion zones
                     for wave=1:app.nWaves
@@ -2421,7 +2448,12 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.PopupGraphButtonPushed
                 p = [];
             end
-            x = ginput(2);
+            try
+                x = ginput(2);
+            catch
+                % Prevents error and system beep when pop-up graph is closed prematurely
+                return
+            end
             app.cell_one.Value = min(x(:,1));
             app.cell_two.Value = max(x(:,1));
             app.ApplyExclusionZones;
@@ -2455,7 +2487,12 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 uiwait(f);
                 return
             end
-            x = ginput(2);
+            try
+                x = ginput(2);
+            catch
+                % Prevents error and system beep when pop-up graph is closed prematurely
+                return
+            end
             prevone = dsearchn(app.array(:,1), min(x(:,1)));
             prevtwo = dsearchn(app.array(:,1), max(x(:,1)));
             temp = app.array;
@@ -2676,7 +2713,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-            cla(app.TemplatePreviewAxes);
+            %cla(app.TemplatePreviewAxes); 
             app.UnsavedLabel.Visible = 'off';
             app.UnsavedLabel.Enable = 'off';
             app.CriterionDropDownValueChanged;
@@ -2914,7 +2951,11 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                end
             end
             % Create load/save dialog box
-            dlg = uifigure; dlg.Icon = 'eventer_logo.png'; dlg.Position = [680 558 225 75]; dlg.Name = 'Presets file';
+            dlg = uifigure; 
+            if isprop(dlg,'Icon')
+                dlg.Icon = 'eventer_logo.png'; 
+            end
+            dlg.Position = [680 558 225 75]; dlg.Name = 'Presets file';
             app.prefield = uieditfield(dlg); app.prefield.Position = [20 40 180 22];
             if app.presetsFile_flag == 1
                 app.prefield.Value = fullfile(app.presets_path,app.presets_file);
@@ -2933,6 +2974,14 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
 
         % Value changed function: ParallelCheckBox
         function ParallelCheckBoxValueChanged(app, event)
+            if ~any(any(contains(struct2cell(ver),'Parallel Computing Toolbox')))
+                errMsg = 'Please install the Parallel Computing Toolbox in order to run analysis on multiple cores';
+                f = errordlg(errMsg,'Error');
+                set(f,'WindowStyle','modal');
+                uiwait(f);
+                app.ParallelCheckBox.Value = 0;
+                return
+            end
             h = waitbar(0,'This may take some time to initialize. Please wait...');
             frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             try
@@ -3407,7 +3456,15 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
 
         % Value changed function: TrainingmodeCheckBox
         function TrainingmodeCheckBoxValueChanged(app, event)
-            if app.TrainingmodeCheckBox.Value > 0   
+            if app.TrainingmodeCheckBox.Value > 0  
+                if ~any(any(contains(struct2cell(ver),'Statistics and Machine Learning Toolbox')))
+                    errMsg = 'Please install the Statistics and Machine Learning Toolbox in order to train a model';
+                    f = errordlg(errMsg,'Error');
+                    set(f,'WindowStyle','modal');
+                    uiwait(f);
+                    app.TrainingmodeCheckBox.Value = 0;
+                    return
+                end
                 outdir = inputdlg('Enter a name for the new machine learning model:','',[1 50],app.outdir);
                 if ~isempty(outdir)
                     if isempty(outdir{1})
@@ -3476,7 +3533,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.1.3",...
+                   "\fontsize{12}\color{black}v1.1.4",...
                    "\fontsize{10}Compiled for Matlab 2020b (9.9) Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
@@ -4289,8 +4346,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
 
             % Create ThresholdabsoluteEditFieldLabel
             app.ThresholdabsoluteEditFieldLabel = uilabel(app.DetectionTab);
-            app.ThresholdabsoluteEditFieldLabel.HorizontalAlignment = 'right';
-            app.ThresholdabsoluteEditFieldLabel.Position = [16 163 126 22];
+            app.ThresholdabsoluteEditFieldLabel.Position = [27 163 129 22];
             app.ThresholdabsoluteEditFieldLabel.Text = 'Threshold (absolute)';
 
             % Create ThresholdAbsoluteEditField
@@ -4652,7 +4708,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.StoreAllWavesButton = uibutton(app.StorePanel, 'push');
             app.StoreAllWavesButton.ButtonPushedFcn = createCallbackFcn(app, @StoreAllButtonPushed, true);
             app.StoreAllWavesButton.Interruptible = 'off';
-            app.StoreAllWavesButton.Tooltip = {'Toggle store or unstore all waves'};
+            app.StoreAllWavesButton.Tooltip = {'Toggle store or unstore all wave settings for analysis'};
             app.StoreAllWavesButton.Position = [179 5 105 22];
             app.StoreAllWavesButton.Text = 'Store all waves';
 
