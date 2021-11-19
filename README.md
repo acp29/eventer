@@ -96,14 +96,23 @@ United Kingdom.
 - Fixed bug that prevented some wait/progress bars from staying on-top of other windows
 - Added Eventer icon to title bar in uifigures of R2020b version (only visible in Windows version)
 
+**v1.1.4** Release version (source code in version associated with MATLAB R2020b)  
+
+- When x-units are not specified in .itx files, assume units of 'ms' instead of 's'  
+- Fixed bug that prevented zip compression of exported data files  
+- Fixed bug that caused .phy files to be exported in addition to files of desired export format  
+- Added error messages to notify uses if required toolboxes are not installed (relevant only to Matlab app version of Eventer)  
+- Fixed bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)  
+- Clarified tool tip for 'Store all waves' button  
+- Prevent the template tab graph from being cleared when changing wave  
+- Prevent error (and system beep) when figure closed before assigning the start and end positions on graphs for the fit and exlcusion zones  
+- Changed Eventer behaviour when 'Split' valus is not an exact multiple of the whole recording length - the last wave will be discarded if it is not equal to the 'Split' value
+- Fixed bug that prevented the recording configuration to be updated upon loading an analysis.evt file  
+
 ## Development roadmap  
 
-- Change default x-axis units for ibw and itx to ms (when units not specified)  
 - Add option to apply median filter method for low-pass filtering in the filter waves section
-- Add error message to notify uses if required toolboxes are not installed (relevant only to Matlab app version of Eventer)  
-- Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)  
-- Fix bug that prevents multiple files loading from the load open file dialogue in some contexts 
-- Add pop-up message to warn users that Eventer cannot load multiple .evt files  
+- Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)   
 - Add Axon Binary File (ABF version 1) as an additional export format
 - Reduce memory footprint of eventer  
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
