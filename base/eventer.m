@@ -1120,12 +1120,14 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     mkdir(filewave);
   end
   chdir(filewave);
-  ephysIO ('event_data.phy',event_data,xunit,yunit);
-  ephysIO ('ensemble_mean.phy',ensemble_mean,xunit,yunit);
-  if ~strcmpi(export,'none')
-    ephysIO (sprintf('event_data.%s',export),event_data,xunit,yunit);
-    ephysIO (sprintf('ensemble_mean.%s',export),ensemble_mean,xunit,yunit);
-  end
+  %ephysIO('event_data.phy',event_data,xunit,yunit);
+  %ephysIO('ensemble_mean.phy',ensemble_mean,xunit,yunit);
+  %if ~strcmpi(export,'none')
+  % ephysIO(sprintf('event_data.%s',export),event_data,xunit,yunit);
+  % ephysIO(sprintf('ensemble_mean.%s',export),ensemble_mean,xunit,yunit);
+  %end
+  ephysIO(sprintf('event_data.%s',export),event_data,xunit,yunit);
+  ephysIO(sprintf('ensemble_mean.%s',export),ensemble_mean,xunit,yunit);
 
   % Save detection parameters and event amplitudes and times to text file
   dlmwrite('_parameters',[TC';noiseSD;AnalysedTime;sample_rate;npeaks],'newline','pc')
@@ -1259,7 +1261,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     dirname{i} = strtrim(dirarray(i));
     if ~strcmp(dirname{i},'ALL_events') &&... %isdir(char(dirname{i})) && was removed
     ~strcmp(dirname{i},'.') &&...
-    ~strcmp(dirname{i},'..')
+    ~strcmp(dirname{i},'..') &&...
+    ~strcmp(dirname{i},'.DS_Store')
       count = count+1;
 	  if i==3
 	    chdir(char(dirname{i}));
@@ -1268,8 +1271,10 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
 	    location = strcat(root,filesep,dirname{i});
 	    chdir(char(location));
 	  end
-      if exist('event_data.phy','file')
-        [temp,xdiff,xunit,yunit] = ephysIO('event_data.phy');
+      %if exist('event_data.phy','file')
+      %  [temp,xdiff,xunit,yunit] = ephysIO('event_data.phy');
+      if exist(sprintf('event_data.%s',export),'file')
+        [temp,xdiff,xunit,yunit] = ephysIO(sprintf('event_data.%s',export));
         temp(:,1) = temp(:,1)+win(1);
         temp(abs(temp(:,1))<eps,1)=0;
         if isempty(t)
@@ -1455,12 +1460,14 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     fid = fopen('event_counts.txt','w');
     fprintf(fid,'%d\n',numtraces);
     fclose(fid);
-    ephysIO ('event_data.phy',events,xunit,yunit);
-    ephysIO ('ensemble_average.phy',ensemble_average,xunit,yunit);
-    if ~strcmpi(export,'none')
-      ephysIO (sprintf('event_data.%s',export),events,xunit,yunit);
-      ephysIO (sprintf('ensemble_average.%s',export),ensemble_average,xunit,yunit);
-    end
+    %ephysIO('event_data.phy',events,xunit,yunit);
+    %ephysIO('ensemble_average.phy',ensemble_average,xunit,yunit);
+    %if ~strcmpi(export,'none')
+    %  ephysIO(sprintf('event_data.%s',export),events,xunit,yunit);
+    %  ephysIO(sprintf('ensemble_average.%s',export),ensemble_average,xunit,yunit);
+    %end
+    ephysIO(sprintf('event_data.%s',export),events,xunit,yunit);
+    ephysIO(sprintf('ensemble_average.%s',export),ensemble_average,xunit,yunit);   
     dlmwrite('_parameters',[tau_rise;tau_decay;sigma;AnalysedTime],'newline','pc');
     dlmwrite('_offset',win(1),'newline','pc');
     if exist('img','dir')==0

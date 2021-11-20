@@ -1236,7 +1236,7 @@ function [waves,xdiff,xunit,yunit,names,notes] = ITXread (filename)
               % Set the X dimension unit since it is undefined
               xunit = tmparr{5}(2:end-1);
               if isempty(xunit)
-                xunit = 's';
+                xunit = 'ms'; % defaults is ms
               end
             else
               if ~isempty(tmparr{5}(2:end-1))
@@ -1523,6 +1523,9 @@ function [array,xdiff,xunit,yunit,names,notes] = ATFread (filename)
   else
     xdiff = dx(1);
   end
+       
+  % Close file identifier
+  fclose(fid);
 
 end
 
@@ -1904,6 +1907,8 @@ function [array,xdiff,xunit,yunit,names,notes] = PXPload (filename)
   % Return empty notes
   notes = '';
 
+  % Close file identifier
+  fclose(fid);
 
 end
 
@@ -2066,7 +2071,6 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = EDRload (filename,ch)
   fseek(fid,db_pos,'bof');
   DB=fread(fid,[EDR.nc,EDR.np],'*int16');
   DAB=double(DB);
-  fclose(fid);
   if isempty(DAB)
     error('no data in file')
   end
@@ -2107,6 +2111,9 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = EDRload (filename,ch)
   yunit = EDR.channel_info{ch}.yu;
   names = char(zeros(2,1)+63);
   notes = EDR.ctime;
+              
+  % Close file identifier
+  fclose(fid);
 
 end
 
@@ -2430,6 +2437,9 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = SMRload (filename,ch)
   % Assign question marks to character array of column names
   ncols = nWaves+1;
   names = char(zeros(ncols,1)+63);
+              
+  % Close file identifier
+  fclose(fid)
 
 end
 
