@@ -161,7 +161,7 @@ if ischar(stop)
   end
 end
 % check existence of file
-if ~exist(fn,'file'),
+if ~exist(fn,'file')
   error(['could not find file ' fn]);
 end
 
@@ -170,7 +170,7 @@ end
 % -------------------------------------------------------------------------
 disp(['opening ' fn '..']);
 [fid,messg]=fopen(fn,'r',machineF);
-if fid == -1,
+if fid == -1
   error(messg);
 end
 % on the occasion, determine absolute file size
@@ -181,7 +181,7 @@ fseek(fid,0,'bof');
 % *** read value of parameter 'fFileSignature' (i.e. abf version) from header ***
 sz=4;
 [fFileSignature,n]=fread(fid,sz,'uchar=>char');
-if n~=sz,
+if n~=sz
   fclose(fid);
   error('something went wrong reading value(s) for fFileSignature');
 end
@@ -261,14 +261,14 @@ clear tmp headPar;
 
 % convert names in structure to variables and read value from header
 for g=1:numOfParams
-  if fseek(fid, s(g).offs,'bof')~=0,
+  if fseek(fid, s(g).offs,'bof')~=0
     fclose(fid);
     error(['something went wrong locating ' s(g).name]);
   end
   sz=length(s(g).value);
   % use dynamic field names
   [h.(s(g).name),n]=fread(fid,sz,s(g).numType);
-  if n~=sz,
+  if n~=sz
     fclose(fid);
     error(['something went wrong reading value(s) for ' s(g).name]);
   end
@@ -388,7 +388,7 @@ end
 % -------------------------------------------------------------------------
 %    PART 2d: groom parameters & perform some plausibility checks
 % -------------------------------------------------------------------------
-if h.lActualAcqLength<h.nADCNumChannels,
+if h.lActualAcqLength<h.nADCNumChannels
   fclose(fid);
   error('less data points than sampled channels in file');
 end
@@ -508,7 +508,7 @@ switch h.nOperationMode
     if h.fFileVersionNumber>=2.0
       errordlg('abfload currently does not work with data acquired in event-driven variable-length mode and ABF version 2.0','ABF version issue');
     else
-      if (h.lSynchArrayPtr<=0 || h.lSynchArraySize<=0),
+      if (h.lSynchArrayPtr<=0 || h.lSynchArraySize<=0)
         fclose(fid);
         error('internal variables ''lSynchArraynnn'' are zero or negative');
       end
@@ -516,16 +516,16 @@ switch h.nOperationMode
       h.lSynchArrayPtrByte=BLOCKSIZE*h.lSynchArrayPtr;
       % before reading Synch Arr parameters check if file is big enough to hold them
       % 4 bytes/long, 2 values per episode (start and length)
-      if h.lSynchArrayPtrByte+2*4*h.lSynchArraySize<fileSz,
+      if h.lSynchArrayPtrByte+2*4*h.lSynchArraySize<fileSz
         fclose(fid);
         error('file seems not to contain complete Synch Array Section');
       end
-      if fseek(fid,h.lSynchArrayPtrByte,'bof')~=0,
+      if fseek(fid,h.lSynchArrayPtrByte,'bof')~=0
         fclose(fid);
         error('something went wrong positioning file pointer to Synch Array Section');
       end
       [synchArr,n]=fread(fid,h.lSynchArraySize*2,'int32');
-      if n~=h.lSynchArraySize*2,
+      if n~=h.lSynchArraySize*2
         fclose(fid);
         error('something went wrong reading synch array section');
       end
@@ -537,23 +537,23 @@ switch h.nOperationMode
       segStartInPts=cumsum([0 (segLengthInPts(1:end-1))']*dataSz)+headOffset;
       % start time (synchArr(:,1)) has to be divided by h.nADCNumChannels to get true value
       % go to data portion
-      if fseek(fid,headOffset,'bof')~=0,
+      if fseek(fid,headOffset,'bof')~=0
         fclose(fid);
         error('something went wrong positioning file pointer (too few data points ?)');
       end
       % ** load data if requested
       if doLoadData
-        for i=1:nSweeps,
+        for i=1:nSweeps
           % if selected sweeps are to be read, seek correct position
-          if ~isequal(nSweeps,h.lActualEpisodes),
+          if ~isequal(nSweeps,h.lActualEpisodes)
             fseek(fid,segStartInPts(sweeps(i)),'bof');
           end
           [tmpd,n]=fread(fid,segLengthInPts(sweeps(i)),precision);
-          if n~=segLengthInPts(sweeps(i)),
+          if n~=segLengthInPts(sweeps(i))
             warning(['something went wrong reading episode ' int2str(sweeps(i)) ': ' segLengthInPts(sweeps(i)) ' points should have been read, ' int2str(n) ' points actually read']);
           end
           h.dataPtsPerChan=n/h.nADCNumChannels;
-          if rem(n,h.nADCNumChannels)>0,
+          if rem(n,h.nADCNumChannels)>0
             fclose(fid);
             error('number of data points in episode not OK');
           end
@@ -564,7 +564,7 @@ switch h.nOperationMode
           tmpd=tmpd';
           % if data format is integer, scale appropriately; if it's float, tmpd is fine
           if ~h.nDataFormat
-            for j=1:length(chInd),
+            for j=1:length(chInd)
               ch=recChIdx(chInd(j))+1;
               tmpd(:,j)=tmpd(:,j)/(h.fInstrumentScaleFactor(ch)*h.fSignalGain(ch)*h.fADCProgrammableGain(ch)*addGain(ch))...
                 *h.fADCRange/h.lADCResolution+h.fInstrumentOffset(ch)-h.fSignalOffset(ch);
@@ -585,7 +585,7 @@ switch h.nOperationMode
       disp('data were acquired in waveform fixed-length mode');
     end
     % extract timing information on sweeps
-    if (h.lSynchArrayPtr<=0 || h.lSynchArraySize<=0),
+    if (h.lSynchArrayPtr<=0 || h.lSynchArraySize<=0)
       fclose(fid);
       error('internal variables ''lSynchArraynnn'' are zero or negative');
     end
@@ -593,16 +593,16 @@ switch h.nOperationMode
     h.lSynchArrayPtrByte=BLOCKSIZE*h.lSynchArrayPtr;
     % before reading Synch Arr parameters check if file is big enough to hold them
     % 4 bytes/long, 2 values per episode (start and length)
-    if h.lSynchArrayPtrByte+2*4*h.lSynchArraySize>fileSz,
+    if h.lSynchArrayPtrByte+2*4*h.lSynchArraySize>fileSz
       fclose(fid);
       error('file seems not to contain complete Synch Array Section');
     end
-    if fseek(fid,h.lSynchArrayPtrByte,'bof')~=0,
+    if fseek(fid,h.lSynchArrayPtrByte,'bof')~=0
       fclose(fid);
       error('something went wrong positioning file pointer to Synch Array Section');
     end
     [synchArr,n]=fread(fid,h.lSynchArraySize*2,'int32');
-    if n~=h.lSynchArraySize*2,
+    if n~=h.lSynchArraySize*2
       fclose(fid);
       error('something went wrong reading synch array section');
     end
@@ -641,10 +641,10 @@ switch h.nOperationMode
     selectedSegStartInPts=((sweeps-1)*dataPtsPerSweep)*dataSz+headOffset;
     % ** load data if requested
     if doLoadData
-      for i=1:nSweeps,
+      for i=1:nSweeps
         fseek(fid,selectedSegStartInPts(i),'bof');
         [tmpd,n]=fread(fid,dataPtsPerSweep,precision);
-        if n~=dataPtsPerSweep,
+        if n~=dataPtsPerSweep
           fclose(fid);
           error(['something went wrong reading episode ' int2str(sweeps(i)) ': ' dataPtsPerSweep ' points should have been read, ' int2str(n) ' points actually read']);
         end
@@ -660,7 +660,7 @@ switch h.nOperationMode
         tmpd=tmpd';
         % if data format is integer, scale appropriately; if it's float, d is fine
         if ~h.nDataFormat
-          for j=1:length(chInd),
+          for j=1:length(chInd)
             ch=recChIdx(chInd(j))+1;
             tmpd(:,j)=tmpd(:,j)/(h.fInstrumentScaleFactor(ch)*h.fSignalGain(ch)*h.fADCProgrammableGain(ch)*addGain(ch))...
               *h.fADCRange/h.lADCResolution+h.fInstrumentOffset(ch)-h.fSignalOffset(ch);
@@ -680,7 +680,7 @@ switch h.nOperationMode
     startPt=floor(startPt/h.nADCNumChannels)*h.nADCNumChannels;
     % if stop is a char array, it can only be 'e' at this point (other values would have
     % been caught above)
-    if ischar(stop),
+    if ischar(stop)
       h.dataPtsPerChan=h.lActualAcqLength/h.nADCNumChannels-floor(1e6*start/h.si);
       h.dataPts=h.dataPtsPerChan*h.nADCNumChannels;
     else
@@ -706,7 +706,7 @@ switch h.nOperationMode
     % recording start and stop times in seconds from midnight
     h.recTime=h.lFileStartTime;
     h.recTime=[h.recTime h.recTime+tmp];
-    if fseek(fid,startPt*dataSz+headOffset,'bof')~=0,
+    if fseek(fid,startPt*dataSz+headOffset,'bof')~=0
       fclose(fid);
       error('something went wrong positioning file pointer (too few data points ?)');
     end
@@ -730,7 +730,7 @@ switch h.nOperationMode
         end
         % read, skipping h.nADCNumChannels-1 data points after each read
         [d,n]=fread(fid,h.dataPtsPerChan,precision,dataSz*(h.nADCNumChannels-1));
-        if n~=h.dataPtsPerChan,
+        if n~=h.dataPtsPerChan
           fclose(fid);
           error(['something went wrong reading file (' int2str(h.dataPtsPerChan) ' points should have been read, ' int2str(n) ' points actually read']);
         end
@@ -786,7 +786,7 @@ switch h.nOperationMode
       else
         % --- situation (i)
         [d,n]=fread(fid,h.dataPts,precision);
-        if n~=h.dataPts,
+        if n~=h.dataPts
           fclose(fid);
           error(['something went wrong reading file (' int2str(h.dataPts) ' points should have been read, ' int2str(n) ' points actually read']);
         end
@@ -796,7 +796,7 @@ switch h.nOperationMode
       end
       % if data format is integer, scale appropriately; if it's float, d is fine
       if ~h.nDataFormat
-        for j=1:length(chInd),
+        for j=1:length(chInd)
           ch=recChIdx(chInd(j))+1;
           d(:,j)=d(:,j)/(h.fInstrumentScaleFactor(ch)*h.fSignalGain(ch)*h.fADCProgrammableGain(ch)*addGain(ch))...
             *h.fADCRange/h.lADCResolution+h.fInstrumentOffset(ch)-h.fSignalOffset(ch);
@@ -1064,8 +1064,8 @@ function pvpmod(x)
 if ~isempty(x)
   for i = 1:2:size(x,2)
      assignin('caller', x{i}, x{i+1});
-  end;
-end;
+  end
+end
 
 
 
