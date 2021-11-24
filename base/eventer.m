@@ -1369,18 +1369,18 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
       ydata = y_avg(idx)*NF;
     end
     fun3 = @(p,tdata)p(1)*(-exp(-tdata/p(2))+exp(-tdata/p(3)));
-	try
+    try
       [p,resnorm,residual,exitflag] = lsqfit(fun3,p0,tdata,ydata,[],[],optimoptions);
       tpeak = p(3)*p(2)/(p(3)-p(2))*log(p(3)/p(2));
       fitAmplitude = abs((fun3(p,tpeak))/NF);
       fitIntegral = abs(p(1)*(p(3)-p(2))/NF);
       fit = fun3(p,tdata)/NF;
       residuals = y_avg(idx)-fit;
-	  errflag = 0;
-	catch
-	  % do nothing
-	  errflag = 1;
-	end
+      errflag = 0;
+    catch
+      % do nothing
+      errflag = 1;
+    end
 
     % Get screen size and set figure sizes
     set(0,'units','pixels');
@@ -1417,20 +1417,20 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     if ~isempty(regexpi(vector,figform))
       try
         reduce_plot(t,y_avg,'-b');
-		if errflag < 1
+        if errflag < 1
           reduce_plot(tdata,fit,'r-','linewidth',2);
-		end
+        end
       catch
         plot(t,y_avg,'-b');
-		if errflag < 1
+        if errflag < 1
           plot(tdata,fit,'r-','linewidth',2);
-		end
+        end
       end
     else
       plot(t,y_avg,'-b');
-	  if errflag < 1
+      if errflag < 1
         plot(tdata,fit,'r-','linewidth',2);
-	  end
+      end
     end
     xlim(win);
     ylim([ylimits(1), ylimits(2)]);
@@ -1449,9 +1449,9 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     end
     box('off'); grid('off');
     hold off;
-	if errflag > 0
-	  error('Fit to ensemble average event failed');
-	end
+    if errflag > 0
+       error('Fit to ensemble average event failed');
+    end
 
     % Save data
     save('ensemble_average.txt','ensemble_average','-ascii','-tabs');
