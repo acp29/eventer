@@ -106,7 +106,7 @@
 %    TDMS Reader from Jim Hokanson
 %
 %  Supported input file formats:
-%    pCLAMP Axon binary files 1 and 2 (*.abf)
+%    pCLAMP Axon binary files v1 and v2 (*.abf)
 %    Axograph binary files (*.axgx, *.axgd)
 %    HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)
 %    CED Spike2 binary files (*.smr)
@@ -127,8 +127,9 @@
 %    ASCII comma-separated values text files (*.csv) (with or without header)
 %
 %  Supported output file formats:
-%    ephysIO HDF5 (Matlab v7.3) binary files (*.phy)
+%    Axon binary files v1.83 (*.abf)
 %    HDF5 (Stimfit) binary files (*.h5)
+%    ephysIO HDF5 (Matlab v7.3) binary files (*.phy)
 %    Igor text files (*.itx)
 %    Axon text files (*.atf)
 %    ASCII comma-separated values text files (*.csv) (no header, waves in columns)
@@ -139,7 +140,7 @@
 %  a further .gz extenstion to the filename. Note that in most circumstances, compression
 %  offers little benefit to the specific HDF5 files saved by ephysIO.
 %
-%  ephysIO v1.9.1 (last updated: 12/01/2020)
+%  ephysIO v2.0.0 (last updated: 24/11/2021)
 %  Author: Andrew Charles Penn
 %  https://www.researchgate.net/profile/Andrew_Penn/
 %
@@ -257,7 +258,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     else
       gzflag = 0;
     end
-    pat = '(.\.phy)*(.\.h5)*(.\.itx)*(.\.awav)*(.\.atf)*(.\.txt)*(.\.csv)*(.\.asc)*';
+    pat = '(.\.phy)*(.\.h5)*(.\.abf)*(.\.itx)*(.\.awav)*(.\.atf)*(.\.txt)*(.\.csv)*(.\.asc)*';
     if isempty(regexpi(filename(end-4:end),pat))
       error('unsupported filetype for save')
     end
@@ -436,7 +437,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     % Remove unit prefixes and scale the data appropriately
     [array(:,1),xunit,SF] = scale_units(array(:,1),xunit);
     xdiff = xdiff*SF;
-    if abs(array(1,1))>0 && strcmpi(filename(end-3:end),'.phy')
+    if strcmpi(filename(end-3:end),'.phy') && abs(array(1,1))>0  
       warning('timebase offset will be reset to zero','TimeOffset')
       array(:,1) = xdiff * [0:size(array,1)-1]';
     end
@@ -491,6 +492,8 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
       MATsave (filename,array,xunit,yunit,names,notes,datatype);
     elseif strcmpi(filename(end-2:end),'.h5')
       H5save (filename,array,xunit,yunit,names,notes);
+    elseif strcmpi(filename(end-3:end),'.abf') 
+      ABFsave (filename,array,xunit,yunit,names,notes);
     elseif strcmpi(filename(end-3:end),'.itx') || strcmpi(filename(end-4:end),'.awav')
       ITXwrite (filename,array,xunit,yunit,names,notes);
     elseif strcmpi(filename(end-3:end),'.atf')
@@ -2740,3 +2743,132 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = ginj2load (filename,ch)
   notes = sweep_struct.stimdef;
 
 end
+
+%--------------------------------------------------------------------------
+
+function ABFsave (filename,array,xunit,yunit,names,notes)
+
+  % Evaluate the x dimension
+  dx = diff(array(:,1));
+  if any(diff(dx) > 1.192093e-07)
+    error('data is not evenly sampled')
+  else
+    xdiff = dx(1);
+  end
+  
+  % Allocate y unit and scale data appropriately
+  if strcmp(yunit,'A')
+    array(:,2:end) = array(:,2:end)*1e+12;
+    yunit = 'pA';
+  elseif strcmp(yunit,'V')
+    array(:,2:end) = array(:,2:end)*1e+3;
+    yunit = 'mV';
+  end
+
+  % Remove time column from data matrix
+  array(:,1)=[];
+  
+  % Header structure for for ABF 1.83 
+  blocksize = 512;
+  HEADER_BLOCKS = 12;
+  header_bytes = blocksize * HEADER_BLOCKS;
+
+  % Data block structure
+  DATA_START = HEADER_BLOCKS;
+  dataByteOffset = header_bytes;
+  [sweepPointCount,sweepCount] = size(array);
+  dataPointCount = numel(array);
+  bytesPerPoint = 2; % 2 for int16 (short), 4 for float32 (float)
+  DATA_BLOCKS = dataPointCount * bytesPerPoint / blocksize;
+  if DATA_BLOCKS > fix(DATA_BLOCKS)
+    DATA_BLOCKS = fix(DATA_BLOCKS) + 1;
+  end
+  data_bytes = blocksize * DATA_BLOCKS;
+
+  % SynchArray structure
+  SYNCH_START = HEADER_BLOCKS + DATA_BLOCKS;
+  syncByteOffset = header_bytes + data_bytes;
+  synch_bytes = sweepCount * 2 * 4;
+  SYNCH_BLOCKS = synch_bytes / blocksize;
+  if SYNCH_BLOCKS > fix(SYNCH_BLOCKS)
+    SYNCH_BLOCKS = fix(SYNCH_BLOCKS) + 1;
+  end
+  
+  % Preallocate 
+  buffer = zeros(1, header_bytes + data_bytes + blocksize * SYNCH_BLOCKS, 'int8');
+  %buffer = zeros(1, header_bytes + data_bytes, 'int8');
+
+  % Open binary file for writing
+  fid = fopen(filename,'w','ieee-le');
+  fwrite(fid, buffer, 'int8');
+
+  % Populate the header
+  fseek(fid, 0, 'bof'); fwrite(fid, 'ABF ', 'schar');                  % fFileSignature
+  fseek(fid, 4, 'bof'); fwrite(fid, 1.83, 'float');                    % fFileVersionNumber
+  fseek(fid, 8, 'bof'); fwrite(fid, 5, 'short');                       % nOperationMode (5 is episodic)
+  fseek(fid, 10, 'bof'); fwrite(fid, dataPointCount, 'long');          % lActualAcqLength
+  fseek(fid, 16, 'bof'); fwrite(fid, sweepCount, 'long');              % lActualEpisodes
+  fseek(fid, 40, 'bof'); fwrite(fid, DATA_START, 'long');              % lDataSectionPtr
+  fseek(fid, 92, 'bof'); fwrite(fid, SYNCH_START, 'int32');            % lSynchArrayPtr
+  fseek(fid, 96, 'bof'); fwrite(fid, sweepCount, 'int32');             % lSynchArraySize
+  fseek(fid, 100, 'bof'); fwrite(fid, 0, 'short');                     % nDataFormat: 0 for int16, 1 for float32
+  fseek(fid, 120, 'bof'); fwrite(fid, 1, 'short');                     % nADCNumChannels
+  fseek(fid, 122, 'bof'); fwrite(fid, xdiff*1e6, 'float');             % fADCSampleInterval (in microseconds)
+  fseek(fid, 130, 'bof'); fwrite(fid, 0, 'float');                     % fSynchTimeUnit (in microseconds, 0 = Value in sample intervals)
+  fseek(fid, 138, 'bof'); fwrite(fid, sweepPointCount, 'long');        % lNumSamplesPerEpisode
+
+
+  % ADC adjustments required for integer conversion.
+  fSignalGain = 1;                                                     % must be 1
+  fADCProgrammableGain = 1;                                            % must be 1
+  fADCresolution = 2^15;                                               % 16-bit signed = +/- 32768
+  fADCrange = 10.24;                                                   % +/- 10 V
+  sADCUnits = pad(yunit,8,'right');                                    % Set y-units as a space-padded 8-byte string    
+
+
+  % Add default scale data to the header
+  fseek(fid, 244, 'bof'); fwrite(fid, fADCrange, 'float');             % fADCRange
+  fseek(fid, 252, 'bof'); fwrite(fid, fADCresolution, 'long');         % 16-bit signed = +/- 32768
+  fseek(fid, 268, 'bof'); fwrite(fid, 1, 'float');                     % _fAutosampleAdditGain
+  fseek(fid, 272, 'bof'); fwrite(fid, 100000, 'float');                % _fAutosampleFilter (in Hz)
+  for i = 0:15
+    sADCChannelName = pad(sprintf('AI #%d',i),10,'right');
+    fseek(fid, 442+i*10, 'bof'); fwrite(fid, sADCChannelName,'schar'); % sADCChannelName
+    fseek(fid, 378+i*2, 'bof'); fwrite(fid, i, 'short');               % nADCPtoLChannelMap
+    fseek(fid, 410+i*2, 'bof'); fwrite(fid, -1, 'short');              % nADCSamplingSeq
+    fseek(fid, 922+i*4, 'bof'); fwrite(fid, 1, 'float');               % fInstrumentScaleFactor
+    fseek(fid, 1050+i*4, 'bof'); fwrite(fid, 1, 'float');              % fSignalGain
+    fseek(fid, 1178+i*4, 'bof'); fwrite(fid, 100000, 'float');         % fSignalLowpassFilter (in Hz)
+    fseek(fid, 730+i*4, 'bof'); fwrite(fid, 1, 'float');               % fADCProgrammableGain
+    fseek(fid, 4576+i*4, 'bof'); fwrite(fid, 1, 'float');              % fTelegraphAdditGain
+    fseek(fid, 4640+i*4, 'bof'); fwrite(fid, 100000, 'float');         % fTelegraphFilter (in Hz)
+    fseek(fid, 5934+i*4, 'bof'); fwrite(fid, 100000, 'float');         % fPostProcessLowpassFilter (in Hz)
+    fseek(fid, 602+i*8, 'bof'); fwrite(fid, sADCUnits, 'schar');       % sADCUnits
+  end
+  
+  % Scale the data, then convert to integer (int16)
+  maxVal = max(abs(array(:)));
+  fInstrumentOffset = 0;
+  valueScale = (fADCresolution-2) / maxVal;
+  fInstrumentScaleFactor = valueScale * fADCrange / fADCresolution;
+  array = int16(array*valueScale);
+  
+  % Add scale information for the data (channel 1)
+  fseek(fid, 410, 'bof'); fwrite(fid, 0, 'short');
+  fseek(fid, 922, 'bof'); fwrite(fid, fInstrumentScaleFactor, 'float');
+
+  % Write scaled data
+  fseek(fid, dataByteOffset, 'bof'); fwrite(fid, array(:), 'short');
+
+  % Write Sync array
+  synchArr = [[0:sweepPointCount:dataPointCount-1];
+               sweepPointCount*ones(1,sweepCount)];
+  fseek(fid, syncByteOffset, 'bof'); fwrite(fid, synchArr(:), 'int32');
+ 
+  % Close file
+  fclose(fid);
+  
+
+end
+
+%--------------------------------------------------------------------------
