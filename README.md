@@ -109,11 +109,14 @@ United Kingdom.
 - Changed Eventer behaviour when 'Split' valus is not an exact multiple of the whole recording length - the last wave will be discarded if it is not equal to the 'Split' value
 - Fixed bug that prevented the recording configuration to be updated upon loading an analysis.evt file  
 
+**v1.2.0** Release version (source code in version associated with MATLAB R2020b)
+
+- Added Axon Binary File (ABF version 1.83) as an additional export format. This widely recognised format is now adopted as Eventer's default output wave format. The ABF files created by eventer are readable in ClampFit, Axograph, Stimfit, WinWCP and EasyElectrophysiology (at least that's what we've tested them in)  
+
 ## Development roadmap  
 
 - Add option to apply median filter method for low-pass filtering in the filter waves section
 - Fix bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)   
-- Add Axon Binary File (ABF version 1) as an additional export format
 - Reduce memory footprint of eventer  
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
 - Add support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
