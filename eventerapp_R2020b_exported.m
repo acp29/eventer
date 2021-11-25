@@ -825,6 +825,19 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.WaveDropDownValueChanged;
             app.ConfigurationDropDownValueChanged;
             
+            % check store status of all waves
+            allStoredFlag = 1;
+            for i=1:app.nWaves
+              if ~isfield(app.settings{i+1},'s')
+                allStoredFlag = 0;
+              end
+            end
+            if allStoredFlag > 0
+              app.StoreAllWavesButton.Text = 'Unstore all waves';
+            else
+              app.StoreAllWavesButton.Text = 'Store all waves';
+            end
+     
             % Store a reference list of current file paths
             app.refpathlist = app.fullpathlist;
             
@@ -1079,7 +1092,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         function loadEventClassifier(app)
             % load event data
             chdir(fullfile(app.outdir{1},'eventer.output','ALL_events'));
-            app.training_data = ephysIO('event_data.phy');
+            file_ext = app.WaveFormatDropDown.Value;
+            app.training_data = ephysIO(sprintf('event_data.%s',file_ext));
             cd txt
             app.event_features = load('-ascii','features.txt');
             N = size(app.training_data.array,2)-1;
@@ -1173,12 +1187,14 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 close(app.h);
                 model = app.model;
                 % Plot out-of-bag classification error
-                figure(7);
+                h_err = figure(7);
                 plot(oobError(app.model));
                 xlabel('Number of grown trees');
                 ylabel('Out-of-bag classification error');
-                % Save trained model
+                % Save OOB error plot and trained model
                 chdir(app.outdir{1});
+                savefig(h_err,'oob_error.fig','compact');
+                print(h_err,'oob_error.png','-dpng','-r300','-opengl');
                 save([app.outdirLabel.Text,'.mlm'],'model','-v7.3');
                 % Save the classification
                 dlmwrite('classification.txt',app.event_class,'delimiter','\t','newline','pc');
@@ -1944,7 +1960,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.MedianButton.Value = 1;
                 app.MinWindowSpinner.Value = -0.01;
                 app.MaxWindowSpinner.Value = +0.04;
-                app.WaveFormatDropDown.Value = 'phy';
+                app.WaveFormatDropDown.Value = 'abf';
                 app.GNUZipCompressionCheckBox.Value = 0;
                 app.SplitSpinner.Value = 0;
                 app.ThresholdAbsoluteEditField.Value = 0;
@@ -3533,7 +3549,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.2.0",...
+                   "\fontsize{12}\color{black}v1.2.1",...
                    "\fontsize{10}Compiled for Matlab 2020b (9.9) Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
