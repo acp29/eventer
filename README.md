@@ -111,11 +111,12 @@ United Kingdom.
 
 **v1.2.0** Release version (source code in version associated with MATLAB R2020b)
 
-- Added Axon Binary File (ABF version 1.83) as an additional export format. This widely recognised format is now adopted as Eventer's default output wave format. The ABF files created by eventer are readable in ClampFit, Axograph, Stimfit, WinWCP and EasyElectrophysiology (at least that's what we've tested them in)  
+- Added Axon Binary File (ABF version 1.83) as an additional export format. This widely recognised format is now adopted as Eventer's default output wave format. The ABF files created by eventer are readable in ClampFit, Axograph, Stimfit, IgorPro (via Neuromatic), WinWCP and EasyElectrophysiology (at least that's what we've tested them in)  
 - Fixed bug that halts merge when the fit to the ensemble average event fails (plot fit using initial values (average template time constants) instead)   
 
 ## Development roadmap  
 
+- Add feature to automatically save plot of out-of-bag classification error
 - Add option to apply median filter method for low-pass filtering in the filter waves section
 - Reduce memory footprint of eventer  
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
