@@ -2821,8 +2821,8 @@ function ABFsave (filename,array,xunit,yunit,names,notes)
   % ADC adjustments required for integer conversion.
   fSignalGain = 1;                                                     % must be 1
   fADCProgrammableGain = 1;                                            % must be 1
-  fADCresolution = 2^15;                                               % 16-bit signed = +/- 32768
-  fADCrange = 10.24;                                                   % +/- 10 V
+  fADCresolution = 2^15;                                               % 16-bit signed = +/- 32767
+  fADCrange = 10;                                                      % +/- 10 V
   sADCUnits = pad(yunit,8,'right');                                    % Set y-units as a space-padded 8-byte string    
 
 
