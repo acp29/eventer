@@ -109,6 +109,7 @@ United Kingdom.
 - Prevent error (and system beep) when figure closed before assigning the start and end positions on graphs for the fit and exlcusion zones  
 - Changed Eventer behaviour when 'Split' valus is not an exact multiple of the whole recording length - the last wave will be discarded if it is not equal to the 'Split' value
 - Fixed bug that prevented the recording configuration to be updated upon loading an analysis.evt file  
+- Fixed bug that caused erroneous values to be copied over to template time constants; this was only an issue for analysis of current clamp recordings  
 
 **v1.2.0** Release version (source code in version associated with MATLAB R2020b)
 
