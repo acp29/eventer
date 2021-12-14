@@ -600,7 +600,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                             app.S = {};
                             return
                         end
-                    elseif strcmpi(app.file.baseName(end-4:end),'.tdms')
+                    elseif strcmpi(app.fullpathlist{i}(end-4:end),'.tdms')
                         % Allow user to scale data input from tdms files
                         prompt = 'Enter the factor to scale the data by:';
                         app.ySF = inputdlg(prompt,'Data scaling',1,{'1'});
@@ -823,6 +823,13 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.WaveDropDown.Value = num2str(app.nWaves);
             end
             app.WaveDropDownValueChanged;
+            if strcmp(app.S.yunit,'A')
+                app.ConfigurationDropDown.Value = 'VC';
+            elseif strcmp(app.S.yunit,'V')
+                app.ConfigurationDropDown.Value = 'CC';
+            else
+                app.ConfigurationDropDown.Value = 'dummy';
+            end
             app.ConfigurationDropDownValueChanged;
             
             % check store status of all waves
