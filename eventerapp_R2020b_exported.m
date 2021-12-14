@@ -141,7 +141,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         FigureFormatDropDown            matlab.ui.control.DropDown
         dpiLabel                        matlab.ui.control.Label
         wavesstackedLabel               matlab.ui.control.Label
-        GNUZipCompressionCheckBox       matlab.ui.control.CheckBox
+        CompressionCheckBox             matlab.ui.control.CheckBox
         MaxWindowSpinner                matlab.ui.control.Spinner
         EventwindowLabel                matlab.ui.control.Label
         MinWindowSpinner                matlab.ui.control.Spinner
@@ -303,7 +303,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         ( ~strcmp(app.WaveFormatDropDown.Value,app.settings{1}.export) )                 || ...
                         ( ~strcmp(app.FigureFormatDropDown.Value,app.settings{1}.format) )               || ...
                         ( ~strcmp(app.outdirLabel.Text,app.settings{1}.outdir{1}) )                      || ...
-                        ( app.GNUZipCompressionCheckBox.Value ~= app.settings{1}.gz )                    || ...
+                        ( app.CompressionCheckBox.Value ~= app.settings{1}.gz )                    || ...
                         ( app.cell_one.Value ~= app.settings{app.current_wave+1}.cell_one )              || ...
                         ( app.cell_two.Value ~= app.settings{app.current_wave+1}.cell_two )              || ...
                         ( app.cell_three.Value ~= app.settings{app.current_wave+1}.cell_three )          || ...
@@ -908,7 +908,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             fprintf(fid,'app.MinWindowSpinner.Value = %g;\n',app.MinWindowSpinner.Value);
             fprintf(fid,'app.MaxWindowSpinner.Value = %g;\n',app.MaxWindowSpinner.Value);
             fprintf(fid,'app.WaveFormatDropDown.Value = ''%s'';\n',app.WaveFormatDropDown.Value);
-            fprintf(fid,'app.GNUZipCompressionCheckBox.Value = %g;\n',app.GNUZipCompressionCheckBox.Value);
+            fprintf(fid,'app.CompressionCheckBox.Value = %g;\n',app.CompressionCheckBox.Value);
             fprintf(fid,'app.FigureFormatDropDown.Value = ''%s'';\n',app.FigureFormatDropDown.Value);
             fprintf(fid,'app.SplitSpinner.Value = %g;\n',app.SplitSpinner.Value);
             fprintf(fid,'app.ThresholdAbsoluteEditField.Value = %g;\n',app.ThresholdAbsoluteEditField.Value);
@@ -1326,10 +1326,11 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             f.Visible = 'off';
             %User selection of file & display of file name
             [file.baseName, file.Path] = uigetfile(...
-                {'*.abf;*.axgx;*.axgd;*.dat;*.cfs;*.smr;*.tdms;*.wcp;*.EDR;*.pxp;*.ibw;*.bwav;*.ma;*.h5;*.mat;*.phy;*.itx;*.awav;*.atf;*.txt;*.csv;*.evt','All Types';...
+                {'*.abf;*.axgx;*.axgd;*.dat;*.nwb;*.cfs;*.smr;*.tdms;*.wcp;*.EDR;*.pxp;*.ibw;*.bwav;*.ma;*.h5;*.mat;*.phy;*.itx;*.awav;*.atf;*.txt;*.csv;*.evt','All Types';...
                 '*.abf','Axon binary files v1 and v2 (*.abf)';...
                 '*.axgx;*.axgd','Axograph binary file (*.axgx, *.axgd)';...
                 '*.dat','HEKA PatchMaster,Pulse and ChartMaster binary files (*.dat)';...
+                '*.nwb','Neurodata without borders v2 (*.nwb)';...
                 '*.cfs','CED Signal binary files (*.cfs)';...
                 '*.smr','CED Spike2 binary files (*.smr)';...
                 '*.tdms','LabVIEW Signal Express TDMS binary files (*.tdms)';...
@@ -1961,7 +1962,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.MinWindowSpinner.Value = -0.01;
                 app.MaxWindowSpinner.Value = +0.04;
                 app.WaveFormatDropDown.Value = 'abf';
-                app.GNUZipCompressionCheckBox.Value = 0;
+                app.CompressionCheckBox.Value = 0;
                 app.SplitSpinner.Value = 0;
                 app.ThresholdAbsoluteEditField.Value = 0;
                 app.FigureFormatDropDown.Value = 'fig';
@@ -2658,7 +2659,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.ExmodeDropDown.Value = app.settings{1}.exmode;
                 app.WaveFormatDropDown.Value = app.settings{1}.export;
                 app.FigureFormatDropDown.Value = app.settings{1}.format;
-                app.GNUZipCompressionCheckBox.Value = app.settings{1}.gz;
+                app.CompressionCheckBox.Value = app.settings{1}.gz;
                 app.SplitSpinner.Value = app.settings{1}.split;
                 app.outdir = app.settings{1}.outdir;
                 app.ThresholdAbsoluteEditField.Value = app.settings{1}.absthreshold;
@@ -2812,7 +2813,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 saved.format = app.FigureFormatDropDown.Value;
                 saved.exmode = app.ExmodeDropDown.Value;
                 saved.export = app.WaveFormatDropDown.Value;
-                saved.gz = app.GNUZipCompressionCheckBox.Value;
+                saved.gz = app.CompressionCheckBox.Value;
                 saved.saved = 1;
                 saved.split = app.SplitSpinner.Value;
                 saved.outdir = app.outdir;
@@ -2940,8 +2941,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             unstored(app);
         end
 
-        % Value changed function: GNUZipCompressionCheckBox
-        function GNUZipCompressionCheckBoxValueChanged(app, event)
+        % Value changed function: CompressionCheckBox
+        function CompressionCheckBoxValueChanged(app, event)
             unstored(app);
         end
 
@@ -4529,11 +4530,11 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
 
             % Create WaveFormatDropDown
             app.WaveFormatDropDown = uidropdown(app.OutputTab);
-            app.WaveFormatDropDown.Items = {'Axon binary file v1.83 (.abf)', 'ephysIO HDF5 binary (.phy)', 'HDF5 (Stimfit) binary (.h5)', 'Axon Text File (.atf)', 'Igor Text File (.itx)', 'ASCII CSV File (.csv)', 'ASCII TSV File (.txt)', 'ASCII TSV File (.asc)'};
-            app.WaveFormatDropDown.ItemsData = {'abf', 'phy', 'h5', 'atf', 'itx', 'csv', 'txt', 'asc'};
+            app.WaveFormatDropDown.Items = {'Axon binary file v1.83 (.abf)', 'Neurodata without borders 2.4.0 (.nwb)', 'Stimfit binary (.h5)', 'ephysIO binary (.phy)', 'Axon Text File (.atf)', 'Igor Text File (.itx)', 'ASCII CSV File (.csv)', 'ASCII TSV File (.txt)', 'ASCII TSV File (.asc)'};
+            app.WaveFormatDropDown.ItemsData = {'abf', 'nwb', 'h5', 'phy', 'atf', 'itx', 'csv', 'txt', 'asc'};
             app.WaveFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @WaveFormatDropDownValueChanged, true);
-            app.WaveFormatDropDown.Tooltip = {'Tells eventer to export the episodic wave data of all detected events in the specified format. Choose ephysIO HDF5 binary for optimal performance and storage efficiency or other formats for portability'};
-            app.WaveFormatDropDown.Position = [134 134 208 22];
+            app.WaveFormatDropDown.Tooltip = {'Tells eventer to export the episodic wave data of all detected events in the specified format.'};
+            app.WaveFormatDropDown.Position = [134 134 258 22];
             app.WaveFormatDropDown.Value = 'abf';
 
             % Create FigureFormatDropDownLabel
@@ -4565,12 +4566,12 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.wavesstackedLabel.Position = [135 109 91 22];
             app.wavesstackedLabel.Text = '(waves stacked)';
 
-            % Create GNUZipCompressionCheckBox
-            app.GNUZipCompressionCheckBox = uicheckbox(app.OutputTab);
-            app.GNUZipCompressionCheckBox.ValueChangedFcn = createCallbackFcn(app, @GNUZipCompressionCheckBoxValueChanged, true);
-            app.GNUZipCompressionCheckBox.Tooltip = {'Note that in most circumstances compression offers little benefit to the HDF5 (MATLAB) binary files saved by ephysIO.'};
-            app.GNUZipCompressionCheckBox.Text = 'GNU Zip Compression';
-            app.GNUZipCompressionCheckBox.Position = [357 134 144 22];
+            % Create CompressionCheckBox
+            app.CompressionCheckBox = uicheckbox(app.OutputTab);
+            app.CompressionCheckBox.ValueChangedFcn = createCallbackFcn(app, @CompressionCheckBoxValueChanged, true);
+            app.CompressionCheckBox.Tooltip = {'Compress resulting data file by GNU zip. Note that NWB already uses data compression internally.'};
+            app.CompressionCheckBox.Text = 'Compression';
+            app.CompressionCheckBox.Position = [403 134 98 22];
 
             % Create MaxWindowSpinner
             app.MaxWindowSpinner = uispinner(app.OutputTab);
