@@ -2542,59 +2542,107 @@ function [array,xdiff,xunit,yunit,names,notes] = NWB2load (filename,ch)
   % We have plans to continue developing NWB file reading to support a wider range of NWB file structures.
   % Watch out for bug fix releases where NBW file reading is extended
   
-  % Read NWB file using matneb
-  nwb = nwbRead(filename, 'ignorecache');
+  % Read NWB file using matnwb
+  nwb = nwbRead(filename);
   
   % Get recording channels
   rec_channels = keys(nwb.general_intracellular_ephys);
-  if ch > numel(rec_channels)
-    error('channel number out of range')
-  end
   
   % Get names of recordings
   rec_names = keys(nwb.acquisition);
   
-  % Get/set units
-  yunit = nwb.acquisition.get(rec_names{1}).data_unit;
-  if regexpi(yunit,'amp*')
-    yunit = 'A';
-  elseif regexpi(yunit,'volt*')
-    yunit = 'V';
-  end
-  xunit = 's';
-  
-  % Get sampling frequency and calculate xdiff
-  xdiff = 1/nwb.acquisition.get(rec_names{1}).starting_time_rate;
-  
   % Get data
   if ~isempty(nwb.general_intracellular_ephys_sweep_table)
   
+    if ch > numel(rec_channels)
+      error('channel number out of range')
+    end
+  
     % Waves are stored as sweeps
+    data = {};
     n = numel(rec_names)/numel(rec_channels);
     N = [];
     count = 0;
     for i = 1:numel(rec_names)
+      
+      % Get channel information for recording sweep 
       [filepath,channel] = fileparts(nwb.acquisition.get(rec_names{i}).electrode.path);
+      
+      % Get recording information if correct channel
       if strcmp(channel, rec_channels{ch})
-        count = count + 1;
-        temp = double(nwb.acquisition.get(rec_names{i}).data.load()) * ...
-               nwb.acquisition.get(rec_names{i}).data_conversion;
-        if isempty(N)
-          N = numel(temp);
-          data = zeros(N,n); % preallocate data matrix
-        else
-          if numel(temp) ~= N
-             error('waves are not the same length');
+      
+        % Get information about the corresponding recording channel
+        % We only need to do this once
+        if count == 0
+        
+          % Get/set units
+          yunit = nwb.acquisition.get(rec_names{1}).data_unit;
+          if regexpi(yunit,'amp*')
+            yunit = 'A';
+          elseif regexpi(yunit,'volt*')
+           yunit = 'V';
+          end
+          xunit = 's';
+  
+          % Calculate xdiff and time vector
+          if ~isempty(nwb.acquisition.get(rec_names{1}).starting_time_rate)
+            xdiff = 1/nwb.acquisition.get(rec_names{1}).starting_time_rate;
+            N = numel(nwb.acquisition.get(rec_names{1}).data.load());
+            % Create time stamps
+            t = 1:N;
+            t = (t-1)';           % first data point at zero
+            t = xdiff*t;
+          else
+            % Get time stamps
+            t = nwb.acquisition.get(rec_names{1}).timestamps.load();
+            % Get sampling interval from first pair of time stamps 
+            % Assume data is is evenly sampled (it might not be!!!)
+            dx = diff(t);
+            xdiff = dx(1);
           end
         end
-        data(:, count) = temp;
+        count = count + 1;    
+        
+        % Get data
+        data{count} = double(nwb.acquisition.get(rec_names{i}).data.load()) * ...
+                      nwb.acquisition.get(rec_names{i}).data_conversion;
+        if size(data{count},1) == 1
+          data{count} = data{count}';
+        end     
+        
       end
-    end
-    if count ~= n 
-      error('sweeps: unexpected number of waves in data file')
     end
     
   else
+  
+    % Channel number will be used to determine which recording wave to load
+    % (as opposed to which recording device when data is formatted as sweeps)
+    
+    % Get/set units
+    yunit = nwb.acquisition.get(rec_names{1}).data_unit;
+    if regexpi(yunit,'amp*')
+      yunit = 'A';
+    elseif regexpi(yunit,'volt*')
+      yunit = 'V';
+    end
+    xunit = 's'; 
+          
+    % Calculate xdiff and time vector
+    if ~isempty(nwb.acquisition.get(rec_names{ch}).starting_time_rate)
+      xdiff = 1/nwb.acquisition.get(rec_names{ch}).starting_time_rate;
+      N = numel(nwb.acquisition.get(rec_names{ch}).data.load());
+      % Create time stamps
+      t = 1:N;
+      t = (t-1)';           % first data point at zero
+      t = xdiff*t;
+    else
+      % Get time stamps
+      t = nwb.acquisition.get(rec_names{ch}).timestamps.load();
+      % Get sampling interval from first pair of time stamps 
+      % Assume data is is evenly sampled (it might not be!!!)
+      dx = diff(t);
+      xdiff = dx(1);
+    end
     
     % Check if waves are defined in intervals_epochs or intervals_trials
     if ~isempty(nwb.intervals_epochs)
@@ -2604,33 +2652,40 @@ function [array,xdiff,xunit,yunit,names,notes] = NWB2load (filename,ch)
       wave_start = nwb.intervals_trials.start_time.data.load();
       wave_stop  = nwb.intervals_trials.stop_time.data.load();
     end
-    wave_duration = wave_stop - wave_start;
-    mean_wave_duration = mean(wave_duration);
-    if any(abs(wave_duration - mean_wave_duration) > eps('single'))
-      error('waves are not the same length')
+    wave_start_idx = dsearchn(t,wave_start);
+    wave_stop_idx = dsearchn(t,wave_stop);
+    if numel(wave_start) ~= numel(wave_stop)
+      error('inconsistent number of start and stop times in TimeIntervals')
     end
-    
-    % Get data dimensions of waves
-    n = round(numel(wave_start));
-    N = round(mean_wave_duration/xdiff);
-    
+    if (any(wave_start_idx(2:end)-wave_stop_idx(1:end-1)) == 0)
+      wave_stop_idx(1:end-1) = wave_stop_idx(1:end-1)-1;
+    end
+
     % Get data points
-    if numel(rec_names) ~= numel(rec_channels)
-      error('intervals: unexpected number of waves in data file')
+    temp = double(nwb.acquisition.get(rec_names{ch}).data.load()) * ...
+               nwb.acquisition.get(rec_names{ch}).data_conversion;
+    n = numel(wave_start);
+    data = {};
+    for i = 1:n
+      data{i} = temp(wave_start_idx(i):wave_stop_idx(i)); 
+      if size(data{i},1) == 1
+        data{i} = data{i}';
+      end
     end
-    scale = nwb.acquisition.get(rec_names{ch}).data_conversion;
-    data = scale * double(nwb.acquisition.get(rec_names{ch}).data.load());
-    data = reshape(data,N,n);
-    
+
   end
   
-  % Create time vector
-  t = 1:N;
-  t = (t-1)';           % first data point at zero
-  t = xdiff*t;
+  % Convert data cell array to matrix (with padding if necessary)
+  data = cells2mat(data);
+  N = size(data,1);
+  
+  % Create x-dimension vector
+  x = 1:N;
+  x = (x-1)';           % first data point at zero
+  x = xdiff*x;
   
   % Combine time vector with data array
-  array = [t, data];
+  array = [x, data];
   
   % Assign question marks to character array of column names
   ncols = n+1;
@@ -2638,6 +2693,11 @@ function [array,xdiff,xunit,yunit,names,notes] = NWB2load (filename,ch)
 
   % Assign empty notes array
   notes = '';  
+  
+  % Remove temporary NWB cache
+  if exist('+types','dir')
+    rmdir('+types','s')
+  end
   
   
 end
@@ -3083,6 +3143,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
                                                   'description', 'Series of fixed-length waves', ...
                                                   'comments', ['Convert data to floating point ', ...
                                                                'and multiply by data_conversion'], ...
+                                                  'data', compressed_data, ...
                                                   'data_unit', 'volts', ...
                                                   'data_conversion', 1/valueScale, ...
                                                   'data_resolution', valueScale);
