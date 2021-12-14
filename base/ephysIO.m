@@ -31,6 +31,66 @@
 %    original file from which the data came and a column of zeros and ones
 %    indicating which channel the data in array represents
 %
+%  If a header line is encountered when reading text file formats (.txt or
+%  .csv), it will be detected automatically. Support is also provided to
+%  export an ASCII tab-delimited text file (.asc) with waves stacked;
+%  suitable to import into WinWCP or WinEDR.
+%
+%  Zip (.zip) or gzip (.gz) compressed files of the supported input file
+%  formats will automatically be decompressed.
+%
+%  Support for reading non-matlab binary files is available via the
+%  following third party helper functions distributed with ephysIO:
+%    readMeta.m from ACQ4 (Luke Campagnola)
+%    IBWread.m from Jakub Bialek (modified by AP)
+%    import_wcp.m from David Jaeckeld (modified by AP)
+%    importaxo.m from Marco Russo
+%    loadDataFile.m from WaveSurfer
+%    ImportHEKA.m from Malcolm Lidierth and Sammy Katta (modified by AP)
+%    abfload.m from Harald Hentschke, Forrest Collman and Ulrich Egert
+%              (modified by AP)
+%    matcfs32 and matcfs64d from Jim Colebatch
+%    SON2 from Malcolm Lidierth
+%    TDMS Reader from Jim Hokanson
+%    matnwb from Ivan Smalianchuk and Ben Dichter
+%
+%  Supported input file formats:
+%    pCLAMP Axon binary files v1 and v2 (*.abf)
+%    Axograph binary files (*.axgx, *.axgd)
+%    HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)
+%    Neurodata without borders v2 (*.nwb)
+%    CED Spike2 binary files (*.smr)
+%    CED Signal binary files (*.cfs) (windows only; 32 or 64-bit)
+%    LabVIEW Signal Express TDMS binary files (*.tdms) (except DAQmx Raw data)
+%    WinWCP binary files (*.wcp)
+%    WinEDR binary files (*.EDR)
+%    Igor Packed experiment binary files (*.pxp)
+%    Igor binary wave files (*.ibw, *.bwav) (versions 2 and 5 only)
+%    WaveSurfer binary (HDF5) files (*.h5)
+%    ACQ4 binary (HDF5) files (*.ma) (no compression only)
+%    GINJ2 MATLAB binary files (*.mat)
+%    Stimfit binary (HDF5) files (*.h5)
+%    Igor text files (*.itx,*.awav)
+%    Axon text files (*.atf)
+%    ASCII tab-delimited text files (*.txt) (with or without header)
+%    ASCII comma-separated values text files (*.csv) (with or without header)
+%    ephysIO HDF5/MATLAB binary files (*.phy)
+%
+%  Supported output file formats:
+%    Axon binary files v1.83 (*.abf, integer-type)
+%    Neurodata without borders v2.4.0 (*.nwb)
+%    HDF5 (Stimfit) binary files (*.h5)
+%    Igor text files (*.itx)
+%    Axon text files (*.atf)
+%    ASCII comma-separated values text files (*.csv) (no header, waves in columns)
+%    ASCII tab-delimited text files (*.txt) (no header, waves in columns)
+%    ASCII tab-delimited text files (*.asc) (no header, waves stacked)
+%    ephysIO HDF5 (Matlab v7.3) binary files (*.phy)
+%
+%  Any of the above output formats can be combined with gzip compression by including
+%  a further .gz extenstion to the filename. Note that in most circumstances, compression
+%  offers little benefit to ABF files or the specific HDF5 files saved by ephysIO.
+%
 %  --------------------- Notes on ephysIO's HDF5 file format ---------------------
 %
 %  The preferred ephysIO format (.phy) is a simple hdf5 format that is created for
@@ -78,69 +138,7 @@
 %
 %  -------------------------------------------------------------------------------
 %
-%  Both read and write support is provided for Axon text files (.atf), Igor
-%  text files (.itx), ephysIO HDF5/MATLAB binary files (.phy), Stimfit HDF5
-%  binary files (*.h5), comma separated value text files (.csv) and tab-
-%  delimited text files (.txt, .asc).
-%
-%  If a header line is encountered when reading text file formats (.txt or
-%  .csv), it will be detected automatically. Support is also provided to
-%  export an ASCII tab-delimited text file (.asc) with waves stacked;
-%  suitable to import into WinWCP or WinEDR.
-%
-%  Zip (.zip) or gzip (.gz) compressed files of the supported input file
-%  formats will automatically be decompressed.
-%
-%  Support for reading non-matlab binary files is available via the
-%  following third party helper functions distributed with ephysIO:
-%    readMeta.m from ACQ4 (Luke Campagnola)
-%    IBWread.m from Jakub Bialek (modified by AP)
-%    import_wcp.m from David Jaeckeld (modified by AP)
-%    importaxo.m from Marco Russo
-%    loadDataFile.m from WaveSurfer
-%    ImportHEKA.m from Malcolm Lidierth and Sammy Katta (modified by AP)
-%    abfload.m from Harald Hentschke, Forrest Collman and Ulrich Egert
-%              (modified by AP)
-%    matcfs32 and matcfs64d from Jim Colebatch
-%    SON2 from Malcolm Lidierth
-%    TDMS Reader from Jim Hokanson
-%
-%  Supported input file formats:
-%    pCLAMP Axon binary files v1 and v2 (*.abf)
-%    Axograph binary files (*.axgx, *.axgd)
-%    HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)
-%    CED Spike2 binary files (*.smr)
-%    CED Signal binary files (*.cfs) (windows only; 32 or 64-bit)
-%    LabVIEW Signal Express TDMS binary files (*.tdms) (except DAQmx Raw data)
-%    WinWCP binary files (*.wcp)
-%    WinEDR binary files (*.EDR)
-%    Igor Packed experiment binary files (*.pxp)
-%    Igor binary wave files (*.ibw, *.bwav) (versions 2 and 5 only)
-%    WaveSurfer binary (HDF5) files (*.h5)
-%    ACQ4 binary (HDF5) files (*.ma) (no compression only)
-%    GINJ2 MATLAB binary files (*.mat)
-%    ephysIO HDF5/MATLAB binary files (*.phy)
-%    Stimfit binary (HDF5) files (*.h5)
-%    Igor text files (*.itx,*.awav)
-%    Axon text files (*.atf)
-%    ASCII tab-delimited text files (*.txt) (with or without header)
-%    ASCII comma-separated values text files (*.csv) (with or without header)
-%
-%  Supported output file formats:
-%    Axon binary files v1.83 (*.abf)
-%    HDF5 (Stimfit) binary files (*.h5)
-%    ephysIO HDF5 (Matlab v7.3) binary files (*.phy)
-%    Igor text files (*.itx)
-%    Axon text files (*.atf)
-%    ASCII comma-separated values text files (*.csv) (no header, waves in columns)
-%    ASCII tab-delimited text files (*.txt) (no header, waves in columns)
-%    ASCII tab-delimited text files (*.asc) (no header, waves stacked)
-%
-%  Any of the above output formats can be combined with gzip compression by including
-%  a further .gz extenstion to the filename. Note that in most circumstances, compression
-%  offers little benefit to the specific HDF5 files saved by ephysIO.
-%
-%  ephysIO v2.0.0 (last updated: 24/11/2021)
+%  ephysIO v2.1.0 (last updated: 13/12/2021)
 %  Author: Andrew Charles Penn
 %  https://www.researchgate.net/profile/Andrew_Penn/
 %
@@ -157,6 +155,8 @@
 %
 %  You should have received a copy of the GNU General Public License
 %  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 
 
 function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
@@ -230,8 +230,8 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     %D = dir(sprintf('%s*',filename));
     %[junk,idx] = sort([D.datenum],'descend');
     %filename = D(idx(1)).name;
-    pat = ['(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.abf)*'...
-           '(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
+    pat = ['(.\.nwb)*(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*'...
+           '(.\.abf)*(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
     if isempty(regexpi(filename(end-minlim:end),pat))
       error('unsupported filetype for load')
     end
@@ -258,7 +258,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     else
       gzflag = 0;
     end
-    pat = '(.\.phy)*(.\.h5)*(.\.abf)*(.\.itx)*(.\.awav)*(.\.atf)*(.\.txt)*(.\.csv)*(.\.asc)*';
+    pat = '(.\.abf)*(.\.nwb)*(.\.h5)*(.\.phy)*(.\.itx)*(.\.awav)*(.\.atf)*(.\.txt)*(.\.csv)*(.\.asc)*';
     if isempty(regexpi(filename(end-4:end),pat))
       error('unsupported filetype for save')
     end
@@ -333,7 +333,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
   % LOAD DATA if only filename input argument is provided
   if (nargin <= 1)
     if strcmpi(filename(end-3:end),'.phy')
-      [array,xdiff,xunit,yunit,names,notes,saved] = MATload (filename); %#ok<*ASGLU>
+      [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename); %#ok<*ASGLU>
     elseif strcmpi(filename(end-3:end),'.mat')
       [array,xdiff,xunit,yunit,names,notes] = ginj2load (filename,ch); %#ok<*ASGLU>
     elseif strcmpi(filename(end-3:end),'.txt')
@@ -383,6 +383,12 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
         [array,xdiff,xunit,yunit,names,notes,clist] = ABF2load (filename,ch);
       else
          error('the required helper function abfload.m cannot be found')
+      end
+    elseif strcmpi(filename(end-3:end),'.nwb')
+      if exist('nwbRead')
+        [array,xdiff,xunit,yunit,names,notes] = NWB2load (filename,ch);
+      else
+         error('the required helper function nwbRead.m (from matnwb) cannot be found')
       end
     elseif strcmpi(filename(end-3:end),'.wcp')
       if exist('import_wcp')
@@ -484,16 +490,22 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     [array(:,2:end),yunit] = scale_units(array(:,2:end),yunit);
     % Set data values below the machine precision to 0
     array(abs(array)<eps) = 0;
-    if strcmpi(filename(end-3:end),'.phy')
+    if strcmpi(filename(end-3:end),'.abf') 
+      ABFsave (filename,array,xunit,yunit,names,notes);
+    elseif strcmpi(filename(end-3:end),'.nwb') 
+      if exist('nwbExport')
+        NWB2save (filename,array,xunit,yunit,names,notes);
+      else
+        error('the required helper function nwbExport.m (from matnwb) cannot be found')
+      end
+    elseif strcmpi(filename(end-2:end),'.h5')
+      H5save (filename,array,xunit,yunit,names,notes);
+    elseif strcmpi(filename(end-3:end),'.phy')
       if any(isnan(array(:)))>0 || any(isinf(array(:)))>0
         error(['ephysIO binary files do not support the storage of NaN '...
               'or inf values in the data array'])
       end
-      MATsave (filename,array,xunit,yunit,names,notes,datatype);
-    elseif strcmpi(filename(end-2:end),'.h5')
-      H5save (filename,array,xunit,yunit,names,notes);
-    elseif strcmpi(filename(end-3:end),'.abf') 
-      ABFsave (filename,array,xunit,yunit,names,notes);
+      PHYsave (filename,array,xunit,yunit,names,notes,datatype);
     elseif strcmpi(filename(end-3:end),'.itx') || strcmpi(filename(end-4:end),'.awav')
       ITXwrite (filename,array,xunit,yunit,names,notes);
     elseif strcmpi(filename(end-3:end),'.atf')
@@ -593,7 +605,7 @@ end
 
 %--------------------------------------------------------------------------
 
-function MATsave (filename,array,xunit,yunit,names,notes,datatype)
+function PHYsave (filename,array,xunit,yunit,names,notes,datatype)
 
   % ephysIO HDF5 matlab binary file
 
@@ -711,7 +723,7 @@ end
 
 %--------------------------------------------------------------------------
 
-function [array,xdiff,xunit,yunit,names,notes,saved] = MATload (filename)
+function [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename)
 
   % HDF5 matlab binary file
   try
@@ -2488,6 +2500,150 @@ end
 
 %--------------------------------------------------------------------------
 
+function [array,xdiff,xunit,yunit,names,notes,clist] = ginj2load (filename,ch)
+
+  % Get channel information
+  load(filename);
+
+  % Get meta data
+  [nWaves,nPoints] = size(sweep_struct.data);
+  if ch > nWaves
+    error('channel number out of range')
+  end
+  xOffset = 0;
+  xdiff = 1/sweep_struct.stiminfo.samplerate;
+  xunit = 's';
+  yunit = sweep_struct.stiminfo.in_units{ch};
+
+  % Create x dimension
+  x = 1:nPoints;
+  x = (x-1)';           % first data point at zero
+  x = xdiff*x+xOffset;
+
+  % Form data array
+  array = cat(2,x,sweep_struct.data(ch,:)');
+
+  % Create cell array of column names
+  names = {'Time',sweep_struct.filename};
+
+  % Pass stimdef into notes array
+  notes = sweep_struct.stimdef;
+
+end
+
+%--------------------------------------------------------------------------
+
+function [array,xdiff,xunit,yunit,names,notes] = NWB2load (filename,ch)
+
+  % Load Neurodata Without Borders (NWB) file (version 2)
+  % Currently very limited support for NWB files
+  % NBW2load can load NWB files saved by ephysIO but because of the optionality in how data is stored
+  % in NWB files (e.g. as sweeps, trials, epochs) it may not load NWB saved by other programs as expected.
+  % We have plans to continue developing NWB file reading to support a wider range of NWB file structures.
+  % Watch out for bug fix releases where NBW file reading is extended
+  
+  % Read NWB file using matneb
+  nwb = nwbRead(filename, 'ignorecache');
+  
+  % Get recording channels
+  rec_channels = keys(nwb.general_intracellular_ephys);
+  if ch > numel(rec_channels)
+    error('channel number out of range')
+  end
+  
+  % Get names of recordings
+  rec_names = keys(nwb.acquisition);
+  
+  % Get/set units
+  yunit = nwb.acquisition.get(rec_names{1}).data_unit;
+  if regexpi(yunit,'amp*')
+    yunit = 'A';
+  elseif regexpi(yunit,'volt*')
+    yunit = 'V';
+  end
+  xunit = 's';
+  
+  % Get sampling frequency and calculate xdiff
+  xdiff = 1/nwb.acquisition.get(rec_names{1}).starting_time_rate;
+  
+  % Get data
+  if ~isempty(nwb.general_intracellular_ephys_sweep_table)
+  
+    % Waves are stored as sweeps
+    n = numel(rec_names)/numel(rec_channels);
+    N = [];
+    count = 0;
+    for i = 1:numel(rec_names)
+      [filepath,channel] = fileparts(nwb.acquisition.get(rec_names{i}).electrode.path);
+      if strcmp(channel, rec_channels{ch})
+        count = count + 1;
+        temp = double(nwb.acquisition.get(rec_names{i}).data.load()) * ...
+               nwb.acquisition.get(rec_names{i}).data_conversion;
+        if isempty(N)
+          N = numel(temp);
+          data = zeros(N,n); % preallocate data matrix
+        else
+          if numel(temp) ~= N
+             error('waves are not the same length');
+          end
+        end
+        data(:, count) = temp;
+      end
+    end
+    if count ~= n 
+      error('sweeps: unexpected number of waves in data file')
+    end
+    
+  else
+    
+    % Check if waves are defined in intervals_epochs or intervals_trials
+    if ~isempty(nwb.intervals_epochs)
+      wave_start = nwb.intervals_epochs.start_time.data.load();
+      wave_stop  = nwb.intervals_epochs.stop_time.data.load();
+    elseif ~isempty(nwb.intervals_trials)
+      wave_start = nwb.intervals_trials.start_time.data.load();
+      wave_stop  = nwb.intervals_trials.stop_time.data.load();
+    end
+    wave_duration = wave_stop - wave_start;
+    mean_wave_duration = mean(wave_duration);
+    if any(abs(wave_duration - mean_wave_duration) > eps('single'))
+      error('waves are not the same length')
+    end
+    
+    % Get data dimensions of waves
+    n = round(numel(wave_start));
+    N = round(mean_wave_duration/xdiff);
+    
+    % Get data points
+    if numel(rec_names) ~= numel(rec_channels)
+      error('intervals: unexpected number of waves in data file')
+    end
+    scale = nwb.acquisition.get(rec_names{ch}).data_conversion;
+    data = scale * double(nwb.acquisition.get(rec_names{ch}).data.load());
+    data = reshape(data,N,n);
+    
+  end
+  
+  % Create time vector
+  t = 1:N;
+  t = (t-1)';           % first data point at zero
+  t = xdiff*t;
+  
+  % Combine time vector with data array
+  array = [t, data];
+  
+  % Assign question marks to character array of column names
+  ncols = n+1;
+  names = char(zeros(ncols,1)+63);
+
+  % Assign empty notes array
+  notes = '';  
+  
+  
+end
+
+%--------------------------------------------------------------------------
+
 function H5save (filename,array,xunit,yunit,names,notes)
 
   % Stimfit HDF5 binary files
@@ -2713,39 +2869,6 @@ end
 
 %--------------------------------------------------------------------------
 
-function [array,xdiff,xunit,yunit,names,notes,clist] = ginj2load (filename,ch)
-
-  % Get channel information
-  load(filename);
-
-  % Get meta data
-  [nWaves,nPoints] = size(sweep_struct.data);
-  if ch > nWaves
-    error('Channel number out of range')
-  end
-  xOffset = 0;
-  xdiff = 1/sweep_struct.stiminfo.samplerate;
-  xunit = 's';
-  yunit = sweep_struct.stiminfo.in_units{ch};
-
-  % Create x dimension
-  x = 1:nPoints;
-  x = (x-1)';           % first datapoint at zero
-  x = xdiff*x+xOffset;
-
-  % Form data array
-  array = cat(2,x,sweep_struct.data(ch,:)');
-
-  % Create cell array of column names
-  names = {'Time',sweep_struct.filename};
-
-  % Pass stimdef into notes array
-  notes = sweep_struct.stimdef;
-
-end
-
-%--------------------------------------------------------------------------
-
 function ABFsave (filename,array,xunit,yunit,names,notes)
 
   % Evaluate the x dimension
@@ -2869,6 +2992,138 @@ function ABFsave (filename,array,xunit,yunit,names,notes)
   fclose(fid);
   
 
+end
+
+%--------------------------------------------------------------------------
+
+function NWB2save (filename,array,xunit,yunit,names,notes)
+
+  % Save in Neurodata Without Borders (NWB) format (version 2)
+  % Only basic metadata is currently written to file (plans to develop further)
+  % Scales data, converts to int16 and applies maximal data compression on entire wave series
+  % Waves defines using TimeIntervals type in intervals_epochs
+  
+  % If NWB file of filename already exists, remove it 
+  if exist(sprintf('./%s',filename),'file')
+    delete(sprintf('./%s',filename));
+  end
+
+  % Get data dimensions
+  N = size(array,1);   % sweepPointCount
+  n = size(array,2)-1; % sweepCount
+  
+  % Evaluate the x dimension
+  dx = diff(array(:,1));
+  if any(diff(dx) > 1.192093e-07)
+    error('data is not evenly sampled')
+  else
+    xdiff = dx(1);
+  end
+  
+  % Create blank yunits if is empty (prevents errors)
+  if isempty(yunit)
+    yunit = ' ';
+  end
+
+  % Create NWB file object
+  nwb = NwbFile( ...
+    'session_description', 'none', ...
+    'identifier', fullfile(pwd, filename), ...
+    'session_start_time', datetime, ... 
+    'general_experimenter', char(java.lang.System.getProperty('user.name')));
+
+  % Device and channel metadata
+  channel_name = 'ch0';
+  device_name = 'unknown';
+  nwb.general_devices.set(device_name, types.core.Device());
+  if any(strcmp(yunit, {'A','V'}))
+    device_link = types.untyped.SoftLink(['/general/devices/' device_name]);
+    ic_elec = types.core.IntracellularElectrode( ...
+                                                'device', device_link, ...
+                                                'description', 'none');
+    nwb.general_intracellular_ephys.set(channel_name, ic_elec);
+    ic_elec_link = types.untyped.SoftLink(['/general/intracellular_ephys/' channel_name]);
+  end
+
+  % Perform data scaling, conversion to 16-bit and then compression
+  % Waves are concatenate waves for optimal data compression
+  % Times corresponding to the start and end times of each wave will be placed in nwb.intervals_epochs
+  data = array(:,2:end);
+  maxVal = max(abs(data(:)));
+  valueScale = (2^15-2) / maxVal; % 16-bit signed = +/- 32768 (2^15)
+  data = int16(data*valueScale);
+  chunkSize = 5e+05; % 1 Megabyte
+  compressed_data = types.untyped.DataPipe('data', data(:)', ...
+                                           'chunkSize', [1,5e+05], ... 
+                                           'compressionLevel', 9);
+                                
+  % Assign data to a time series data object and add it to the NWB file object
+  switch yunit
+    case 'A'
+      % Use voltage clamp time series data object
+      data_object = types.core.VoltageClampSeries('electrode', ic_elec_link, ...
+                                                  'gain', 1, ...
+                                                  'stimulus_description', 'no stimulus', ...
+                                                  'starting_time', 0, ... % in seconds
+                                                  'starting_time_rate', 1/xdiff, ...
+                                                  'description', 'Series of fixed-length waves', ...
+                                                  'comments', ['Convert data to floating point ', ...
+                                                               'and multiply by data_conversion'], ...
+                                                  'data', compressed_data, ...
+                                                  'data_unit', 'amperes', ...
+                                                  'data_conversion', 1/valueScale, ...
+                                                  'data_resolution', valueScale);
+    case 'V'
+      % Use current clamp time series data object
+      data_object = types.core.CurrentClampSeries('electrode', ic_elec_link, ...
+                                                  'gain', 1, ...
+                                                  'stimulus_description', 'no stimulus', ...
+                                                  'starting_time', 0, ... % in seconds
+                                                  'starting_time_rate', 1/xdiff, ...
+                                                  'description', 'Series of fixed-length waves', ...
+                                                  'comments', ['Convert data to floating point ', ...
+                                                               'and multiply by data_conversion'], ...
+                                                  'data_unit', 'volts', ...
+                                                  'data_conversion', 1/valueScale, ...
+                                                  'data_resolution', valueScale);
+    otherwise
+      % Use generic time series data object if unit not recognised for electrophysiology
+      data_object = types.core.TimeSeries('starting_time', 0, ... % in seconds
+                                          'starting_time_rate', 1/xdiff, ...
+                                          'description', 'Series of fixed-length waves', ...
+                                          'comments', ['Convert data to floating point ', ...
+                                                       'and multiply by data_conversion'], ...
+                                          'data', compressed_data, ...
+                                          'data_unit', yunit, ...
+                                          'data_conversion', 1/valueScale, ...
+                                          'data_resolution', valueScale);
+  end
+  nwb.acquisition.set('wave_series', data_object);
+
+  % Define the start and stop time for each wave (epoch) with a time intervals object and add it to the NWB file object
+  l = N*xdiff; % epoch length (in seconds)
+  start = l*[0:n-1];
+  stop = l*[1:n];
+  epoch = types.core.TimeIntervals('colnames', {'start_time', 'stop_time'}, ...
+                                   'description', ['Start and stop time for each wave in ', ... 
+                                                   'the time series data (wave series)'], ...
+                                   'id', types.hdmf_common.ElementIdentifiers('data', [0:n-1]), ...
+                                     'start_time', types.hdmf_common.VectorData( ...
+                                     'data', start, ...
+   	                               'description','Start time of each wave in series (arbitrary)'), ...
+                                     'stop_time', types.hdmf_common.VectorData( ...
+                                     'data', stop, ...
+   	                               'description','End time of each wave in series (arbitrary)')) ;
+  nwb.intervals_epochs = epoch;
+
+
+  % Add new metadata 
+  nwb.general_source_script_file_name = 'ephysIO.m';
+  nwb.general_source_script = 'https://github.com/acp29/eventer';
+  
+  % Write data to file
+  nwbExport(nwb, filename);
+  
 end
 
 %--------------------------------------------------------------------------
