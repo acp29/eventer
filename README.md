@@ -124,7 +124,7 @@ United Kingdom.
 
 **v1.3.0** Release version (source code in version associated with MATLAB R2020b)
 
-- Added basic support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
+- Added basic support to load and save files in NWB (Neurodata without borders) format (https://www.nwb.org/nwb-neurophysiology/)  
 - Changed behaviour of 'Store all waves'/'Unstore all waves' button. It now depends on the status of the stored wave checkbox.  
 - Fixed bug that prevented option to set data scale factor when tdms files from an previous analysis (i.e. .evt file)  
 
