@@ -136,3 +136,4 @@ United Kingdom.
 - Expand the amount of experiment metadata in reading and writing data files
 - Add offline series resistance compensation feature
 - Make eventer tolerate empty lines in filepaths.txt when loading analysis.evt files  
+- Add option to load (and save) files using BioSig importer
