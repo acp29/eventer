@@ -26,3 +26,4 @@ if (strcmp(class(buffer),'single'))
         fh, chan, buffer, count, startTime);
 else
     ret=-22;
+end
