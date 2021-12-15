@@ -38,6 +38,7 @@ Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: 
 - **SON2** (from sigTOOL version 0.95), Copyright © Malcolm Lidierth & King's College London 2009-  
 - **loadDataFile** (from WaveSurfer1.0.5), Copyright © 2013–, Howard Hughes Medical Institute. 
 - **wcp_import**, version 04 Feb 2015, Copyright © 2015, David Jäckel  
+- **matnwb**, version 2.4.0.0, Copyright © 2019, Neurodata Without Borders (Lawrence Niu)  
   
 ### Principle Author
 **Dr Andrew Penn**  
