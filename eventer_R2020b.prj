@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="447228369" file="C:\Users\Andrew Penn\Documents\MATLAB\eventer-dev\eventer_R2020b.prj" location="C:\Users\Andrew Penn\Documents\MATLAB\eventer-dev" name="eventer_R2020b" preferred-package-location="C:\Users\Andrew Penn\Documents\MATLAB\eventer-dev\eventer_R2020b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="1089031983" file="C:\Users\Andrew Penn\Documents\MATLAB\eventer-dev\eventer_R2020b.prj" location="C:\Users\Andrew Penn\Documents\MATLAB\eventer-dev" name="eventer_R2020b" preferred-package-location="C:\Users\Andrew Penn\Documents\MATLAB\eventer-dev\eventer_R2020b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>Eventer</param.appname>
     <param.icon>${PROJECT_ROOT}\eventer_R2020b_resources\icon.ico</param.icon>
     <param.icons>
