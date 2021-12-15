@@ -689,7 +689,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         set(f,'WindowStyle','modal');
                         uiwait(f);
                     end
-                    if any(strcmpi(app.file.baseName(end-3:end),{'.csv','.txt'}))
+                    if any(strcmpi(app.fullpathlist{i}(end-3:end),{'.csv','.txt'}))
                         % Assume the same units as for the first file loaded
                         % if loading data from raw text files
                         app.S.xunit = app.xunit;
@@ -697,7 +697,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         app.S.yunit = app.yunit;
                         app.S.array(:,1) = app.S.array(:,1) * app.xSF;
                         app.S.array(2:end) = app.S.array(2:end) * app.ySF;
-                    elseif strcmpi(app.file.baseName(end-4:end),'.tdms')
+                    elseif strcmpi(app.fullpathlist{i}(end-4:end),'.tdms')
                         app.S.array(:,2:end) = app.S.array(:,2:end) * app.ySF;
                     end
                     app.split_excl = [0 0];
