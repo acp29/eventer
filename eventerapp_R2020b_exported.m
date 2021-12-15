@@ -141,7 +141,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         FigureFormatDropDown            matlab.ui.control.DropDown
         dpiLabel                        matlab.ui.control.Label
         wavesstackedLabel               matlab.ui.control.Label
-        CompressionCheckBox             matlab.ui.control.CheckBox
+        GNUZipCompressionCheckBox       matlab.ui.control.CheckBox
         MaxWindowSpinner                matlab.ui.control.Spinner
         EventwindowLabel                matlab.ui.control.Label
         MinWindowSpinner                matlab.ui.control.Spinner
@@ -303,7 +303,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                         ( ~strcmp(app.WaveFormatDropDown.Value,app.settings{1}.export) )                 || ...
                         ( ~strcmp(app.FigureFormatDropDown.Value,app.settings{1}.format) )               || ...
                         ( ~strcmp(app.outdirLabel.Text,app.settings{1}.outdir{1}) )                      || ...
-                        ( app.CompressionCheckBox.Value ~= app.settings{1}.gz )                    || ...
+                        ( app.GNUZipCompressionCheckBox.Value ~= app.settings{1}.gz )                    || ...
                         ( app.cell_one.Value ~= app.settings{app.current_wave+1}.cell_one )              || ...
                         ( app.cell_two.Value ~= app.settings{app.current_wave+1}.cell_two )              || ...
                         ( app.cell_three.Value ~= app.settings{app.current_wave+1}.cell_three )          || ...
@@ -831,19 +831,20 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.ConfigurationDropDown.Value = 'dummy';
             end
             app.ConfigurationDropDownValueChanged;
+            app.WaveFormatDropDownValueChanged;
             
-            % check store status of all waves
-            allStoredFlag = 1;
-            for i=1:app.nWaves
-              if ~isfield(app.settings{i+1},'s')
-                allStoredFlag = 0;
-              end
-            end
-            if allStoredFlag > 0
-              app.StoreAllWavesButton.Text = 'Unstore all waves';
-            else
-              app.StoreAllWavesButton.Text = 'Store all waves';
-            end
+            %% check store status of all waves
+            %allStoredFlag = 1;
+            %for i=1:app.nWaves
+            %  if ~isfield(app.settings{i+1},'s')
+            %    allStoredFlag = 0;
+            %  end
+            %end
+            %if allStoredFlag > 0
+            %  app.StoreAllWavesButton.Text = 'Unstore all waves';
+            %else
+            %  app.StoreAllWavesButton.Text = 'Store all waves';
+            %end
      
             % Store a reference list of current file paths
             app.refpathlist = app.fullpathlist;
@@ -915,7 +916,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             fprintf(fid,'app.MinWindowSpinner.Value = %g;\n',app.MinWindowSpinner.Value);
             fprintf(fid,'app.MaxWindowSpinner.Value = %g;\n',app.MaxWindowSpinner.Value);
             fprintf(fid,'app.WaveFormatDropDown.Value = ''%s'';\n',app.WaveFormatDropDown.Value);
-            fprintf(fid,'app.CompressionCheckBox.Value = %g;\n',app.CompressionCheckBox.Value);
+            fprintf(fid,'app.GNUZipCompressionCheckBox.Value = %g;\n',app.GNUZipCompressionCheckBox.Value);
             fprintf(fid,'app.FigureFormatDropDown.Value = ''%s'';\n',app.FigureFormatDropDown.Value);
             fprintf(fid,'app.SplitSpinner.Value = %g;\n',app.SplitSpinner.Value);
             fprintf(fid,'app.ThresholdAbsoluteEditField.Value = %g;\n',app.ThresholdAbsoluteEditField.Value);
@@ -1969,7 +1970,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.MinWindowSpinner.Value = -0.01;
                 app.MaxWindowSpinner.Value = +0.04;
                 app.WaveFormatDropDown.Value = 'abf';
-                app.CompressionCheckBox.Value = 0;
+                app.GNUZipCompressionCheckBox.Value = 0;
                 app.SplitSpinner.Value = 0;
                 app.ThresholdAbsoluteEditField.Value = 0;
                 app.FigureFormatDropDown.Value = 'fig';
@@ -2616,6 +2617,11 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 else
                     set(app.wavesstackedLabel,'Visible','off');
                 end
+                if strcmp('nwb',value)
+                    set(app.GNUZipCompressionCheckBox,'Enable','off');
+                else
+                    set(app.GNUZipCompressionCheckBox,'Enable','on');
+                end
                 unstored(app);
         end
 
@@ -2666,7 +2672,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 app.ExmodeDropDown.Value = app.settings{1}.exmode;
                 app.WaveFormatDropDown.Value = app.settings{1}.export;
                 app.FigureFormatDropDown.Value = app.settings{1}.format;
-                app.CompressionCheckBox.Value = app.settings{1}.gz;
+                app.GNUZipCompressionCheckBox.Value = app.settings{1}.gz;
                 app.SplitSpinner.Value = app.settings{1}.split;
                 app.outdir = app.settings{1}.outdir;
                 app.ThresholdAbsoluteEditField.Value = app.settings{1}.absthreshold;
@@ -2759,6 +2765,11 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             if ishandle(6)
                 close(6)
             end
+            if (app.CurrentWaveStoredBox.Value == 1)
+              app.StoreAllWavesButton.Text = 'Unstore all waves';
+            elseif (app.CurrentWaveStoredBox.Value == 0)
+              app.StoreAllWavesButton.Text = 'Store all waves';
+            end
             unstored(app);
             figure(app.Eventer);
         end
@@ -2777,6 +2788,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                     app.settings{app.current_wave+1} = ...
                         rmfield(app.settings{app.current_wave+1},'s');
                 end
+                app.StoreAllWavesButton.Text = 'Store all waves';
             end
             if value == 1
                 %temp saved structure creation
@@ -2820,7 +2832,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 saved.format = app.FigureFormatDropDown.Value;
                 saved.exmode = app.ExmodeDropDown.Value;
                 saved.export = app.WaveFormatDropDown.Value;
-                saved.gz = app.CompressionCheckBox.Value;
+                saved.gz = app.GNUZipCompressionCheckBox.Value;
                 saved.saved = 1;
                 saved.split = app.SplitSpinner.Value;
                 saved.outdir = app.outdir;
@@ -2837,6 +2849,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                 end
                 app.settings{app.current_wave+1} = saved;
                 app.CurrentWaveStoredBox.Value = 1;
+                app.StoreAllWavesButton.Text = 'Unstore all waves';
             end
             app.UnsavedLabel.Visible = 'off';
             app.UnsavedLabel.Enable = 'off';
@@ -2948,8 +2961,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             unstored(app);
         end
 
-        % Value changed function: CompressionCheckBox
-        function CompressionCheckBoxValueChanged(app, event)
+        % Value changed function: GNUZipCompressionCheckBox
+        function GNUZipCompressionCheckBoxValueChanged(app, event)
             unstored(app);
         end
 
@@ -3557,7 +3570,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.2.1",...
+                   "\fontsize{12}\color{black}v1.3.0",...
                    "\fontsize{10}Compiled for Matlab 2020b (9.9) Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
@@ -3578,7 +3591,8 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
                    "\bfTDMS DAQmx Raw data reader\rm, version 24 Mar 2014", "Copyright © CAS Key Laboratory of Basic Plasma Physics, USTC 1958-2014, Author: Tao Lan ",...
                    "\bfSON2\rm (from sigTOOL v0.95)","Copyright © Malcolm Lidierth & King's College London 2009-",...
                    "\bfloadDataFile\rm (from WaveSurfer 1.0.5)\rm","Copyright © 2013–, Howard Hughes Medical Institute",...
-                   "\bfwcp\_import\rm, version 04 Feb 2015","Copyright © 2015, David Jäckel\rm",""];
+                   "\bfwcp\_import\rm, version 04 Feb 2015","Copyright © 2015, David Jäckel\rm",...
+                   "\bfmatnwb\rm, version 2.4.0.0", "Copyright © 2019, Neurodata Without Borders (Lawrence Niu)",""];
                    Opt.Interpreter = 'tex';
                    Opt.WindowStyle = 'normal';
                    msgbox(credits, 'Credits', 'none', Opt);
@@ -4516,7 +4530,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.EnsembleAverageButtonGroup.Tooltip = {'Select whether you want the ensemble average waveform to be calculated using the arithmetic mean or the median'};
             app.EnsembleAverageButtonGroup.TitlePosition = 'centertop';
             app.EnsembleAverageButtonGroup.Title = 'Ensemble Average';
-            app.EnsembleAverageButtonGroup.Position = [49 183 181 87];
+            app.EnsembleAverageButtonGroup.Position = [35 183 181 87];
 
             % Create MedianButton
             app.MedianButton = uiradiobutton(app.EnsembleAverageButtonGroup);
@@ -4532,7 +4546,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             % Create WaveFormatDropDownLabel
             app.WaveFormatDropDownLabel = uilabel(app.OutputTab);
             app.WaveFormatDropDownLabel.HorizontalAlignment = 'right';
-            app.WaveFormatDropDownLabel.Position = [49 134 80 22];
+            app.WaveFormatDropDownLabel.Position = [30 133 80 22];
             app.WaveFormatDropDownLabel.Text = 'Wave Format:';
 
             % Create WaveFormatDropDown
@@ -4541,13 +4555,13 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.WaveFormatDropDown.ItemsData = {'abf', 'nwb', 'h5', 'phy', 'atf', 'itx', 'csv', 'txt', 'asc'};
             app.WaveFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @WaveFormatDropDownValueChanged, true);
             app.WaveFormatDropDown.Tooltip = {'Tells eventer to export the episodic wave data of all detected events in the specified format.'};
-            app.WaveFormatDropDown.Position = [134 134 258 22];
+            app.WaveFormatDropDown.Position = [115 133 250 22];
             app.WaveFormatDropDown.Value = 'abf';
 
             % Create FigureFormatDropDownLabel
             app.FigureFormatDropDownLabel = uilabel(app.OutputTab);
             app.FigureFormatDropDownLabel.HorizontalAlignment = 'right';
-            app.FigureFormatDropDownLabel.Position = [241 194 80 22];
+            app.FigureFormatDropDownLabel.Position = [234 194 80 22];
             app.FigureFormatDropDownLabel.Text = 'Figure Format';
 
             % Create FigureFormatDropDown
@@ -4556,29 +4570,29 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.FigureFormatDropDown.ItemsData = {'none', 'fig', 'tiff', 'tiffn', 'png', 'bmp', 'svg', 'eps', 'emf'};
             app.FigureFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @FigureFormatDropDownValueChanged, true);
             app.FigureFormatDropDown.Tooltip = {'Tells eventer what format to use when saving figures. Bitmap images are saved at 300 dpi resolution. Note that viewing *.fig files requires MATLAB. Set to ''none'' for speed if figures are not required.'};
-            app.FigureFormatDropDown.Position = [336 193 160 22];
+            app.FigureFormatDropDown.Position = [325 193 184 22];
             app.FigureFormatDropDown.Value = 'fig';
 
             % Create dpiLabel
             app.dpiLabel = uilabel(app.OutputTab);
             app.dpiLabel.FontColor = [0.651 0.651 0.651];
             app.dpiLabel.Visible = 'off';
-            app.dpiLabel.Position = [360 172 52 22];
+            app.dpiLabel.Position = [326 170 52 22];
             app.dpiLabel.Text = '(300 dpi)';
 
             % Create wavesstackedLabel
             app.wavesstackedLabel = uilabel(app.OutputTab);
             app.wavesstackedLabel.FontColor = [0.651 0.651 0.651];
             app.wavesstackedLabel.Visible = 'off';
-            app.wavesstackedLabel.Position = [135 109 91 22];
+            app.wavesstackedLabel.Position = [116 109 91 22];
             app.wavesstackedLabel.Text = '(waves stacked)';
 
-            % Create CompressionCheckBox
-            app.CompressionCheckBox = uicheckbox(app.OutputTab);
-            app.CompressionCheckBox.ValueChangedFcn = createCallbackFcn(app, @CompressionCheckBoxValueChanged, true);
-            app.CompressionCheckBox.Tooltip = {'Compress resulting data file by GNU zip. Note that NWB already uses data compression internally.'};
-            app.CompressionCheckBox.Text = 'Compression';
-            app.CompressionCheckBox.Position = [403 134 98 22];
+            % Create GNUZipCompressionCheckBox
+            app.GNUZipCompressionCheckBox = uicheckbox(app.OutputTab);
+            app.GNUZipCompressionCheckBox.ValueChangedFcn = createCallbackFcn(app, @GNUZipCompressionCheckBoxValueChanged, true);
+            app.GNUZipCompressionCheckBox.Tooltip = {'Compress resulting data file by GNU zip. Note that NWB already uses data compression internally.'};
+            app.GNUZipCompressionCheckBox.Text = 'GNU Zip Compression';
+            app.GNUZipCompressionCheckBox.Position = [375 133 144 22];
 
             % Create MaxWindowSpinner
             app.MaxWindowSpinner = uispinner(app.OutputTab);
@@ -4586,12 +4600,12 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.MaxWindowSpinner.Limits = [0 1.79769313486232e+308];
             app.MaxWindowSpinner.ValueChangedFcn = createCallbackFcn(app, @MaxWindowSpinnerValueChanged, true);
             app.MaxWindowSpinner.Tooltip = {'Events are aligned and exported. Set the post event time in seconds'};
-            app.MaxWindowSpinner.Position = [420 238 65 22];
+            app.MaxWindowSpinner.Position = [426 241 85 22];
             app.MaxWindowSpinner.Value = 0.04;
 
             % Create EventwindowLabel
             app.EventwindowLabel = uilabel(app.OutputTab);
-            app.EventwindowLabel.Position = [245 238 83 22];
+            app.EventwindowLabel.Position = [238 241 83 22];
             app.EventwindowLabel.Text = 'Event window ';
 
             % Create MinWindowSpinner
@@ -4600,23 +4614,23 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.MinWindowSpinner.Limits = [-1.79769313486232e+308 0];
             app.MinWindowSpinner.ValueChangedFcn = createCallbackFcn(app, @MinWindowSpinnerValueChanged, true);
             app.MinWindowSpinner.Tooltip = {'Events are aligned and exported. Set the pre event time in seconds'};
-            app.MinWindowSpinner.Position = [336 238 65 22];
+            app.MinWindowSpinner.Position = [324 241 85 22];
             app.MinWindowSpinner.Value = -0.01;
 
             % Create sLabel_2
             app.sLabel_2 = uilabel(app.OutputTab);
-            app.sLabel_2.Position = [403 237 25 22];
+            app.sLabel_2.Position = [411 240 25 22];
             app.sLabel_2.Text = 's';
 
             % Create sLabel_3
             app.sLabel_3 = uilabel(app.OutputTab);
-            app.sLabel_3.Position = [487 238 25 22];
+            app.sLabel_3.Position = [512 240 13 22];
             app.sLabel_3.Text = 's';
 
             % Create RootdirectoryEditFieldLabel
             app.RootdirectoryEditFieldLabel = uilabel(app.OutputTab);
             app.RootdirectoryEditFieldLabel.Tooltip = {'Path to the root directory for the analysis. This is determined by the location of the first file loaded. It cannot be changed by the user.'};
-            app.RootdirectoryEditFieldLabel.Position = [55 88 82 22];
+            app.RootdirectoryEditFieldLabel.Position = [36 88 82 22];
             app.RootdirectoryEditFieldLabel.Text = 'Root directory';
 
             % Create RootdirectoryEditField
@@ -4625,18 +4639,18 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.RootdirectoryEditField.Editable = 'off';
             app.RootdirectoryEditField.Enable = 'off';
             app.RootdirectoryEditField.Tooltip = {'Path to root'};
-            app.RootdirectoryEditField.Position = [55 63 441 22];
+            app.RootdirectoryEditField.Position = [36 63 441 22];
 
             % Create SetOutputFolderButton
             app.SetOutputFolderButton = uibutton(app.OutputTab, 'push');
             app.SetOutputFolderButton.ButtonPushedFcn = createCallbackFcn(app, @SetOutputFolderButtonPushed, true);
             app.SetOutputFolderButton.Tooltip = {'Enter the folder name to store Eventer output'};
-            app.SetOutputFolderButton.Position = [54 24 106 22];
+            app.SetOutputFolderButton.Position = [35 24 106 22];
             app.SetOutputFolderButton.Text = 'Set output folder';
 
             % Create outdirLabel
             app.outdirLabel = uilabel(app.OutputTab);
-            app.outdirLabel.Position = [169 24 327 22];
+            app.outdirLabel.Position = [150 24 327 22];
             app.outdirLabel.Text = '';
 
             % Create SummaryTab
