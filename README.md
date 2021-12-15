@@ -122,9 +122,15 @@ United Kingdom.
 - Fixed bug that prevented 'Store all waves' button becoming 'Unstore all waves' when loading evt file with all waves stored
 - Fixed bug that caused Eventer to error when training a model when the exported wave file format was set to anything other than .phy
 
+**v1.3.0** Release version (source code in version associated with MATLAB R2020b)
+
+- Added basic support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
+- Changed behaviour of 'Store all waves'/'Unstore all waves' button. It now depends on the status of the stored wave checkbox.  
+- Fixed bug that prevented option to set data scale factor when tdms files from an previous analysis (i.e. .evt file)  
+
 ## Development roadmap  
 
 - Reduce memory footprint of eventer  
 - Add support to load files acquired using Symphony (http://symphony-das.github.io/)  
-- Add support to load and export files in NWB format (https://www.nwb.org/nwb-neurophysiology/)  
+- Expand the amount of experiment metadata in reading and writing data files
 - Add offline series resistance compensation feature
