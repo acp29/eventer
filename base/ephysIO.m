@@ -52,7 +52,7 @@
 %    matcfs32 and matcfs64d from Jim Colebatch
 %    SON2 from Malcolm Lidierth
 %    TDMS Reader from Jim Hokanson
-%    matnwb from Ivan Smalianchuk and Ben Dichter
+%    matnwb from Lawrence Niu and Ben Dichter
 %
 %  Supported input file formats:
 %    pCLAMP Axon binary files v1 and v2 (*.abf)
@@ -61,7 +61,7 @@
 %    Neurodata without borders v2 (*.nwb)
 %    CED Spike2 binary files (*.smr)
 %    CED Signal binary files (*.cfs) (windows only; 32 or 64-bit)
-%    LabVIEW Signal Express TDMS binary files (*.tdms) (except DAQmx Raw data)
+%    LabVIEW Signal Express TDMS binary files (*.tdms)
 %    WinWCP binary files (*.wcp)
 %    WinEDR binary files (*.EDR)
 %    Igor Packed experiment binary files (*.pxp)
@@ -3131,8 +3131,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
                                                                'and multiply by data_conversion'], ...
                                                   'data', compressed_data, ...
                                                   'data_unit', 'amperes', ...
-                                                  'data_conversion', 1/valueScale, ...
-                                                  'data_resolution', valueScale);
+                                                  'data_conversion', 1/valueScale);
     case 'V'
       % Use current clamp time series data object
       data_object = types.core.CurrentClampSeries('electrode', ic_elec_link, ...
@@ -3145,8 +3144,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
                                                                'and multiply by data_conversion'], ...
                                                   'data', compressed_data, ...
                                                   'data_unit', 'volts', ...
-                                                  'data_conversion', 1/valueScale, ...
-                                                  'data_resolution', valueScale);
+                                                  'data_conversion', 1/valueScale);
     otherwise
       % Use generic time series data object if unit not recognised for electrophysiology
       data_object = types.core.TimeSeries('starting_time', 0, ... % in seconds
@@ -3156,8 +3154,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
                                                        'and multiply by data_conversion'], ...
                                           'data', compressed_data, ...
                                           'data_unit', yunit, ...
-                                          'data_conversion', 1/valueScale, ...
-                                          'data_resolution', valueScale);
+                                          'data_conversion', 1/valueScale);
   end
   nwb.acquisition.set('wave_series', data_object);
 
