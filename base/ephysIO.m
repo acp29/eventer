@@ -3061,7 +3061,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
   % Save in Neurodata Without Borders (NWB) format (version 2)
   % Only basic metadata is currently written to file (plans to develop further)
   % Scales data, converts to int16 and applies maximal data compression on entire wave series
-  % Waves defines using TimeIntervals type in intervals_epochs
+  % Waves defined using TimeIntervals type in intervals_epochs
   
   % If NWB file of filename already exists, remove it 
   if exist(sprintf('./%s',filename),'file')
