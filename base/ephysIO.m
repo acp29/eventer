@@ -3106,7 +3106,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
   end
 
   % Perform data scaling, conversion to 16-bit and then compression
-  % Waves are concatenated (optimal to compress all data in one go) 
+  % Waves are concatenated (as it is optimal to compress all data in one go) 
   % Times corresponding to the start and end times of each wave will be placed in nwb.intervals_epochs
   data = array(:,2:end);
   maxVal = max(abs(data(:)));
