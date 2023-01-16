@@ -21,7 +21,7 @@ To install, run or edit the source code:
 - Start 'appdesigner', open the eventerapp.mlapp file and then click RUN  
   
 ### The pre-print for this software is in preparation. In the mean time please cite: 
-Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.* http://doi.org/10.5281/zenodo.3991677  
+Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.* http://doi.org/10.5281/zenodo.3991676  
   
 ### Eventer acknowledges code included or modified from:  
 
