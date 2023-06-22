@@ -69,6 +69,7 @@
 %    WaveSurfer binary (HDF5) files (*.h5)
 %    ACQ4 binary (HDF5) files (*.ma) (no compression only)
 %    GINJ2 MATLAB binary files (*.mat)
+%    PackIO binary files (*.paq)
 %    Stimfit binary (HDF5) files (*.h5)
 %    Igor text files (*.itx,*.awav)
 %    Axon text files (*.atf)
@@ -230,7 +231,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     %D = dir(sprintf('%s*',filename));
     %[junk,idx] = sort([D.datenum],'descend');
     %filename = D(idx(1)).name;
-    pat = ['(.\.nwb)*(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*'...
+    pat = ['(.\.nwb)*(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.paq)*'...
            '(.\.abf)*(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
     if isempty(regexpi(filename(end-minlim:end),pat))
       error('unsupported filetype for load')
@@ -336,6 +337,8 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
       [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename); %#ok<*ASGLU>
     elseif strcmpi(filename(end-3:end),'.mat')
       [array,xdiff,xunit,yunit,names,notes] = ginj2load (filename,ch); %#ok<*ASGLU>
+    elseif strcmpi(filename(end-3:end),'.paq')
+      [array,xdiff,xunit,yunit,names,notes] = paqload (filename,ch); %#ok<*ASGLU>
     elseif strcmpi(filename(end-3:end),'.txt')
       [array,xdiff,xunit,yunit,names,notes] = TXTread (filename,'\t');
     elseif strcmpi(filename(end-3:end),'.csv')
@@ -2533,6 +2536,102 @@ end
 
 %--------------------------------------------------------------------------
 
+function [array,xdiff,xunit,yunit,names,notes,clist] = paqload (filename,ch)
+
+  % Initialize
+  xunit = 's';
+  yunit = 'V';
+  xdiff = 0;
+  array = [];
+  names = '';
+  notes = '';
+
+  % Load file
+  fid=fopen(filename);
+ 
+  % Read in rate, number of channels, and channel names
+  rate = fread(fid,1,'float32','b');
+  numchans = fread(fid,1,'float32','b');
+  for i=1:numchans
+    number_of_characters = fread(fid,1,'float32','b');
+    channelname{i} = [];
+    for j=1:number_of_characters
+      channelname{i} = [channelname{i}, strrep(fread(fid,1,'float32=>char', 'b'),' ','')];
+    end
+  end
+
+  % Read in hardware channel ('HWchan') and units if available (*.paq only)
+  for k=1:numchans
+    number_of_characters = fread(fid,1,'float32','b');
+    HWchan{k} = [];
+    for m=1:number_of_characters
+      HWchan{k} = [HWchan{k}, strrep(strrep(fread(fid,1,'float32=>char','b'),' ',''),'/','_')];
+    end
+  end
+  for n=1:numchans
+    number_of_characters = fread(fid,1,'float32','b');
+    units{n} = [];
+    for q=1:number_of_characters
+      units{n}=[units{n}, strrep(fread(fid,1,'float32=>char','b'),' ','')];
+    end
+  end
+  
+  % Get filesize and fposition (which should be after all header info)
+  dirinfo = dir(filename);
+  for n=1:numel(dirinfo)
+    if strcmp(dirinfo(n).name,filename)
+      filesize = dirinfo(n).bytes;
+    end
+  end
+
+  % Get 'channels'
+  % Try to get included channels, or ask user
+  try
+    % Fetch y data
+    y = fread(fid,[numchans,filesize/numchans],'*float32','b');
+    notchans = 1:numchans;
+    notchans(ch) = [];
+    y(notchans,:) = [];
+    y = y';
+    fclose(fid);
+
+    % Create x dimension
+    xOffset = 0;
+    xdiff = 1/rate;
+    xunit = 's';
+    nPoints = size(y,1);
+    x = 1:nPoints;
+    x = (x-1)';           % first data point at zero
+    x = xdiff*x+xOffset;
+ 
+    % Get data unit
+    switch lower(units{ch})
+      case {'millivolts','mV'}
+        yunit = 'mV';
+      case {'volts','V'}
+        yunit = 'V';
+      case {'picoamps','pA'}
+        yunit = 'pA';
+      case {'amps','A'}
+        yunit = 'A';
+    end
+
+    % Form data array
+    array = cat(2,x,y);
+ 
+    % Create channel name
+    names = {'Time',channelname{ch}};
+    
+  catch
+
+    % Do nothing
+
+  end
+
+end
+
+%--------------------------------------------------------------------------
+
 function [array,xdiff,xunit,yunit,names,notes] = NWB2load (filename,ch)
 
   % Load Neurodata Without Borders (NWB) file (version 2)
@@ -3061,7 +3160,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
   % Save in Neurodata Without Borders (NWB) format (version 2)
   % Only basic metadata is currently written to file (plans to develop further)
   % Scales data, converts to int16 and applies maximal data compression on entire wave series
-  % Waves defined using TimeIntervals type in intervals_epochs
+  % Waves defines using TimeIntervals type in intervals_epochs
   
   % If NWB file of filename already exists, remove it 
   if exist(sprintf('./%s',filename),'file')
@@ -3106,7 +3205,7 @@ function NWB2save (filename,array,xunit,yunit,names,notes)
   end
 
   % Perform data scaling, conversion to 16-bit and then compression
-  % Waves are concatenated (as it is optimal to compress all data in one go) 
+  % Waves are concatenate waves for optimal data compression
   % Times corresponding to the start and end times of each wave will be placed in nwb.intervals_epochs
   data = array(:,2:end);
   maxVal = max(abs(data(:)));
