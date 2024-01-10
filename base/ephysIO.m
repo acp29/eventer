@@ -1563,7 +1563,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,ch] = MAload (filename,ch)
     error('the file is not a clamp recording trace')
   end
   
-  % Autoselect primary channel if setting channel number to 0 or []
+  % Autoselect primary channel if user sets channel number to 0 or []
   if (isempty (ch) || (ch == 0))
     ch = find (strcmpi (cellfun(@(c) c.name, metadata{1}.cols, ...
                         'UniformOutput', false), '''primary'''));
