@@ -349,7 +349,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
       [array,xdiff,xunit,yunit,names,notes] = ATFread (filename);
     elseif strcmpi(filename(end-2:end),'.ma')
       if exist('readMeta')
-        [array,xdiff,xunit,yunit,names,notes,clist] = MAload (filename,ch);
+        [array,xdiff,xunit,yunit,names,notes,clist,ch] = MAload (filename,ch);
       else
         error('the required helper function readMeta.m cannot be found')
       end
@@ -1549,7 +1549,7 @@ end
 
 %--------------------------------------------------------------------------
 
-function [array,xdiff,xunit,yunit,names,notes,clist] = MAload (filename,ch)
+function [array,xdiff,xunit,yunit,names,notes,clist,ch] = MAload (filename,ch)
 
   % ACQ4 HDF5 binary file
   % Only suitable for reading 'Clamp' files
@@ -1559,15 +1559,15 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = MAload (filename,ch)
   end
 
   metadata = readMeta(filename);
-  if numel(metadata)<3
+  if (numel(metadata) < 3)
     error('the file is not a clamp recording trace')
   end
-
-  % (MATLAB) [PYTHON] Channel name
-  % (1)      [0]      command (IGNORED)
-  % (2)      [1]      primary
-  % (3)      [2]      secondary
-  ch=ch+1;  % Ignore channel 1 (command channel); consider primary channel as the default
+  
+  % Autoselect primary channel if setting channel number to 0 or []
+  if (isempty (ch) || (ch == 0))
+    ch = find (strcmpi (cellfun(@(c) c.name, metadata{1}.cols, ...
+                        'UniformOutput', false), '''primary'''));
+  end
 
   % Read units for x and y axes
   xunit = metadata{2}.units(2);
@@ -1582,17 +1582,13 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = MAload (filename,ch)
   names{1,1} = regexprep(metadata{2}.name,'''','');
 
   % Read data
-  % (MATLAB) [PYTHON] Channel name
-  % (1)      [0]      command (IGNORED)
-  % (2)      [1]      primary
-  % (3)      [2]      secondary
   clist = cell(1);
-  fprintf('Number of recording channels: %d\n',numChannels-1); % not counting command channel
-  for i = 2:numChannels  % ignoring the command channel
-      clist{i-1,1} = regexprep(metadata{1}.cols{i}.name,'''','');
-      fprintf('%d) %s\n',i-1,clist{i-1})
+  fprintf('Number of recording channels: %d\n',numChannels); % not counting command channel
+  for i = 1:numChannels  % ignoring the command channel
+      clist{i,1} = regexprep(metadata{1}.cols{i}.name,'''','');
+      fprintf('%d) %s\n',i,clist{i})
   end
-  fprintf('loading channel %d...\n',ch-1)
+  fprintf('loading channel %d...\n',ch)
   filepath = pwd;
   data = h5read(filename,'/data');
   l = size(data,1);
@@ -2605,7 +2601,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist] = paqload (filename,ch)
     x = xdiff*x+xOffset;
  
     % Get data unit
-    switch lower(units{ch})
+    switch units{ch}
       case {'millivolts','mV'}
         yunit = 'mV';
       case {'volts','V'}
