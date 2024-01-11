@@ -1083,7 +1083,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   fprintf(fid,'Duration of recording analysed (in s): %.1f\n',AnalysedTime);
   if strcmp(yunit,'A')
     fprintf(fid,'Mean event amplitude (pA): %.3g\n',Amplitude*1e+12);
-  elseif strcmp(yunit,'A')
+  elseif strcmp(yunit,'V')
     fprintf(fid,'Mean event amplitude (mV): %.3g\n',Amplitude*1e+3);
   else
     fprintf(fid,'Mean event amplitude: %.3g\n',Amplitude);

@@ -1,181 +1,181 @@
-classdef eventerapp_R2020b_exported < matlab.apps.AppBase
+classdef eventerapp_exported < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
         Eventer                         matlab.ui.Figure
-        FilePanel                       matlab.ui.container.Panel
-        LoadButton                      matlab.ui.control.Button
-        ChannelSpinnerLabel             matlab.ui.control.Label
-        ChannelSpinner                  matlab.ui.control.Spinner
-        CloseButton                     matlab.ui.control.Button
-        FullPathNameBox                 matlab.ui.control.ListBox
-        PresetsButton                   matlab.ui.control.Button
-        ApplypresetsButton              matlab.ui.control.Button
-        ClosefiguresButton              matlab.ui.control.Button
-        SplitSpinnerLabel               matlab.ui.control.Label
-        SplitSpinner                    matlab.ui.control.Spinner
-        sLabel                          matlab.ui.control.Label
+        CreditsButton                   matlab.ui.control.Button
+        StorePanel                      matlab.ui.container.Panel
+        UnsavedLabel                    matlab.ui.control.Label
+        StoreCurrentWaveButton          matlab.ui.control.Button
+        CurrentWaveStoredBox            matlab.ui.control.CheckBox
+        RunDropDown                     matlab.ui.control.DropDown
+        RunButton                       matlab.ui.control.Button
+        RunningLamp                     matlab.ui.control.Lamp
+        PopupGraphButton                matlab.ui.control.Button
+        StoreAllWavesButton             matlab.ui.control.Button
+        WaveDropDown                    matlab.ui.control.DropDown
+        WaveDropDownLabel               matlab.ui.control.Label
+        ParallelPanel                   matlab.ui.container.Panel
+        ParallelsettingsLabel           matlab.ui.control.Label
+        ProfileLabel                    matlab.ui.control.Label
+        ProfileNameButton               matlab.ui.control.Button
+        NoofworkersSpinner              matlab.ui.control.Spinner
+        NoofworkersSpinnerLabel         matlab.ui.control.Label
+        ParallelCheckBox                matlab.ui.control.CheckBox
         TabGroupEventer                 matlab.ui.container.TabGroup
         PreviewTab                      matlab.ui.container.Tab
         WavePreviewAxes                 matlab.ui.control.UIAxes
         TemplateTab                     matlab.ui.container.Tab
-        FitparametersPanel              matlab.ui.container.Panel
-        TemplateSelectButton            matlab.ui.control.Button
-        SelectLabel                     matlab.ui.control.Label
-        tau1EditFieldLabel              matlab.ui.control.Label
-        tau1EditField                   matlab.ui.control.NumericEditField
-        tau2EditFieldLabel              matlab.ui.control.Label
-        tau2EditField                   matlab.ui.control.NumericEditField
-        msLabel_4                       matlab.ui.control.Label
-        msLabel_5                       matlab.ui.control.Label
-        Button                          matlab.ui.control.Button
-        TimeconstantsPanel              matlab.ui.container.Panel
-        TimeConstantsEditField2         matlab.ui.control.NumericEditField
-        TimeConstantsEditField1         matlab.ui.control.NumericEditField
-        msLabel_2                       matlab.ui.control.Label
-        RiseLabel                       matlab.ui.control.Label
-        DecayLabel                      matlab.ui.control.Label
-        ApplyToAllButtonTemplate        matlab.ui.control.Button
-        msLabel                         matlab.ui.control.Label
-        SignoftheEventsSwitch_2         matlab.ui.control.Switch
         SignoftheEventsSwitchLabel_2    matlab.ui.control.Label
+        SignoftheEventsSwitch_2         matlab.ui.control.Switch
+        msLabel                         matlab.ui.control.Label
+        TimeconstantsPanel              matlab.ui.container.Panel
+        ApplyToAllButtonTemplate        matlab.ui.control.Button
+        DecayLabel                      matlab.ui.control.Label
+        RiseLabel                       matlab.ui.control.Label
+        msLabel_2                       matlab.ui.control.Label
+        TimeConstantsEditField1         matlab.ui.control.NumericEditField
+        TimeConstantsEditField2         matlab.ui.control.NumericEditField
+        FitparametersPanel              matlab.ui.container.Panel
+        Button                          matlab.ui.control.Button
+        msLabel_5                       matlab.ui.control.Label
+        msLabel_4                       matlab.ui.control.Label
+        tau2EditField                   matlab.ui.control.NumericEditField
+        tau2EditFieldLabel              matlab.ui.control.Label
+        tau1EditField                   matlab.ui.control.NumericEditField
+        tau1EditFieldLabel              matlab.ui.control.Label
+        SelectLabel                     matlab.ui.control.Label
+        TemplateSelectButton            matlab.ui.control.Button
         TemplatePreviewAxes             matlab.ui.control.UIAxes
         ExcludeTab                      matlab.ui.container.Tab
-        zone_three_x                    matlab.ui.control.Button
-        zone_four_x                     matlab.ui.control.Button
-        zone_five_x                     matlab.ui.control.Button
-        zone_six_x                      matlab.ui.control.Button
-        exselect_1                      matlab.ui.control.Button
-        exselect_2                      matlab.ui.control.Button
-        exselect_3                      matlab.ui.control.Button
-        exselect_4                      matlab.ui.control.Button
-        exselect_5                      matlab.ui.control.Button
-        exselect_6                      matlab.ui.control.Button
-        zone_eleven_x                   matlab.ui.control.Button
-        ExtraExclusions                 matlab.ui.control.TextArea
-        ApplyToAllButton_ex_1           matlab.ui.control.Button
-        ApplyToAllButton_ex_2           matlab.ui.control.Button
-        zone_two_x                      matlab.ui.control.Button
-        ApplyToAllButton_ex_3           matlab.ui.control.Button
-        ApplyToAllButton_ex_4           matlab.ui.control.Button
-        ApplyToAllButton_ex_5           matlab.ui.control.Button
-        ApplyToAllButton_ex_6           matlab.ui.control.Button
-        ApplyToAllButton_xexclusion     matlab.ui.control.Button
-        zone_one_x                      matlab.ui.control.Button
-        EditField_1                     matlab.ui.control.EditField
-        EditField_2                     matlab.ui.control.EditField
-        EditField_3                     matlab.ui.control.EditField
-        EditField_4                     matlab.ui.control.NumericEditField
-        EditField_5                     matlab.ui.control.NumericEditField
-        EditField_6                     matlab.ui.control.NumericEditField
-        EditField_7                     matlab.ui.control.NumericEditField
-        EditField_8                     matlab.ui.control.NumericEditField
-        EditField_9                     matlab.ui.control.NumericEditField
-        cell_three                      matlab.ui.control.NumericEditField
-        cell_four                       matlab.ui.control.NumericEditField
-        cell_one                        matlab.ui.control.NumericEditField
-        cell_two                        matlab.ui.control.NumericEditField
-        cell_seven                      matlab.ui.control.NumericEditField
-        cell_eight                      matlab.ui.control.NumericEditField
-        cell_five                       matlab.ui.control.NumericEditField
-        cell_six                        matlab.ui.control.NumericEditField
-        cell_eleven                     matlab.ui.control.NumericEditField
-        cell_twelve                     matlab.ui.control.NumericEditField
-        cell_nine                       matlab.ui.control.NumericEditField
         cell_ten                        matlab.ui.control.NumericEditField
+        cell_nine                       matlab.ui.control.NumericEditField
+        cell_twelve                     matlab.ui.control.NumericEditField
+        cell_eleven                     matlab.ui.control.NumericEditField
+        cell_six                        matlab.ui.control.NumericEditField
+        cell_five                       matlab.ui.control.NumericEditField
+        cell_eight                      matlab.ui.control.NumericEditField
+        cell_seven                      matlab.ui.control.NumericEditField
+        cell_two                        matlab.ui.control.NumericEditField
+        cell_one                        matlab.ui.control.NumericEditField
+        cell_four                       matlab.ui.control.NumericEditField
+        cell_three                      matlab.ui.control.NumericEditField
+        EditField_9                     matlab.ui.control.NumericEditField
+        EditField_8                     matlab.ui.control.NumericEditField
+        EditField_7                     matlab.ui.control.NumericEditField
+        EditField_6                     matlab.ui.control.NumericEditField
+        EditField_5                     matlab.ui.control.NumericEditField
+        EditField_4                     matlab.ui.control.NumericEditField
+        EditField_3                     matlab.ui.control.EditField
+        EditField_2                     matlab.ui.control.EditField
+        EditField_1                     matlab.ui.control.EditField
+        zone_one_x                      matlab.ui.control.Button
+        ApplyToAllButton_xexclusion     matlab.ui.control.Button
+        ApplyToAllButton_ex_6           matlab.ui.control.Button
+        ApplyToAllButton_ex_5           matlab.ui.control.Button
+        ApplyToAllButton_ex_4           matlab.ui.control.Button
+        ApplyToAllButton_ex_3           matlab.ui.control.Button
+        zone_two_x                      matlab.ui.control.Button
+        ApplyToAllButton_ex_2           matlab.ui.control.Button
+        ApplyToAllButton_ex_1           matlab.ui.control.Button
+        ExtraExclusions                 matlab.ui.control.TextArea
+        zone_eleven_x                   matlab.ui.control.Button
+        exselect_6                      matlab.ui.control.Button
+        exselect_5                      matlab.ui.control.Button
+        exselect_4                      matlab.ui.control.Button
+        exselect_3                      matlab.ui.control.Button
+        exselect_2                      matlab.ui.control.Button
+        exselect_1                      matlab.ui.control.Button
+        zone_six_x                      matlab.ui.control.Button
+        zone_five_x                     matlab.ui.control.Button
+        zone_four_x                     matlab.ui.control.Button
+        zone_three_x                    matlab.ui.control.Button
         DetectionTab                    matlab.ui.container.Tab
-        stdevLabel                      matlab.ui.control.Label
-        ThresholdSpinnerLabel           matlab.ui.control.Label
-        ThresholdSpinner                matlab.ui.control.Spinner
-        FilterWavesPanel                matlab.ui.container.Panel
-        HzLabel                         matlab.ui.control.Label
-        HzLabel_2                       matlab.ui.control.Label
-        HighpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
-        HighpassPreFilterCutOffSpinner  matlab.ui.control.Spinner
-        LowpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
-        LowpassPreFilterCutOffSpinner   matlab.ui.control.Spinner
-        OnOffCheckBoxHPF                matlab.ui.control.CheckBox
-        OnOffCheckBoxLPF                matlab.ui.control.CheckBox
-        HighpassfiltermethodDropDownLabel  matlab.ui.control.Label
-        HighpassPreFiltermethodDropDown  matlab.ui.control.DropDown
-        SignoftheEventsSwitchLabel      matlab.ui.control.Label
-        SignoftheEventsSwitch           matlab.ui.control.Switch
-        CriterionDropDown               matlab.ui.control.DropDown
-        CorrelationCoefficientLabel     matlab.ui.control.Label
-        CorrelationCoefficientSpinner   matlab.ui.control.Spinner
-        EventCriterionLabel             matlab.ui.control.Label
-        ConfigurationDropDownLabel      matlab.ui.control.Label
-        ConfigurationDropDown           matlab.ui.control.DropDown
-        LoadmodelButton                 matlab.ui.control.Button
-        TrainingmodeCheckBox            matlab.ui.control.CheckBox
-        ModelfileEditFieldLabel         matlab.ui.control.Label
-        ModelfileEditField              matlab.ui.control.EditField
-        ThresholdabsoluteEditFieldLabel  matlab.ui.control.Label
         ThresholdAbsoluteEditField      matlab.ui.control.NumericEditField
+        ThresholdabsoluteEditFieldLabel  matlab.ui.control.Label
+        ModelfileEditField              matlab.ui.control.EditField
+        ModelfileEditFieldLabel         matlab.ui.control.Label
+        TrainingmodeCheckBox            matlab.ui.control.CheckBox
+        LoadmodelButton                 matlab.ui.control.Button
+        ConfigurationDropDown           matlab.ui.control.DropDown
+        ConfigurationDropDownLabel      matlab.ui.control.Label
+        EventCriterionLabel             matlab.ui.control.Label
+        CorrelationCoefficientSpinner   matlab.ui.control.Spinner
+        CorrelationCoefficientLabel     matlab.ui.control.Label
+        CriterionDropDown               matlab.ui.control.DropDown
+        SignoftheEventsSwitch           matlab.ui.control.Switch
+        SignoftheEventsSwitchLabel      matlab.ui.control.Label
+        FilterWavesPanel                matlab.ui.container.Panel
+        HighpassPreFiltermethodDropDown  matlab.ui.control.DropDown
+        HighpassfiltermethodDropDownLabel  matlab.ui.control.Label
+        OnOffCheckBoxLPF                matlab.ui.control.CheckBox
+        OnOffCheckBoxHPF                matlab.ui.control.CheckBox
+        LowpassPreFilterCutOffSpinner   matlab.ui.control.Spinner
+        LowpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
+        HighpassPreFilterCutOffSpinner  matlab.ui.control.Spinner
+        HighpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
+        HzLabel_2                       matlab.ui.control.Label
+        HzLabel                         matlab.ui.control.Label
+        ThresholdSpinner                matlab.ui.control.Spinner
+        ThresholdSpinnerLabel           matlab.ui.control.Label
+        stdevLabel                      matlab.ui.control.Label
         AdvancedTab                     matlab.ui.container.Tab
-        NoofTausSpinnerLabel            matlab.ui.control.Label
-        NoofTausSpinner                 matlab.ui.control.Spinner
-        BaselineTimeSpinnerLabel        matlab.ui.control.Label
-        BaselineTimeSpinner             matlab.ui.control.Spinner
-        msLabel_3                       matlab.ui.control.Label
-        ExmodeDropDownLabel             matlab.ui.control.Label
-        ExmodeDropDown                  matlab.ui.control.DropDown
-        LevenbergMarquardtSettingsPanel  matlab.ui.container.Panel
-        LambdaSliderLabel               matlab.ui.control.Label
-        LambdaSlider                    matlab.ui.control.Slider
-        LambdaDisp                      matlab.ui.control.NumericEditField
         DeconvolutedWaveSignalProcessingPanel_2  matlab.ui.container.Panel
-        HighpassFilterCutOffSpinner_2Label  matlab.ui.control.Label
-        HzLabel_4                       matlab.ui.control.Label
-        HighpassFilterCutOffSpinner     matlab.ui.control.Spinner
-        HzLabel_3                       matlab.ui.control.Label
-        LowpassFilterCutOffSpinner      matlab.ui.control.Spinner
         LowpassFilterCutOffSpinnerLabel_2  matlab.ui.control.Label
+        LowpassFilterCutOffSpinner      matlab.ui.control.Spinner
+        HzLabel_3                       matlab.ui.control.Label
+        HighpassFilterCutOffSpinner     matlab.ui.control.Spinner
+        HzLabel_4                       matlab.ui.control.Label
+        HighpassFilterCutOffSpinner_2Label  matlab.ui.control.Label
+        LevenbergMarquardtSettingsPanel  matlab.ui.container.Panel
+        LambdaDisp                      matlab.ui.control.NumericEditField
+        LambdaSlider                    matlab.ui.control.Slider
+        LambdaSliderLabel               matlab.ui.control.Label
+        ExmodeDropDown                  matlab.ui.control.DropDown
+        ExmodeDropDownLabel             matlab.ui.control.Label
+        msLabel_3                       matlab.ui.control.Label
+        BaselineTimeSpinner             matlab.ui.control.Spinner
+        BaselineTimeSpinnerLabel        matlab.ui.control.Label
+        NoofTausSpinner                 matlab.ui.control.Spinner
+        NoofTausSpinnerLabel            matlab.ui.control.Label
         OutputTab                       matlab.ui.container.Tab
-        EnsembleAverageButtonGroup      matlab.ui.container.ButtonGroup
-        MedianButton                    matlab.ui.control.RadioButton
-        MeanButton                      matlab.ui.control.RadioButton
-        WaveFormatDropDownLabel         matlab.ui.control.Label
-        WaveFormatDropDown              matlab.ui.control.DropDown
-        FigureFormatDropDownLabel       matlab.ui.control.Label
-        FigureFormatDropDown            matlab.ui.control.DropDown
-        dpiLabel                        matlab.ui.control.Label
-        wavesstackedLabel               matlab.ui.control.Label
-        GNUZipCompressionCheckBox       matlab.ui.control.CheckBox
-        MaxWindowSpinner                matlab.ui.control.Spinner
-        EventwindowLabel                matlab.ui.control.Label
-        MinWindowSpinner                matlab.ui.control.Spinner
-        sLabel_2                        matlab.ui.control.Label
-        sLabel_3                        matlab.ui.control.Label
-        RootdirectoryEditFieldLabel     matlab.ui.control.Label
-        RootdirectoryEditField          matlab.ui.control.EditField
-        SetOutputFolderButton           matlab.ui.control.Button
         outdirLabel                     matlab.ui.control.Label
+        SetOutputFolderButton           matlab.ui.control.Button
+        RootdirectoryEditField          matlab.ui.control.EditField
+        RootdirectoryEditFieldLabel     matlab.ui.control.Label
+        sLabel_3                        matlab.ui.control.Label
+        sLabel_2                        matlab.ui.control.Label
+        MinWindowSpinner                matlab.ui.control.Spinner
+        EventwindowLabel                matlab.ui.control.Label
+        MaxWindowSpinner                matlab.ui.control.Spinner
+        GNUZipCompressionCheckBox       matlab.ui.control.CheckBox
+        wavesstackedLabel               matlab.ui.control.Label
+        dpiLabel                        matlab.ui.control.Label
+        FigureFormatDropDown            matlab.ui.control.DropDown
+        FigureFormatDropDownLabel       matlab.ui.control.Label
+        WaveFormatDropDown              matlab.ui.control.DropDown
+        WaveFormatDropDownLabel         matlab.ui.control.Label
+        EnsembleAverageButtonGroup      matlab.ui.container.ButtonGroup
+        MeanButton                      matlab.ui.control.RadioButton
+        MedianButton                    matlab.ui.control.RadioButton
         SummaryTab                      matlab.ui.container.Tab
         TabGroupSummary                 matlab.ui.container.TabGroup
         AllTab                          matlab.ui.container.Tab
         SummaryAll                      matlab.ui.control.TextArea
         CurrentTab                      matlab.ui.container.Tab
         SummaryCurrent                  matlab.ui.control.TextArea
-        ParallelPanel                   matlab.ui.container.Panel
-        ParallelCheckBox                matlab.ui.control.CheckBox
-        NoofworkersSpinnerLabel         matlab.ui.control.Label
-        NoofworkersSpinner              matlab.ui.control.Spinner
-        ProfileNameButton               matlab.ui.control.Button
-        ProfileLabel                    matlab.ui.control.Label
-        ParallelsettingsLabel           matlab.ui.control.Label
-        StorePanel                      matlab.ui.container.Panel
-        WaveDropDownLabel               matlab.ui.control.Label
-        WaveDropDown                    matlab.ui.control.DropDown
-        StoreAllWavesButton             matlab.ui.control.Button
-        PopupGraphButton                matlab.ui.control.Button
-        RunningLamp                     matlab.ui.control.Lamp
-        RunButton                       matlab.ui.control.Button
-        RunDropDown                     matlab.ui.control.DropDown
-        CurrentWaveStoredBox            matlab.ui.control.CheckBox
-        StoreCurrentWaveButton          matlab.ui.control.Button
-        UnsavedLabel                    matlab.ui.control.Label
-        CreditsButton                   matlab.ui.control.Button
+        FilePanel                       matlab.ui.container.Panel
+        sLabel                          matlab.ui.control.Label
+        SplitSpinner                    matlab.ui.control.Spinner
+        SplitSpinnerLabel               matlab.ui.control.Label
+        ClosefiguresButton              matlab.ui.control.Button
+        ApplypresetsButton              matlab.ui.control.Button
+        PresetsButton                   matlab.ui.control.Button
+        FullPathNameBox                 matlab.ui.control.ListBox
+        CloseButton                     matlab.ui.control.Button
+        ChannelSpinner                  matlab.ui.control.Spinner
+        ChannelSpinnerLabel             matlab.ui.control.Label
+        LoadButton                      matlab.ui.control.Button
     end
 
     
@@ -3176,8 +3176,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         end
 
         % Value changed function: HighpassPreFilterCutOffSpinner, 
-        % HighpassPreFiltermethodDropDown, 
-        % LowpassPreFilterCutOffSpinner
+        % ...and 2 other components
         function PreFilterCutOffSpinnerValueChanged(app, event)
             if app.HighpassPreFilterCutOffSpinner.Value == 0
                 app.OnOffCheckBoxHPF.Value = 0;
@@ -3612,12 +3611,15 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
         % Create UIFigure and components
         function createComponents(app)
 
+            % Get the file path for locating images
+            pathToMLAPP = fileparts(mfilename('fullpath'));
+
             % Create Eventer and hide until all components are created
             app.Eventer = uifigure('Visible', 'off');
-            app.Eventer.Colormap = [0.2431 0.149 0.6588;0.251 0.1647 0.7059;0.2588 0.1804 0.7529;0.2627 0.1961 0.7961;0.2706 0.2157 0.8353;0.2745 0.2353 0.8706;0.2784 0.2549 0.898;0.2784 0.2784 0.9216;0.2824 0.302 0.9412;0.2824 0.3216 0.9569;0.2784 0.3451 0.9725;0.2745 0.3686 0.9843;0.2706 0.3882 0.9922;0.2588 0.4118 0.9961;0.2431 0.4353 1;0.2196 0.4588 0.9961;0.1961 0.4863 0.9882;0.1843 0.5059 0.9804;0.1804 0.5294 0.9686;0.1765 0.549 0.9529;0.1686 0.5686 0.9373;0.1529 0.5922 0.9216;0.1451 0.6078 0.9098;0.1373 0.6275 0.898;0.1255 0.6471 0.8902;0.1098 0.6627 0.8745;0.0941 0.6784 0.8588;0.0706 0.6941 0.8392;0.0314 0.7098 0.8157;0.0039 0.7216 0.7922;0.0078 0.7294 0.7647;0.0431 0.7412 0.7412;0.098 0.749 0.7137;0.1412 0.7569 0.6824;0.1725 0.7686 0.6549;0.1922 0.7765 0.6235;0.2157 0.7843 0.5922;0.2471 0.7922 0.5569;0.2902 0.7961 0.5176;0.3412 0.8 0.4784;0.3922 0.8039 0.4353;0.4471 0.8039 0.3922;0.5059 0.8 0.349;0.5608 0.7961 0.3059;0.6157 0.7882 0.2627;0.6706 0.7804 0.2235;0.7255 0.7686 0.1922;0.7725 0.7608 0.1647;0.8196 0.749 0.1529;0.8627 0.7412 0.1608;0.902 0.7333 0.1765;0.9412 0.7294 0.2118;0.9725 0.7294 0.2392;0.9961 0.7451 0.2353;0.9961 0.7647 0.2196;0.9961 0.7882 0.2039;0.9882 0.8118 0.1882;0.9804 0.8392 0.1765;0.9686 0.8627 0.1647;0.9608 0.8902 0.1529;0.9608 0.9137 0.1412;0.9647 0.9373 0.1255;0.9686 0.9608 0.1059;0.9765 0.9843 0.0824];
+            colormap(app.Eventer, 'parula');
             app.Eventer.Position = [50 50 564 503];
             app.Eventer.Name = 'Eventer';
-            app.Eventer.Icon = 'eventer_logo.png';
+            app.Eventer.Icon = fullfile(pathToMLAPP, 'misc', 'eventer_logo.png');
             app.Eventer.CloseRequestFcn = createCallbackFcn(app, @EventerCloseRequest, true);
             app.Eventer.WindowKeyPressFcn = createCallbackFcn(app, @EventerWindowKeyPress, true);
 
@@ -3641,7 +3643,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
 
             % Create ChannelSpinner
             app.ChannelSpinner = uispinner(app.FilePanel);
-            app.ChannelSpinner.Limits = [1 Inf];
+            app.ChannelSpinner.Limits = [0 Inf];
             app.ChannelSpinner.ValueChangedFcn = createCallbackFcn(app, @ChannelSpinnerValueChanged, true);
             app.ChannelSpinner.Tooltip = {'Select the recording channel before loading files.'};
             app.ChannelSpinner.Position = [108 62 44 22];
@@ -3721,7 +3723,9 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             xlabel(app.WavePreviewAxes, 'Time (s)')
             ylabel(app.WavePreviewAxes, 'Current (A)')
             app.WavePreviewAxes.PlotBoxAspectRatio = [2 1 1];
-            app.WavePreviewAxes.Colormap = [0.2431 0.149 0.6588;0.251 0.1647 0.7059;0.2588 0.1804 0.7529;0.2627 0.1961 0.7961;0.2706 0.2157 0.8353;0.2745 0.2353 0.8706;0.2784 0.2549 0.898;0.2784 0.2784 0.9216;0.2824 0.302 0.9412;0.2824 0.3216 0.9569;0.2784 0.3451 0.9725;0.2745 0.3686 0.9843;0.2706 0.3882 0.9922;0.2588 0.4118 0.9961;0.2431 0.4353 1;0.2196 0.4588 0.9961;0.1961 0.4863 0.9882;0.1843 0.5059 0.9804;0.1804 0.5294 0.9686;0.1765 0.549 0.9529;0.1686 0.5686 0.9373;0.1529 0.5922 0.9216;0.1451 0.6078 0.9098;0.1373 0.6275 0.898;0.1255 0.6471 0.8902;0.1098 0.6627 0.8745;0.0941 0.6784 0.8588;0.0706 0.6941 0.8392;0.0314 0.7098 0.8157;0.0039 0.7216 0.7922;0.0078 0.7294 0.7647;0.0431 0.7412 0.7412;0.098 0.749 0.7137;0.1412 0.7569 0.6824;0.1725 0.7686 0.6549;0.1922 0.7765 0.6235;0.2157 0.7843 0.5922;0.2471 0.7922 0.5569;0.2902 0.7961 0.5176;0.3412 0.8 0.4784;0.3922 0.8039 0.4353;0.4471 0.8039 0.3922;0.5059 0.8 0.349;0.5608 0.7961 0.3059;0.6157 0.7882 0.2627;0.6706 0.7804 0.2235;0.7255 0.7686 0.1922;0.7725 0.7608 0.1647;0.8196 0.749 0.1529;0.8627 0.7412 0.1608;0.902 0.7333 0.1765;0.9412 0.7294 0.2118;0.9725 0.7294 0.2392;0.9961 0.7451 0.2353;0.9961 0.7647 0.2196;0.9961 0.7882 0.2039;0.9882 0.8118 0.1882;0.9804 0.8392 0.1765;0.9686 0.8627 0.1647;0.9608 0.8902 0.1529;0.9608 0.9137 0.1412;0.9647 0.9373 0.1255;0.9686 0.9608 0.1059;0.9765 0.9843 0.0824];
+            app.WavePreviewAxes.XTickLabelRotation = 0;
+            app.WavePreviewAxes.YTickLabelRotation = 0;
+            app.WavePreviewAxes.ZTickLabelRotation = 0;
             app.WavePreviewAxes.LineWidth = 0.25;
             app.WavePreviewAxes.Color = 'none';
             app.WavePreviewAxes.Position = [1 16 543 272];
@@ -3731,6 +3735,18 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.TemplateTab.Title = 'Template';
             app.TemplateTab.BackgroundColor = [0.9412 0.9412 0.9412];
             app.TemplateTab.ForegroundColor = [0.6392 0.0784 0.1804];
+
+            % Create TemplatePreviewAxes
+            app.TemplatePreviewAxes = uiaxes(app.TemplateTab);
+            xlabel(app.TemplatePreviewAxes, 'Time (s)')
+            ylabel(app.TemplatePreviewAxes, 'Normalised Amplitude')
+            app.TemplatePreviewAxes.PlotBoxAspectRatio = [1.47111111111111 1 1];
+            app.TemplatePreviewAxes.XTickLabelRotation = 0;
+            app.TemplatePreviewAxes.YTickLabelRotation = 0;
+            app.TemplatePreviewAxes.ZTickLabelRotation = 0;
+            app.TemplatePreviewAxes.LineWidth = 0.25;
+            app.TemplatePreviewAxes.Color = 'none';
+            app.TemplatePreviewAxes.Position = [14 13 380 269];
 
             % Create FitparametersPanel
             app.FitparametersPanel = uipanel(app.TemplateTab);
@@ -3743,7 +3759,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.TemplateSelectButton = uibutton(app.FitparametersPanel, 'push');
             app.TemplateSelectButton.ButtonPushedFcn = createCallbackFcn(app, @TemplateSelectButtonPushed, true);
             app.TemplateSelectButton.BusyAction = 'cancel';
-            app.TemplateSelectButton.Icon = 'cursor-23231_1280.png';
+            app.TemplateSelectButton.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.TemplateSelectButton.Tooltip = {'Select lower and upper limits on the pop-up graph around an event of interest for fitting'};
             app.TemplateSelectButton.Position = [45 71 48 20];
             app.TemplateSelectButton.Text = '';
@@ -3794,7 +3810,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             % Create Button
             app.Button = uibutton(app.FitparametersPanel, 'push');
             app.Button.ButtonPushedFcn = createCallbackFcn(app, @CopyFitParametersButtonPushed, true);
-            app.Button.Icon = 'copy.png';
+            app.Button.Icon = fullfile(pathToMLAPP, 'misc', 'copy.png');
             app.Button.Tooltip = {'Copy over fitted parameters to template time constant settings'};
             app.Button.Position = [99 71 22 20];
             app.Button.Text = '';
@@ -3866,16 +3882,6 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.SignoftheEventsSwitchLabel_2.Position = [417 26 106 22];
             app.SignoftheEventsSwitchLabel_2.Text = 'Sign of the Events:';
 
-            % Create TemplatePreviewAxes
-            app.TemplatePreviewAxes = uiaxes(app.TemplateTab);
-            xlabel(app.TemplatePreviewAxes, 'Time (s)')
-            ylabel(app.TemplatePreviewAxes, 'Normalised Amplitude')
-            app.TemplatePreviewAxes.PlotBoxAspectRatio = [1.47111111111111 1 1];
-            app.TemplatePreviewAxes.Colormap = [0.2431 0.149 0.6588;0.251 0.1647 0.7059;0.2588 0.1804 0.7529;0.2627 0.1961 0.7961;0.2706 0.2157 0.8353;0.2745 0.2353 0.8706;0.2784 0.2549 0.898;0.2784 0.2784 0.9216;0.2824 0.302 0.9412;0.2824 0.3216 0.9569;0.2784 0.3451 0.9725;0.2745 0.3686 0.9843;0.2706 0.3882 0.9922;0.2588 0.4118 0.9961;0.2431 0.4353 1;0.2196 0.4588 0.9961;0.1961 0.4863 0.9882;0.1843 0.5059 0.9804;0.1804 0.5294 0.9686;0.1765 0.549 0.9529;0.1686 0.5686 0.9373;0.1529 0.5922 0.9216;0.1451 0.6078 0.9098;0.1373 0.6275 0.898;0.1255 0.6471 0.8902;0.1098 0.6627 0.8745;0.0941 0.6784 0.8588;0.0706 0.6941 0.8392;0.0314 0.7098 0.8157;0.0039 0.7216 0.7922;0.0078 0.7294 0.7647;0.0431 0.7412 0.7412;0.098 0.749 0.7137;0.1412 0.7569 0.6824;0.1725 0.7686 0.6549;0.1922 0.7765 0.6235;0.2157 0.7843 0.5922;0.2471 0.7922 0.5569;0.2902 0.7961 0.5176;0.3412 0.8 0.4784;0.3922 0.8039 0.4353;0.4471 0.8039 0.3922;0.5059 0.8 0.349;0.5608 0.7961 0.3059;0.6157 0.7882 0.2627;0.6706 0.7804 0.2235;0.7255 0.7686 0.1922;0.7725 0.7608 0.1647;0.8196 0.749 0.1529;0.8627 0.7412 0.1608;0.902 0.7333 0.1765;0.9412 0.7294 0.2118;0.9725 0.7294 0.2392;0.9961 0.7451 0.2353;0.9961 0.7647 0.2196;0.9961 0.7882 0.2039;0.9882 0.8118 0.1882;0.9804 0.8392 0.1765;0.9686 0.8627 0.1647;0.9608 0.8902 0.1529;0.9608 0.9137 0.1412;0.9647 0.9373 0.1255;0.9686 0.9608 0.1059;0.9765 0.9843 0.0824];
-            app.TemplatePreviewAxes.LineWidth = 0.25;
-            app.TemplatePreviewAxes.Color = 'none';
-            app.TemplatePreviewAxes.Position = [14 13 380 269];
-
             % Create ExcludeTab
             app.ExcludeTab = uitab(app.TabGroupEventer);
             app.ExcludeTab.Title = 'Exclude';
@@ -3922,7 +3928,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.exselect_1.ButtonPushedFcn = createCallbackFcn(app, @exselect_1_1ButtonPushed, true);
             app.exselect_1.BusyAction = 'cancel';
             app.exselect_1.Interruptible = 'off';
-            app.exselect_1.Icon = 'cursor-23231_1280.png';
+            app.exselect_1.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.exselect_1.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 1'};
             app.exselect_1.Position = [45 246 16 21];
             app.exselect_1.Text = '';
@@ -3932,7 +3938,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.exselect_2.ButtonPushedFcn = createCallbackFcn(app, @exselect_2ButtonPushed, true);
             app.exselect_2.BusyAction = 'cancel';
             app.exselect_2.Interruptible = 'off';
-            app.exselect_2.Icon = 'cursor-23231_1280.png';
+            app.exselect_2.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.exselect_2.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 2'};
             app.exselect_2.Position = [45 225 16 21];
             app.exselect_2.Text = '';
@@ -3942,7 +3948,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.exselect_3.ButtonPushedFcn = createCallbackFcn(app, @exselect_3ButtonPushed, true);
             app.exselect_3.BusyAction = 'cancel';
             app.exselect_3.Interruptible = 'off';
-            app.exselect_3.Icon = 'cursor-23231_1280.png';
+            app.exselect_3.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.exselect_3.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 3'};
             app.exselect_3.Position = [45 205 16 21];
             app.exselect_3.Text = '';
@@ -3952,7 +3958,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.exselect_4.ButtonPushedFcn = createCallbackFcn(app, @exselect_4ButtonPushed, true);
             app.exselect_4.BusyAction = 'cancel';
             app.exselect_4.Interruptible = 'off';
-            app.exselect_4.Icon = 'cursor-23231_1280.png';
+            app.exselect_4.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.exselect_4.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 4'};
             app.exselect_4.Position = [45 184 16 21];
             app.exselect_4.Text = '';
@@ -3962,7 +3968,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.exselect_5.ButtonPushedFcn = createCallbackFcn(app, @exselect_5ButtonPushed, true);
             app.exselect_5.BusyAction = 'cancel';
             app.exselect_5.Interruptible = 'off';
-            app.exselect_5.Icon = 'cursor-23231_1280.png';
+            app.exselect_5.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.exselect_5.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 5'};
             app.exselect_5.Position = [45 163 16 21];
             app.exselect_5.Text = '';
@@ -3972,7 +3978,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.exselect_6.ButtonPushedFcn = createCallbackFcn(app, @exselect_6ButtonPushed, true);
             app.exselect_6.BusyAction = 'cancel';
             app.exselect_6.Interruptible = 'off';
-            app.exselect_6.Icon = 'cursor-23231_1280.png';
+            app.exselect_6.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
             app.exselect_6.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 6'};
             app.exselect_6.Position = [45 142 16 21];
             app.exselect_6.Text = '';
@@ -4446,7 +4452,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
             app.ExmodeDropDown.ValueChangedFcn = createCallbackFcn(app, @ExmodeDropDownValueChanged, true);
             app.ExmodeDropDown.Tooltip = {'Tells eventer what to do with the first event proceeding each exclusion zone. For mode = 1 IEIs are calculated for these events from the last event preceeding the exclusion zone under the assumption that no events occurred during the exclusion zone. For mode = 2 these events are assigned an IEI of NaN. Note that events with NaN values are excluded during the merge (i.e. that are in the ALL_events output directory'};
             app.ExmodeDropDown.Position = [108 146 100 22];
-            app.ExmodeDropDown.Value = '1';
+            app.ExmodeDropDown.Value = '2';
 
             % Create LevenbergMarquardtSettingsPanel
             app.LevenbergMarquardtSettingsPanel = uipanel(app.AdvancedTab);
@@ -4820,7 +4826,7 @@ classdef eventerapp_R2020b_exported < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = eventerapp_R2020b_exported
+        function app = eventerapp_exported
 
             % Create UIFigure and components
             createComponents(app)
