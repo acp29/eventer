@@ -67,7 +67,7 @@
 %    Igor Packed experiment binary files (*.pxp)
 %    Igor binary wave files (*.ibw, *.bwav) (versions 2 and 5 only)
 %    WaveSurfer binary (HDF5) files (*.h5)
-%    ACQ4 binary (HDF5) files (*.ma) (no compression only)
+%    ACQ4 binary (HDF5) files (*.ma) (no compression only, ch 0 auto-selects primary)
 %    GINJ2 MATLAB binary files (*.mat)
 %    PackIO binary files (*.paq)
 %    Stimfit binary (HDF5) files (*.h5)
@@ -1564,9 +1564,21 @@ function [array,xdiff,xunit,yunit,names,notes,clist,ch] = MAload (filename,ch)
   end
   
   % Autoselect primary channel if user sets channel number to 0 or []
-  if (isempty (ch) || (ch == 0))
+  if (ischar (ch))
     ch = find (strcmpi (cellfun(@(c) c.name, metadata{1}.cols, ...
-                        'UniformOutput', false), '''primary'''));
+                        'UniformOutput', false), ...
+                        sprintf ('''%s''', ch)));
+    if (isempty (ch))
+      error ('channel name not recognised')
+    end
+  else    
+    if (isempty (ch) || (ch == 0))
+      ch = find (strcmpi (cellfun(@(c) c.name, metadata{1}.cols, ...
+                          'UniformOutput', false), '''primary'''));
+    end
+    if (isempty (ch))
+      error ('no channel is named ''primary''')
+    end
   end
 
   % Read units for x and y axes
