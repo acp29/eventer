@@ -115,13 +115,15 @@
 %    the wave number from the file. If none is specified, eventer analyses
 %    the first wave.
 %
-%  peak = eventer(file,TC,s,SF,...,'exmode',exmode) tells eventer what to
-%    do with the first event proceeding each exclusion zone. For mode = 1
-%    (default) IEIs are calculated for these events from the last event
-%    preceeding the exclusion zone under the assumption that no events
-%    occurred during the exclusion zone. For mode = 2, these events are
-%    assigned an IEI of NaN. Note that events with NaN values are excluded
-%    during the merge (i.e. that are in the ALL_events output directory).
+%  peak = eventer(file,TC,s,SF,...,'exmode',exmode) tells eventer what
+%    to do in relation to calculation of interevent intervals after each
+%    exclusions zone, and for the first event in each wave. With mode = 1,
+%    IEIs are calculated for these events from the last event preceeding
+%    the exclusion zone under the assumption that no events occurred during
+%    the exclusion zone. When merging multiple waves, eventer also assumes
+%    there was no gap between waves. With mode = 2, the occurence of an
+%    event during these times is considered ambiguous and so is assign a
+%    value of NaN. 
 %
 %  peak = eventer(file,TC,s,SF,...,'figure',format) tells eventer what
 %    format to use when saving figures. Bitmap images are saved at 300 dpi
@@ -918,7 +920,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     cd ../..
 
     if merge == 1
-      merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus);
+      merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,exmode);
     end
 
     return
@@ -1200,7 +1202,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   cd ../../..
 
   if merge == 1
-    merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus);
+    merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,exmode);
   end
 
 end
@@ -1243,7 +1245,7 @@ end
 
 %----------------------------------------------------------------------
 
-function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
+function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,exmode)
 
   % Merge the event data for all the waves analysed in this experiment
 
@@ -1270,9 +1272,7 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
         %chdir(['../',dirname{i}]);
 	    location = strcat(root,filesep,dirname{i});
 	    chdir(char(location));
-	  end
-      %if exist('event_data.phy','file')
-      %  [temp,xdiff,xunit,yunit] = ephysIO('event_data.phy');
+      end
       if exist(sprintf('event_data.%s',export),'file')
         [temp,xdiff,xunit,yunit] = ephysIO(sprintf('event_data.%s',export));
         temp(:,1) = temp(:,1)+win(1);
@@ -1304,11 +1304,17 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
       end
       if exist('txt','dir')
         cd txt
-        IEI{i,1} = load('-ascii','IEI.txt');
-        peak{i,1} = load('-ascii','peak.txt');
+        IEI{count,1} = load('-ascii','IEI.txt');
+        peak{count,1} = load('-ascii','peak.txt');
+        times{count,1} = load('-ascii','times.txt');
         if exist('features.txt','file')
-          features{i,1} = load('-ascii','features.txt');
+          features{count,1} = load('-ascii','features.txt');
         end
+      else
+        IEI{count,1} = [];
+        peak{count,1} = [];
+        times{count,1} = [];
+        features{count,1} = [];
       end
     else
       % The name in the directory list is not a folder suitable for the
@@ -1334,7 +1340,16 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     tau_rise = sum(TC(:,1).*numtraces/sum(numtraces));
     tau_decay = sum(TC(:,2).*numtraces/sum(numtraces));
     y = cell2mat(data);
-    IEI = cell2mat(IEI);
+    if exmode == 1
+      % Compute interevent interval assuming that consecutive waves are
+      % split from a single continuous recording
+      times = cell2mat(cellfun(@plus,num2cell(AnalysedTime.*(0:count-1)',2),...
+                               times,'UniformOutput',false));
+      IEI = [NaN; diff(times)];
+    elseif exmode == 2
+      IEI = cell2mat(IEI);
+      times = [];
+    end
     peak = cell2mat(peak);
     if exist('features','var')
       features = cell2mat(features);
@@ -1499,6 +1514,9 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus)
     cd('txt')
     dlmwrite('IEI.txt',IEI,'delimiter','\t','newline','pc');
     dlmwrite('peak.txt',peak,'delimiter','\t','newline','pc');
+    if ~isempty(times)
+      dlmwrite('times.txt',times,'delimiter','\t','newline','pc');
+    end
     if exist('features','var')
       dlmwrite('features.txt',features,'delimiter','\t','newline','pc');
     end

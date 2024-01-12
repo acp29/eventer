@@ -105,7 +105,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
         CriterionDropDown               matlab.ui.control.DropDown
         SignoftheEventsSwitch           matlab.ui.control.Switch
         SignoftheEventsSwitchLabel      matlab.ui.control.Label
-        FilterWavesPanel                matlab.ui.container.Panel
+        WavefilterPanel                 matlab.ui.container.Panel
         HighpassPreFiltermethodDropDown  matlab.ui.control.DropDown
         HighpassfiltermethodDropDownLabel  matlab.ui.control.Label
         OnOffCheckBoxLPF                matlab.ui.control.CheckBox
@@ -138,6 +138,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
         BaselineTimeSpinnerLabel        matlab.ui.control.Label
         NoofTausSpinner                 matlab.ui.control.Spinner
         NoofTausSpinnerLabel            matlab.ui.control.Label
+        EventsettingsPanel              matlab.ui.container.Panel
         OutputTab                       matlab.ui.container.Tab
         outdirLabel                     matlab.ui.control.Label
         SetOutputFolderButton           matlab.ui.control.Button
@@ -3570,8 +3571,8 @@ classdef eventerapp_exported < matlab.apps.AppBase
         % Button pushed function: CreditsButton
         function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
-                   "\fontsize{12}\color{black}v1.3.0",...
-                   "\fontsize{10}Compiled for Matlab 2020b (9.9) Runtime",...
+                   "\fontsize{12}\color{black}v1.4.0",...
+                   "\fontsize{10}Compiled for Matlab 2023b Runtime",...
                    "\fontsize{10}Copyright © 2019, Andrew Penn",...
                    "Eventer is distributed under the GNU General Public Licence v3.0","",...
                    "\fontsize{12}\bfPLEASE CITE:",...
@@ -3582,7 +3583,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
                    "\color{blue}\fontsize{10}\bfrelativepath\rm, version 1.0.0.0","Copyright © 2003, Jochen Lenz",...
                    "\bfparfor\_progressbar\rm, version 2.13.0.0","Copyright © 2016, Daniel Terry",...
                    "\bfPlot (Big)\rm, version 1.6.0.0","Copyright © 2015 Tucker",...
-                   "\bfabfload\rm, version 4 Dec 2017","Copyright © 2009, Forrest Collman, 2004, Harald Hentschke 1998, U. Egert",...
+                   "\bfabfload\rm, version 14 June 2023","Copyright © 2009, Forrest Collman, 2004, Harald Hentschke 1998, U. Egert",...
                    "\bfreadMeta\rm (from ACQ4), version 24 Dec 2013","Copyright © 2013 Luke Campagnola",...
                    "\bfIBWread\rm, version 1.0.0.0","Copyright © 2009, Jakub Bialek",...
                    "\bfimportaxo\rm, version 4 June 2015","Marco Russo, Modified from BJ/AM <importaxo.m>",...
@@ -3592,7 +3593,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
                    "\bfSON2\rm (from sigTOOL v0.95)","Copyright © Malcolm Lidierth & King's College London 2009-",...
                    "\bfloadDataFile\rm (from WaveSurfer 1.0.5)\rm","Copyright © 2013–, Howard Hughes Medical Institute",...
                    "\bfwcp\_import\rm, version 04 Feb 2015","Copyright © 2015, David Jäckel\rm",...
-                   "\bfmatnwb\rm, version 2.4.0.0", "Copyright © 2019, Neurodata Without Borders (Lawrence Niu)",""];
+                   "\bfmatnwb\rm, version 2.6.0.2", "Copyright © 2019, Neurodata Without Borders (Lawrence Niu)",""];
                    Opt.Interpreter = 'tex';
                    Opt.WindowStyle = 'normal';
                    msgbox(credits, 'Credits', 'none', Opt);
@@ -3617,7 +3618,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             % Create Eventer and hide until all components are created
             app.Eventer = uifigure('Visible', 'off');
             colormap(app.Eventer, 'parula');
-            app.Eventer.Position = [50 50 564 503];
+            app.Eventer.Position = [50 50 564 540];
             app.Eventer.Name = 'Eventer';
             app.Eventer.Icon = fullfile(pathToMLAPP, 'misc', 'eventer_logo.png');
             app.Eventer.CloseRequestFcn = createCallbackFcn(app, @EventerCloseRequest, true);
@@ -3625,20 +3626,20 @@ classdef eventerapp_exported < matlab.apps.AppBase
 
             % Create FilePanel
             app.FilePanel = uipanel(app.Eventer);
-            app.FilePanel.Position = [10 405 546 90];
+            app.FilePanel.Position = [10 415 546 117];
 
             % Create LoadButton
             app.LoadButton = uibutton(app.FilePanel, 'push');
             app.LoadButton.ButtonPushedFcn = createCallbackFcn(app, @LoadButtonPushed, true);
             app.LoadButton.BusyAction = 'cancel';
             app.LoadButton.Tooltip = {'Select and add files to the file list. Key: a'};
-            app.LoadButton.Position = [10 62 43 23];
+            app.LoadButton.Position = [10 89 43 23];
             app.LoadButton.Text = 'Load';
 
             % Create ChannelSpinnerLabel
             app.ChannelSpinnerLabel = uilabel(app.FilePanel);
             app.ChannelSpinnerLabel.HorizontalAlignment = 'right';
-            app.ChannelSpinnerLabel.Position = [53 62 50 22];
+            app.ChannelSpinnerLabel.Position = [53 89 50 22];
             app.ChannelSpinnerLabel.Text = 'Channel';
 
             % Create ChannelSpinner
@@ -3646,7 +3647,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ChannelSpinner.Limits = [0 Inf];
             app.ChannelSpinner.ValueChangedFcn = createCallbackFcn(app, @ChannelSpinnerValueChanged, true);
             app.ChannelSpinner.Tooltip = {'Select the recording channel before loading files.'};
-            app.ChannelSpinner.Position = [108 62 44 22];
+            app.ChannelSpinner.Position = [108 89 44 22];
             app.ChannelSpinner.Value = 1;
 
             % Create CloseButton
@@ -3654,7 +3655,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.CloseButton.ButtonPushedFcn = createCallbackFcn(app, @CloseButtonPushed, true);
             app.CloseButton.BusyAction = 'cancel';
             app.CloseButton.Tooltip = {'Close the analysis and clear the file list'};
-            app.CloseButton.Position = [256 62 46 22];
+            app.CloseButton.Position = [256 89 46 22];
             app.CloseButton.Text = 'Close';
 
             % Create FullPathNameBox
@@ -3662,7 +3663,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.FullPathNameBox.Items = {};
             app.FullPathNameBox.ValueChangedFcn = createCallbackFcn(app, @FullPathNameBoxValueChanged, true);
             app.FullPathNameBox.Tooltip = {'File paths'};
-            app.FullPathNameBox.Position = [10 7 526 50];
+            app.FullPathNameBox.Position = [10 9 526 75];
             app.FullPathNameBox.Value = {};
 
             % Create PresetsButton
@@ -3670,7 +3671,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.PresetsButton.ButtonPushedFcn = createCallbackFcn(app, @LoadSavePresetsButtonPushed, true);
             app.PresetsButton.BusyAction = 'cancel';
             app.PresetsButton.Tooltip = {'Select and load a presets file'};
-            app.PresetsButton.Position = [308 62 51 22];
+            app.PresetsButton.Position = [308 89 51 22];
             app.PresetsButton.Text = 'Presets';
 
             % Create ApplypresetsButton
@@ -3678,7 +3679,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ApplypresetsButton.ButtonPushedFcn = createCallbackFcn(app, @ApplypresetsButtonPushed, true);
             app.ApplypresetsButton.BusyAction = 'cancel';
             app.ApplypresetsButton.Tooltip = {'Apply loaded presets'};
-            app.ApplypresetsButton.Position = [364 62 83 22];
+            app.ApplypresetsButton.Position = [364 89 83 22];
             app.ApplypresetsButton.Text = 'Apply presets';
 
             % Create ClosefiguresButton
@@ -3686,13 +3687,13 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ClosefiguresButton.ButtonPushedFcn = createCallbackFcn(app, @ClosefiguresButtonPushed, true);
             app.ClosefiguresButton.BusyAction = 'cancel';
             app.ClosefiguresButton.Tooltip = {'Close all figures'};
-            app.ClosefiguresButton.Position = [452 62 83 22];
+            app.ClosefiguresButton.Position = [452 89 83 22];
             app.ClosefiguresButton.Text = 'Close figures';
 
             % Create SplitSpinnerLabel
             app.SplitSpinnerLabel = uilabel(app.FilePanel);
             app.SplitSpinnerLabel.HorizontalAlignment = 'right';
-            app.SplitSpinnerLabel.Position = [154 62 29 22];
+            app.SplitSpinnerLabel.Position = [154 89 29 22];
             app.SplitSpinnerLabel.Text = 'Split';
 
             % Create SplitSpinner
@@ -3701,11 +3702,11 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.SplitSpinner.Limits = [0 Inf];
             app.SplitSpinner.ValueChangedFcn = createCallbackFcn(app, @SplitSpinnerValueChanged, true);
             app.SplitSpinner.Tooltip = {'Split a continuous recording trace into episodes of the following length (in seconds). Define the split interval before loading files.'};
-            app.SplitSpinner.Position = [186 62 57 22];
+            app.SplitSpinner.Position = [186 89 57 22];
 
             % Create sLabel
             app.sLabel = uilabel(app.FilePanel);
-            app.sLabel.Position = [245 62 10 22];
+            app.sLabel.Position = [245 89 10 22];
             app.sLabel.Text = 's';
 
             % Create TabGroupEventer
@@ -3740,7 +3741,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.TemplatePreviewAxes = uiaxes(app.TemplateTab);
             xlabel(app.TemplatePreviewAxes, 'Time (s)')
             ylabel(app.TemplatePreviewAxes, 'Normalised Amplitude')
-            app.TemplatePreviewAxes.PlotBoxAspectRatio = [1.47111111111111 1 1];
+            app.TemplatePreviewAxes.PlotBoxAspectRatio = [1.47 1 1];
             app.TemplatePreviewAxes.XTickLabelRotation = 0;
             app.TemplatePreviewAxes.YTickLabelRotation = 0;
             app.TemplatePreviewAxes.ZTickLabelRotation = 0;
@@ -4233,29 +4234,30 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ThresholdSpinner.Position = [167 196 69 22];
             app.ThresholdSpinner.Value = 4;
 
-            % Create FilterWavesPanel
-            app.FilterWavesPanel = uipanel(app.DetectionTab);
-            app.FilterWavesPanel.Title = 'Filter Waves';
-            app.FilterWavesPanel.Position = [28 21 490 127];
+            % Create WavefilterPanel
+            app.WavefilterPanel = uipanel(app.DetectionTab);
+            app.WavefilterPanel.TitlePosition = 'centertop';
+            app.WavefilterPanel.Title = 'Wave filter';
+            app.WavefilterPanel.Position = [28 21 490 127];
 
             % Create HzLabel
-            app.HzLabel = uilabel(app.FilterWavesPanel);
+            app.HzLabel = uilabel(app.WavefilterPanel);
             app.HzLabel.Position = [275 7 25 22];
             app.HzLabel.Text = 'Hz';
 
             % Create HzLabel_2
-            app.HzLabel_2 = uilabel(app.FilterWavesPanel);
+            app.HzLabel_2 = uilabel(app.WavefilterPanel);
             app.HzLabel_2.Position = [275 41 25 22];
             app.HzLabel_2.Text = 'Hz';
 
             % Create HighpassFilterCutOffSpinnerLabel
-            app.HighpassFilterCutOffSpinnerLabel = uilabel(app.FilterWavesPanel);
+            app.HighpassFilterCutOffSpinnerLabel = uilabel(app.WavefilterPanel);
             app.HighpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
             app.HighpassFilterCutOffSpinnerLabel.Position = [17 41 128 22];
             app.HighpassFilterCutOffSpinnerLabel.Text = 'High-pass filter cut-off:';
 
             % Create HighpassPreFilterCutOffSpinner
-            app.HighpassPreFilterCutOffSpinner = uispinner(app.FilterWavesPanel);
+            app.HighpassPreFilterCutOffSpinner = uispinner(app.WavefilterPanel);
             app.HighpassPreFilterCutOffSpinner.Limits = [0 1.79769313486232e+308];
             app.HighpassPreFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
             app.HighpassPreFilterCutOffSpinner.BusyAction = 'cancel';
@@ -4264,13 +4266,13 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.HighpassPreFilterCutOffSpinner.Position = [155 41 115 22];
 
             % Create LowpassFilterCutOffSpinnerLabel
-            app.LowpassFilterCutOffSpinnerLabel = uilabel(app.FilterWavesPanel);
+            app.LowpassFilterCutOffSpinnerLabel = uilabel(app.WavefilterPanel);
             app.LowpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
             app.LowpassFilterCutOffSpinnerLabel.Position = [18 7 125 22];
             app.LowpassFilterCutOffSpinnerLabel.Text = 'Low-pass filter cut-off:';
 
             % Create LowpassPreFilterCutOffSpinner
-            app.LowpassPreFilterCutOffSpinner = uispinner(app.FilterWavesPanel);
+            app.LowpassPreFilterCutOffSpinner = uispinner(app.WavefilterPanel);
             app.LowpassPreFilterCutOffSpinner.Limits = [2.22044604925031e-16 Inf];
             app.LowpassPreFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
             app.LowpassPreFilterCutOffSpinner.BusyAction = 'cancel';
@@ -4280,7 +4282,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.LowpassPreFilterCutOffSpinner.Value = Inf;
 
             % Create OnOffCheckBoxHPF
-            app.OnOffCheckBoxHPF = uicheckbox(app.FilterWavesPanel);
+            app.OnOffCheckBoxHPF = uicheckbox(app.WavefilterPanel);
             app.OnOffCheckBoxHPF.ValueChangedFcn = createCallbackFcn(app, @OnOffCheckBoxHPFValueChanged, true);
             app.OnOffCheckBoxHPF.BusyAction = 'cancel';
             app.OnOffCheckBoxHPF.Tooltip = {'Turns on/off the high-pass filter'};
@@ -4288,7 +4290,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.OnOffCheckBoxHPF.Position = [326 41 58 22];
 
             % Create OnOffCheckBoxLPF
-            app.OnOffCheckBoxLPF = uicheckbox(app.FilterWavesPanel);
+            app.OnOffCheckBoxLPF = uicheckbox(app.WavefilterPanel);
             app.OnOffCheckBoxLPF.ValueChangedFcn = createCallbackFcn(app, @OnOffCheckBoxLPFValueChanged, true);
             app.OnOffCheckBoxLPF.BusyAction = 'cancel';
             app.OnOffCheckBoxLPF.Tooltip = {'Turns on/off the low-pass Gaussian filter'};
@@ -4296,13 +4298,13 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.OnOffCheckBoxLPF.Position = [326 7 58 22];
 
             % Create HighpassfiltermethodDropDownLabel
-            app.HighpassfiltermethodDropDownLabel = uilabel(app.FilterWavesPanel);
+            app.HighpassfiltermethodDropDownLabel = uilabel(app.WavefilterPanel);
             app.HighpassfiltermethodDropDownLabel.HorizontalAlignment = 'right';
             app.HighpassfiltermethodDropDownLabel.Position = [9 76 135 22];
             app.HighpassfiltermethodDropDownLabel.Text = 'High-pass filter method:';
 
             % Create HighpassPreFiltermethodDropDown
-            app.HighpassPreFiltermethodDropDown = uidropdown(app.FilterWavesPanel);
+            app.HighpassPreFiltermethodDropDown = uidropdown(app.WavefilterPanel);
             app.HighpassPreFiltermethodDropDown.Items = {'Median', 'Binomial'};
             app.HighpassPreFiltermethodDropDown.ItemsData = {'median', 'binomial'};
             app.HighpassPreFiltermethodDropDown.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
@@ -4406,10 +4408,16 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.AdvancedTab.Title = 'Advanced';
             app.AdvancedTab.ForegroundColor = [0 0 1];
 
+            % Create EventsettingsPanel
+            app.EventsettingsPanel = uipanel(app.AdvancedTab);
+            app.EventsettingsPanel.TitlePosition = 'centertop';
+            app.EventsettingsPanel.Title = 'Event settings';
+            app.EventsettingsPanel.Position = [14 130 225 161];
+
             % Create NoofTausSpinnerLabel
             app.NoofTausSpinnerLabel = uilabel(app.AdvancedTab);
             app.NoofTausSpinnerLabel.HorizontalAlignment = 'right';
-            app.NoofTausSpinnerLabel.Position = [12 246 66 22];
+            app.NoofTausSpinnerLabel.Position = [20 232 66 22];
             app.NoofTausSpinnerLabel.Text = 'No. of Taus';
 
             % Create NoofTausSpinner
@@ -4417,13 +4425,13 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.NoofTausSpinner.Step = 0.1;
             app.NoofTausSpinner.ValueChangedFcn = createCallbackFcn(app, @NoofTausSpinnerValueChanged, true);
             app.NoofTausSpinner.Tooltip = {'Sets the number of decay time constants after the peak of the template to use when fitting the template to the detected events.'};
-            app.NoofTausSpinner.Position = [108 246 98 22];
+            app.NoofTausSpinner.Position = [108 232 98 22];
             app.NoofTausSpinner.Value = 2;
 
             % Create BaselineTimeSpinnerLabel
             app.BaselineTimeSpinnerLabel = uilabel(app.AdvancedTab);
             app.BaselineTimeSpinnerLabel.HorizontalAlignment = 'right';
-            app.BaselineTimeSpinnerLabel.Position = [12 196 81 22];
+            app.BaselineTimeSpinnerLabel.Position = [20 190 81 22];
             app.BaselineTimeSpinnerLabel.Text = 'Baseline Time';
 
             % Create BaselineTimeSpinner
@@ -4431,18 +4439,18 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.BaselineTimeSpinner.Step = 0.1;
             app.BaselineTimeSpinner.ValueChangedFcn = createCallbackFcn(app, @BaselineTimeSpinnerValueChanged, true);
             app.BaselineTimeSpinner.Tooltip = {'Sets the length of time to use as the pre-event baseline for the template fit in seconds'};
-            app.BaselineTimeSpinner.Position = [108 196 100 22];
+            app.BaselineTimeSpinner.Position = [108 190 100 22];
             app.BaselineTimeSpinner.Value = 1;
 
             % Create msLabel_3
             app.msLabel_3 = uilabel(app.AdvancedTab);
-            app.msLabel_3.Position = [212 196 25 22];
+            app.msLabel_3.Position = [212 190 25 22];
             app.msLabel_3.Text = 'ms';
 
             % Create ExmodeDropDownLabel
             app.ExmodeDropDownLabel = uilabel(app.AdvancedTab);
             app.ExmodeDropDownLabel.HorizontalAlignment = 'right';
-            app.ExmodeDropDownLabel.Position = [12 146 50 22];
+            app.ExmodeDropDownLabel.Position = [20 147 50 22];
             app.ExmodeDropDownLabel.Text = 'Exmode';
 
             % Create ExmodeDropDown
@@ -4450,20 +4458,20 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ExmodeDropDown.Items = {'Mode 1', 'Mode 2'};
             app.ExmodeDropDown.ItemsData = {'1', '2'};
             app.ExmodeDropDown.ValueChangedFcn = createCallbackFcn(app, @ExmodeDropDownValueChanged, true);
-            app.ExmodeDropDown.Tooltip = {'Tells eventer what to do with the first event proceeding each exclusion zone. For mode = 1 IEIs are calculated for these events from the last event preceeding the exclusion zone under the assumption that no events occurred during the exclusion zone. For mode = 2 these events are assigned an IEI of NaN. Note that events with NaN values are excluded during the merge (i.e. that are in the ALL_events output directory'};
-            app.ExmodeDropDown.Position = [108 146 100 22];
+            app.ExmodeDropDown.Tooltip = {'Tells eventer what to do in relation to calculation of interevent intervals after each exclusion zone, and for the first event in each wave. With mode = 1, IEIs are calculated for these events from the last event preceeding the exclusion zone under the assumption that no events occurred during the exclusion zone. When merging multiple waves, eventer also assumes there was no gap between waves. With mode = 2, the occurence of an event during these times is considered ambiguous and so is assign a value of NaN.'};
+            app.ExmodeDropDown.Position = [108 147 100 22];
             app.ExmodeDropDown.Value = '2';
 
             % Create LevenbergMarquardtSettingsPanel
             app.LevenbergMarquardtSettingsPanel = uipanel(app.AdvancedTab);
             app.LevenbergMarquardtSettingsPanel.TitlePosition = 'centertop';
             app.LevenbergMarquardtSettingsPanel.Title = 'Levenberg-Marquardt Settings';
-            app.LevenbergMarquardtSettingsPanel.Position = [0 5 547 115];
+            app.LevenbergMarquardtSettingsPanel.Position = [14 13 521 107];
 
             % Create LambdaSliderLabel
             app.LambdaSliderLabel = uilabel(app.LevenbergMarquardtSettingsPanel);
             app.LambdaSliderLabel.HorizontalAlignment = 'right';
-            app.LambdaSliderLabel.Position = [120 47 50 22];
+            app.LambdaSliderLabel.Position = [120 39 50 22];
             app.LambdaSliderLabel.Text = 'Lambda';
 
             % Create LambdaSlider
@@ -4474,29 +4482,29 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.LambdaSlider.ValueChangedFcn = createCallbackFcn(app, @LambdaSliderValueChanged, true);
             app.LambdaSlider.MinorTicks = [];
             app.LambdaSlider.Tooltip = {'Select the damping factor used in the Levenberg-Marquardt ordinary non-linear least-squares fitting procedures.'};
-            app.LambdaSlider.Position = [191 57 150 3];
+            app.LambdaSlider.Position = [191 49 150 3];
 
             % Create LambdaDisp
             app.LambdaDisp = uieditfield(app.LevenbergMarquardtSettingsPanel, 'numeric');
             app.LambdaDisp.ValueChangedFcn = createCallbackFcn(app, @LambdaDispValueChanged, true);
-            app.LambdaDisp.Position = [361 47 47 22];
+            app.LambdaDisp.Position = [361 39 47 22];
             app.LambdaDisp.Value = 1;
 
             % Create DeconvolutedWaveSignalProcessingPanel_2
             app.DeconvolutedWaveSignalProcessingPanel_2 = uipanel(app.AdvancedTab);
             app.DeconvolutedWaveSignalProcessingPanel_2.TitlePosition = 'centertop';
             app.DeconvolutedWaveSignalProcessingPanel_2.Title = 'Deconvoluted Wave Signal-Processing';
-            app.DeconvolutedWaveSignalProcessingPanel_2.Position = [249 119 298 179];
+            app.DeconvolutedWaveSignalProcessingPanel_2.Position = [249 130 286 161];
 
             % Create HighpassFilterCutOffSpinner_2Label
             app.HighpassFilterCutOffSpinner_2Label = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
             app.HighpassFilterCutOffSpinner_2Label.HorizontalAlignment = 'right';
-            app.HighpassFilterCutOffSpinner_2Label.Position = [73 118 137 22];
+            app.HighpassFilterCutOffSpinner_2Label.Position = [73 100 137 22];
             app.HighpassFilterCutOffSpinner_2Label.Text = 'High-pass Filter Cut-Off:';
 
             % Create HzLabel_4
             app.HzLabel_4 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.HzLabel_4.Position = [203 92 25 22];
+            app.HzLabel_4.Position = [203 74 25 22];
             app.HzLabel_4.Text = 'Hz';
 
             % Create HighpassFilterCutOffSpinner
@@ -4504,12 +4512,12 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.HighpassFilterCutOffSpinner.Limits = [0 1.79769313486232e+308];
             app.HighpassFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @HighpassFilterCutOffSpinnerValueChanged, true);
             app.HighpassFilterCutOffSpinner.Tooltip = {'High-pass median filter. The cut-off is estimated according to the cutoff of a boxcar filter with the same smoothing window size.'};
-            app.HighpassFilterCutOffSpinner.Position = [86 92 108 22];
+            app.HighpassFilterCutOffSpinner.Position = [86 74 108 22];
             app.HighpassFilterCutOffSpinner.Value = 1;
 
             % Create HzLabel_3
             app.HzLabel_3 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.HzLabel_3.Position = [203 26 25 22];
+            app.HzLabel_3.Position = [203 8 25 22];
             app.HzLabel_3.Text = 'Hz';
 
             % Create LowpassFilterCutOffSpinner
@@ -4517,13 +4525,13 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.LowpassFilterCutOffSpinner.Limits = [2.22044604925031e-16 Inf];
             app.LowpassFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @LowpassFilterCutOffSpinnerValueChanged, true);
             app.LowpassFilterCutOffSpinner.Tooltip = {'Low pass Gaussian filter'};
-            app.LowpassFilterCutOffSpinner.Position = [86 26 108 22];
+            app.LowpassFilterCutOffSpinner.Position = [86 8 108 22];
             app.LowpassFilterCutOffSpinner.Value = 200;
 
             % Create LowpassFilterCutOffSpinnerLabel_2
             app.LowpassFilterCutOffSpinnerLabel_2 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
             app.LowpassFilterCutOffSpinnerLabel_2.HorizontalAlignment = 'right';
-            app.LowpassFilterCutOffSpinnerLabel_2.Position = [73 52 135 22];
+            app.LowpassFilterCutOffSpinnerLabel_2.Position = [73 34 135 22];
             app.LowpassFilterCutOffSpinnerLabel_2.Text = 'Low-pass Filter Cut-Off:';
 
             % Create OutputTab
@@ -4542,7 +4550,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             % Create MedianButton
             app.MedianButton = uiradiobutton(app.EnsembleAverageButtonGroup);
             app.MedianButton.Text = 'Median';
-            app.MedianButton.Position = [11 37 62 22];
+            app.MedianButton.Position = [11 35 62 22];
             app.MedianButton.Value = true;
 
             % Create MeanButton
