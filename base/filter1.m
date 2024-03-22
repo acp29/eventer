@@ -155,14 +155,17 @@ for i=1:size(Yl,2)
      arch = computer('arch');
      try
        if strcmpi(arch,'maci64')
-         % Code to run on Mac 64-bit platform
+         % Code to run on Mac 64-bit Intel platform
          [ybase, tbase] = medianf_mex_maci64 (yref, tl, r);  %#ok<*ASGLU>
+       elseif strcmpi(arch,'maca64')
+         % Code to run on Mac 64-bit Apple Silicon platform
+         [ybase, tbase] = medianf_mex_maca64 (yref, tl, r); %#ok<*ASGLU>
        elseif strcmpi(arch,'glnxa64')
          % Code to run on Linux 64-bit platform
-         [ybase, tbase] = medianf_mex_glnxa64 (yref, tl, r);
+         [ybase, tbase] = medianf_mex_glnxa64 (yref, tl, r); %#ok<*ASGLU>
        elseif strcmpi(arch,'win64')
          % Code to run on Windows 64-bit platform
-         [ybase, tbase] = medianf_mex_win64 (yref, tl, r);
+         [ybase, tbase] = medianf_mex_win64 (yref, tl, r); %#ok<*ASGLU>
        end
      catch
        warning(sprintf(['A suitable MEX file for medianf is not available or failed to execute.\n',...
