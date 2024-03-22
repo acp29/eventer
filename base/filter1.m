@@ -13,7 +13,7 @@
 %
 %     Low pass filtering is achieved using a digital Gaussian filter at the
 %     specified cut-off frequency LPF. 
-
+%
 %     High pass filtering is achieved using a digital binomial filter
 %     (default method='binomial'). If the method is specified as 'median', 
 %     then a median filtering method is used at the specified HPF cut-off
