@@ -79,7 +79,7 @@
 %
 %  Supported output file formats:
 %    Axon binary files v1.83 (*.abf, integer-type)
-%    Neurodata without borders v2.4.0 (*.nwb)
+%    Neurodata without borders v2.6.0 (*.nwb)
 %    HDF5 (Stimfit) binary files (*.h5)
 %    Igor text files (*.itx)
 %    Axon text files (*.atf)
@@ -89,7 +89,7 @@
 %    ephysIO HDF5 (Matlab v7.3) binary files (*.phy)
 %
 %  Any of the above output formats can be combined with gzip compression by including
-%  a further .gz extenstion to the filename. Note that in most circumstances, compression
+%  a further .gz extension to the filename. Note that in most circumstances, compression
 %  offers little benefit to ABF files or the specific HDF5 files saved by ephysIO.
 %
 %  --------------------- Notes on ephysIO's HDF5 file format ---------------------
