@@ -21,7 +21,7 @@ To install, run or edit the source code:
 - Start 'appdesigner', open the eventerapp.mlapp file and then click RUN  
   
 ### The pre-print for this software is in preparation. In the mean time please cite: 
-Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.* http://doi.org/10.5281/zenodo.3991676  
+Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.* http://doi.org/10.5281/zenodo.3991677  
   
 ### Eventer acknowledges code included or modified from:  
 
@@ -128,6 +128,15 @@ United Kingdom.
 - Added basic support to load and save files in NWB (Neurodata without borders) format version 2 (https://www.nwb.org/nwb-neurophysiology/)  
 - Changed behaviour of 'Store all waves'/'Unstore all waves' button. It now depends on the status of the stored wave checkbox.  
 - Fixed bug that prevented option to set data scale factor when tdms files from an previous analysis (i.e. .evt file)  
+
+**v1.4.0** Release version (source code in version associated with MATLAB R2023b)  
+
+- Bump Matlab (runtime) version requirement to R2023b  
+- Updated the read suport for NWB (Neurodata without borders) format version 2.X to v2.6. NWB output format is now version 2.6. (https://www.nwb.org/nwb-neurophysiology/)  
+- Added support to load newer ACQ4 files.  
+- Changes to behaviour of 'exmode' setting  on the advanced tab. The exmode feature tells eventer what to do in relation to calculation of interevent intervals after each exclusions zone, and for the first event in each wave. With mode = 1, interevent intervals (IEIs) are calculated for these events from the last event preceeding the exclusion zone under the assumption that no events occurred during the exclusion zone. When merging multiple waves, eventer also assumes there was no gap between waves. With mode = 2, the occurence of an event during these times is considered ambiguous and so is assign a value of NaN.  
+- Minor tweaks to GUI appearance  
+
 
 ## Development roadmap  
 
