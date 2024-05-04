@@ -317,7 +317,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     end
     if exist('datatype','var')
       if ~strcmpi(filename(end-3:end),'.phy')
-        fprintf('datatype only used by ephysIO HDF5/MATLAB file format');
+        fprintf('datatype only used by ephysIO HDF5/MATLAB file format\n');
       end
       if ~strcmpi(datatype,'int16') && ~strcmpi(datatype,'int32')
         error('string defining the datatype must match either int16 or int32')
