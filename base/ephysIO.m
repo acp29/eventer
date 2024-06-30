@@ -57,6 +57,7 @@
 %  Supported input file formats:
 %    pCLAMP Axon binary files v1 and v2 (*.abf)
 %    Axograph binary files (*.axgx, *.axgd)
+%    Generic 16-bit integer raw binary files (*.bin, *.dat)
 %    HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)
 %    Neurodata without borders v2 (*.nwb)
 %    CED Spike2 binary files (*.smr)
@@ -232,7 +233,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     %[junk,idx] = sort([D.datenum],'descend');
     %filename = D(idx(1)).name;
     pat = ['(.\.nwb)*(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.paq)*'...
-           '(.\.abf)*(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
+           '(.\.abf)*(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.bin)*(\.cfs)*(\.smr)*(\.tdms)*'];
     if isempty(regexpi(filename(end-minlim:end),pat))
       error('unsupported filetype for load')
     end
@@ -408,11 +409,20 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
          error('the required helper function importaxo.m cannot be found')
       end
     elseif strcmpi(filename(end-3:end),'.dat')
-      if exist('ImportHEKA')
-        [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch);
+      fid = fopen(filename,'r');
+      ftype = fread(fid,4,'char');
+      fclose(fid);
+      if (strcmp (char (ftype'), 'DAT2'))
+        if exist('ImportHEKA')
+          [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch);
+        else
+           error('the required helper function ImportHEKA.m cannot be found')
+        end
       else
-         error('the required helper function ImportHEKA.m cannot be found')
+        [array,xdiff,xunit,yunit,names,notes] = BINload (filename, ch);
       end
+    elseif strcmpi(filename(end-3:end),'.bin')
+      [array,xdiff,xunit,yunit,names,notes] = BINload (filename, ch);
     elseif strcmpi(filename(end-3:end),'.cfs')
       [array,xdiff,xunit,yunit,names,notes,clist] = CFSload (filename,ch);
     elseif strcmpi(filename(end-3:end),'.smr')
@@ -2295,6 +2305,107 @@ function [array,xdiff,xunit,yunit,names,notes,recChNames] = HEKAload (filename,c
   % Assign question marks to character array of column names
   ncols = nWaves+1;
   names = char(zeros(ncols,1)+63);
+
+end
+
+%--------------------------------------------------------------------------
+
+function [array,xdiff,xunit,yunit,names,notes] = BINload (filename,ch)
+
+  % Set defaults: Select channel 1 if no channel specified
+  if (nargin < 2)
+    ch = 1;
+  end
+
+  % Get file size
+  fid = fopen(filename);
+  fseek(fid,0,1);
+  fSz = ftell(fid);
+  fclose(fid);
+
+  % Request for more information about the file
+  prompt = {...
+      sprintf(cat(2,'Generic 16-bit integer raw binary file loader\n\n', ...
+        'File Name: %s \nFile size (in bytes): %d \n\n',...
+        'Byte start location of data block:'), filename, fSz),...
+      'Byte end location of data block:',...
+      'Machine format (e.g. ieee-le):',...
+      'Number of ADC channels in recording (e.g. 1):',...
+      'ADC voltage range (+/- Volts, e.g. 10):',...
+      'ADC bit depth (in bits, e.g. 12, 14 or 16):',...
+      'Scaling factor (in Volts/unit):' ...
+      'Unit (pA or mV):',...
+      'Sampling Interval (in microseconds):'};
+  dlg_title = 'Raw binary file';
+  num_lines = 1;
+  def = {'0',...
+         num2str(fSz),...
+         'native',...
+         '1',...
+         '10',...
+         '16',...
+         '0.02',...
+         'pA',...
+         '200'};
+  opts = struct;
+  opts.Resize = 'on';
+  opts.WindowStyle = 'modal';
+  answer = inputdlg(prompt,dlg_title,num_lines,def,'on');
+
+  % Read raw binary data block
+  tmp = cellfun(@str2double,answer(1:2),'UniformOutput',false);
+  [byteLocStart,byteLocEnd] = deal(tmp{:});
+  machForm = answer{3};
+  fid = fopen(filename,'r',machForm);
+  fseek(fid,byteLocStart,'bof');
+  allRawData = double(fread(fid, byteLocEnd - byteLocStart, 'int16'));
+  fclose(fid);
+
+  % Collect only the channnel specified by app.ChannelSpinner.Value
+  % assuming data for each sample point is collected in channel order
+  % for all channels
+  nChannels = str2double(answer{4});
+  clist = arrayfun(@(i)sprintf('ch%d',i),(1:nChannels)','UniformOutput',false);
+  fprintf('Number of recording channels: %d\n',nChannels);
+  for i = 1:nChannels
+    fprintf('%d) %s\n',i,clist{i});
+  end
+  fprintf('loading channel %d...\n',ch)
+  if ch > nChannels
+    error('channel number out of range')
+  end
+  rawData = allRawData(ch:nChannels:end);
+
+  % Rescale the raw data to the correct unit
+  tmp = cellfun(@str2double,answer(5:7),'UniformOutput',false);
+  [voltRange,bitDepth,voltsPerUnit] = deal(tmp{:});
+  voltsPerBit = voltRange / (2^(bitDepth-1)-1);
+  yunit = answer{8};
+  switch yunit
+    case 'pA'
+      unitPrefixScale = 1e-12;
+    case 'mV'
+      unitPrefixScale = 1e-03;
+    otherwise
+      error('Units must be pA or mV')
+  end
+  yunit(1) = [];
+  data = unitPrefixScale * rawData * voltsPerBit / voltsPerUnit;
+
+  % Create time vector using sampling interval and size of the data
+  xunit = 's';
+  xdiff = str2double(answer{9}) * 1.0e-06; % in s
+  N = numel(data);
+  time = (0:N-1)' * xdiff;
+
+  % Combine time vector and data into a single array
+  array = cat(2,time,data);
+
+  % Assign an array of question marks to it
+  names = char(zeros(2,1)+63);
+
+  % Create empty notes character array
+  notes = '';
 
 end
 
