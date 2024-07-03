@@ -738,6 +738,9 @@ end
 
 function [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename)
 
+  % Initialise empty array for error checking later on
+  array = [];
+
   % HDF5 matlab binary file
   try
     % The matlab format of the hdf5 is not a strict requirement for saved files
@@ -756,9 +759,13 @@ function [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename)
     end
   catch
     % Try loading using matlab's load command, the matlab file maybe version < 7.3
-    load(filename); %#ok<*LOAD>
+    load(filename,'-mat') %#ok<*LOAD>
   end
 
+  % Error checking
+  if isempty (array)
+    error ('error reading file - check permissions and availability of the file content')
+  end
 
   if isa(array,'single')
 

@@ -31,7 +31,7 @@ classdef LinePlotExplorer < handle
 %
 % Example:
 %
-% lpe = LinePlotExplorer(gca);
+% lpe = LinePlotExplorer(gcf);
 % lpe.AttachCallback('WindowButtonDownFcn', 'disp(''clicked'');');
 % 
 % Or multiple callbacks can be set with a single call:
@@ -43,15 +43,20 @@ classdef LinePlotExplorer < handle
 %
 % Tucker McClure
 % Copyright 2013, The MathWorks, Inc.
+% Modified by Andrew Penn (2024)
 
     properties
         
         % Figure handle
         h_fig;
         
-        % Min and max values for x axis
+        % Min and max values for x and y axes
+        x_reset;
+        y_reset;
         x_max;
         x_min;
+        y_max;
+        y_min;
         
         % Interactivity parameters
         button_down = false;
@@ -62,24 +67,30 @@ classdef LinePlotExplorer < handle
         wbuf; % Pass-through WindowButtonUpFcn
         wbmf; % Pass-through WindowButtonMotionFcn
         wswf; % Pass-through WindowScrollWheelFcn
-        
+        wkpf; % Pass-through WindowKeyPressFcn
+        wkrf; % Pass-through WindowKeyReleaseFcn
+
     end
     
     methods
         
         % Create a ReductiveViewer for the x and y variables.
         function o = LinePlotExplorer(varargin)
-            
+
             % Record the figure number and min and max value on the x axis.
             if nargin < 1, o.h_fig =  gcf; else o.h_fig = varargin{1}; end;
             if nargin < 2, o.x_min = -inf; else o.x_min = varargin{2}; end;
             if nargin < 3, o.x_max =  inf; else o.x_max = varargin{3}; end;
-            
+            o.x_reset = xlim;
+            o.y_reset = ylim;
+
             % Set the callbacks.
             set(o.h_fig, 'WindowScrollWheelFcn',  @o.Scroll, ...
                          'WindowButtonDownFcn',   @o.ButtonDown, ...
                          'WindowButtonUpFcn',     @o.ButtonUp, ...
-                         'WindowButtonMotionFcn', @o.Motion);
+                         'WindowButtonMotionFcn', @o.Motion, ...
+                         'WindowKeyPressFcn', @o.KeyPress, ...
+                         'WindowKeyReleaseFcn', @o.KeyRelease);
  
         end
         
@@ -97,7 +108,8 @@ classdef LinePlotExplorer < handle
                     'WindowButtonDownFcn',   o.wbdf, ...
                     'WindowButtonUpFcn',     o.wbuf, ...
                     'WindowButtonMotionFcn', o.wbmf, ...
-                    'WindowScrollWheelFcn',  o.wswf);
+                    'WindowScrollWheelFcn',  o.wswf, ...
+                    'WindowKeyPressFcn',  o.wkpf);
                 
             end
  
@@ -119,6 +131,10 @@ classdef LinePlotExplorer < handle
                         o.wbmf = varargin{k};
                     case 'WindowScrollWheelFcn'
                         o.wswf = varargin{k};
+                    case 'WindowKeyPressFcn'
+                        o.wkpf = varargin{k};
+                    case 'WindowKeyReleaseFcn'
+                        o.wkrf = varargin{k};
                     otherwise
                         warning('Invalid callback attachment.');
                 end
@@ -135,6 +151,10 @@ classdef LinePlotExplorer < handle
 
             % Get current axes for this figure.
             h_axes = get(o.h_fig, 'CurrentAxes');
+
+            % Disable autoscaling in axes properties
+            set (h_axes, 'XLimMode', 'manual')
+            set (h_axes, 'YLimMode', 'manual')
             
             % Get where the mouse was when the user scrolled.
             point = get(h_axes, 'CurrentPoint');
@@ -154,17 +174,32 @@ classdef LinePlotExplorer < handle
             
             % Get where and in what direction user scrolled.
             exponent = double(event.VerticalScrollCount);
-            
+
             % Calculate new limits.
-            range    = diff(old_x_lims);
-            alpha    = (point(1) - old_x_lims(1)) / range;
-            new_lims = 2.25^exponent * range *[-alpha 1-alpha] + point(1);
+            SelectionType = get (o.h_fig, 'SelectionType');
+            switch SelectionType
+                case 'normal'
+
+                    range    = diff(old_x_lims);
+                    alpha    = (point(1) - old_x_lims(1)) / range;
+                    new_lims = 2.25^exponent * range *[-alpha 1-alpha] + point(1);
+
+                    % Don't zoom out too far.
+                    new_lims = max(min(new_lims, o.x_max), o.x_min);
             
-            % Don't zoom out too far.
-            new_lims = max(min(new_lims, o.x_max), o.x_min);
+                    % Update the axes.
+                    set(h_axes, 'XLim', new_lims);
+
+                case {'extend','alt'}
+
+                    range    = diff(old_y_lims);
+                    alpha    = (point(2) - old_y_lims(1)) / range;
+                    new_lims = 2.25^exponent * range *[-alpha 1-alpha] + point(2);
             
-            % Update the axes.
-            set(h_axes, 'XLim', new_lims);
+                    % Update the axes.
+                    set(h_axes, 'YLim', new_lims);
+
+            end
             
             % If there's a callback attachment, execute it.
             execute_callback(o.wswf, h, event, varargin{:});
@@ -173,14 +208,14 @@ classdef LinePlotExplorer < handle
         
         % The user has clicked and is holding.
         function ButtonDown(o, h, event, varargin)
-            
+
             % Record what the axes were when the user clicked and where the
             % user clicked.
             o.button_down_axes   = get(o.h_fig, 'CurrentAxes');
             point                = get(o.button_down_axes, 'CurrentPoint');
             o.button_down_point  = point(1, 1:2);
             o.button_down        = true;
-            
+
             % If there's a callback attachment, execute it.
             execute_callback(o.wbdf, h, event, varargin{:});
             
@@ -190,7 +225,19 @@ classdef LinePlotExplorer < handle
         function ButtonUp(o, h, event, varargin)
             
             o.button_down = false;
-            
+
+            % Autoscale axes if double left mouse click
+            SelectionType = get (o.h_fig, 'SelectionType');
+            switch SelectionType
+                case 'open'
+
+                    h_axes = get(o.h_fig, 'CurrentAxes');
+                    set(h_axes, 'XLim', o.x_reset);
+                    set(h_axes, 'YLim', o.y_reset);
+
+            end
+            set (o.h_fig, 'SelectionType', 'normal');
+
             % If there's a callback attachment, execute it.
             execute_callback(o.wbuf, h, event, varargin{:});
             
@@ -198,33 +245,221 @@ classdef LinePlotExplorer < handle
         
         % When the user moves the mouse with the button down, pan.
         function Motion(o, h, event, varargin)
-            
+
+            % Get current axes for this figure.
+            h_axes = get(o.h_fig, 'CurrentAxes');
+
+            % Disable autoscaling in axes properties
+            set (h_axes, 'XLimMode', 'manual')
+            set (h_axes, 'YLimMode', 'manual')
+
             if o.button_down
 
-                % Get the mouse position and movement from original point.
-                point    = get(o.button_down_axes, 'CurrentPoint');
-                movement = point(1, 1) - o.button_down_point(1);
-                xlims    = get(o.button_down_axes, 'XLim');
-                
-                % Don't let the user pan too far.
-                new_lims = xlims - movement;
-                if new_lims(1) < o.x_min
-                    new_lims = o.x_min + [0 diff(new_lims)];
-                end
-                if new_lims(2) > o.x_max
-                    new_lims = o.x_max - [diff(new_lims) 0];
-                end
+                SelectionType = get (o.h_fig, 'SelectionType');
+                switch SelectionType
+                    case 'normal'
 
-                % Update the axes.
-                set(o.button_down_axes, 'XLim', new_lims);
+                        % Get the mouse position and movement from original point.
+                        point    = get(o.button_down_axes, 'CurrentPoint');
+                        movement = point(1, 1) - o.button_down_point(1);
+                        xlims    = get(o.button_down_axes, 'XLim');
+              
+                        % Don't let the user pan too far.
+                        new_lims = xlims - movement;
+                        if new_lims(1) < o.x_min
+                            new_lims = o.x_min + [0 diff(new_lims)];
+                        end
+                        if new_lims(2) > o.x_max
+                            new_lims = o.x_max - [diff(new_lims) 0];
+                        end
+        
+                        % Update the axes.
+                        set(o.button_down_axes, 'XLim', new_lims);
 
+                    case {'extend','alt'}
+
+                        % Get the mouse position and movement from original point.
+                        point    = get(o.button_down_axes, 'CurrentPoint');
+                        movement = point(1, 2) - o.button_down_point(2);
+                        ylims    = get(o.button_down_axes, 'YLim');
+              
+                        % Change the limits.
+                        new_lims = ylims - movement;
+        
+                        % Update the axes.
+                        set(o.button_down_axes, 'YLim', new_lims);
+                end
             end
 
             % If there's a callback attachment, execute it.
             execute_callback(o.wbmf, h, event, varargin{:});
             
         end
-                
+
+        % The user has pressed a key on the keyboard.
+        function KeyPress(o, h, event, varargin)
+
+            % Get current axes for this figure.
+            h_axes = get(o.h_fig, 'CurrentAxes');
+
+            % Disable autoscaling in axes properties
+            set (h_axes, 'XLimMode', 'manual')
+            set (h_axes, 'YLimMode', 'manual')
+
+            switch event.Key
+                case 'shift'
+
+                    set (o.h_fig, 'SelectionType', 'extend');
+
+                case 'leftarrow'
+
+                    % Get current axes for this figure.
+                    h_axes = get(o.h_fig, 'CurrentAxes');
+                    if isempty(o.button_down_axes)
+                        old_lims = get(h_axes, 'XLim');
+                    else
+                        old_lims = get(o.button_down_axes, 'XLim');
+                    end
+
+                    % Calculate the new limits
+                    if (ismember (event.Modifier,{'shift'})) 
+
+                        % Zoom
+                        mid_lims = sum (old_lims) * 0.5;
+                        new_lims = (old_lims - mid_lims) * 1.2 + mid_lims;
+
+                        % Don't let the user zoom too far.
+                        new_lims(1) = max (new_lims(1), o.x_min);
+                        new_lims(2) = min (new_lims(2), o.x_max);
+
+                    else
+
+                        % Pan
+                        new_lims = old_lims + diff(old_lims) * 0.1;
+
+                        % Don't let the user pan too far.
+                        if new_lims(1) < o.x_min
+                            new_lims = o.x_min + [0 diff(new_lims)];
+                        end
+                        if new_lims(2) > o.x_max
+                            new_lims = o.x_max - [diff(new_lims) 0];
+                        end
+
+                    end
+                    
+                    % Update the axes.
+                    set(o.button_down_axes, 'XLim', new_lims);
+                    set(h_axes, 'XLim', new_lims)
+
+                case 'rightarrow'
+
+                    % Get current axes for this figure.
+                    h_axes = get(o.h_fig, 'CurrentAxes');
+                    if isempty(o.button_down_axes)
+                        old_lims = get(h_axes, 'XLim');
+                    else
+                        old_lims = get(o.button_down_axes, 'XLim');
+                    end
+
+                    % Calculate the new limits
+                    if (ismember (event.Modifier,{'shift'})) 
+
+                        % Zoom
+                        mid_lims = sum (old_lims) * 0.5;
+                        new_lims = (old_lims - mid_lims) * 0.8 + mid_lims;
+
+                        % Don't let the user zoom too far.
+                        new_lims(1) = max (new_lims(1), o.x_min);
+                        new_lims(2) = min (new_lims(2), o.x_max);
+
+                    else
+
+                        % Pan
+                        new_lims = old_lims - diff(old_lims) * 0.1;
+
+                        % Don't let the user pan too far.
+                        if new_lims(1) < o.x_min
+                            new_lims = o.x_min + [0 diff(new_lims)];
+                        end
+                        if new_lims(2) > o.x_max
+                            new_lims = o.x_max - [diff(new_lims) 0];
+                        end
+
+                    end
+
+                    % Update the axes.
+                    set(o.button_down_axes, 'XLim', new_lims);
+                    set(h_axes, 'XLim', new_lims)
+
+                case 'downarrow'
+
+                    % Get current axes for this figure.
+                    h_axes = get(o.h_fig, 'CurrentAxes');
+                    if isempty(o.button_down_axes)
+                        old_lims = get(h_axes, 'YLim');
+                    else
+                        old_lims = get(o.button_down_axes, 'YLim');
+                    end
+
+                    % Calculate the new limits
+                    if (ismember (event.Modifier,{'shift'}))  
+                        % Zoom
+                        mid_lims = sum (old_lims) * 0.5;
+                        new_lims = (old_lims - mid_lims) * 1.2 + mid_lims;
+                    else
+                        new_lims = old_lims + diff(old_lims) * 0.02; 
+                    end
+
+                    % Update the axes.
+                    set(o.button_down_axes, 'YLim', new_lims);
+                    set(h_axes, 'YLim', new_lims)
+
+                case 'uparrow'
+
+                    % Get current axes for this figure.
+                    h_axes = get(o.h_fig, 'CurrentAxes');
+                    if isempty(o.button_down_axes)
+                        old_lims = get(h_axes, 'YLim');
+                    else
+                        old_lims = get(o.button_down_axes, 'YLim');
+                    end
+
+                    % Calculate the new limits
+                    if (ismember (event.Modifier,{'shift'}))  
+                        % Zoom
+                        mid_lims = sum (old_lims) * 0.5;
+                        new_lims = (old_lims - mid_lims) * 0.8 + mid_lims;
+                    else
+                        new_lims = old_lims - diff(old_lims) * 0.02; 
+                    end
+
+                    % Update the axes.
+                    set(o.button_down_axes, 'YLim', new_lims);
+                    set(h_axes, 'YLim', new_lims)
+
+                case {'escape','return'}
+                    
+                    % Autoscale axes
+                    h_axes = get(o.h_fig, 'CurrentAxes');
+                    set(h_axes, 'XLim', o.x_reset);
+                    set(h_axes, 'YLim', o.y_reset);
+                    
+            end
+
+            % If there's a callback attachment, execute it.
+            execute_callback(o.wkpf, h, event, varargin{:});
+            
+        end
+
+        % The user has pressed a key on the keyboard.
+        function KeyRelease(o, h, event, varargin)
+
+            set (o.h_fig, 'SelectionType','normal');
+
+            % If there's a callback attachment, execute it.
+            execute_callback(o.wkpf, h, event, varargin{:});
+            
+        end
     end
     
 end
