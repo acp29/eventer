@@ -332,10 +332,10 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     try
       export = options{export};
     catch
-      export = 'none';
+      export = 'abf';
     end
   else
-    export = 'none';
+    export = 'abf';
   end
   if ~isempty(channel)
     try
@@ -812,8 +812,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
 
   % Figure 1: All-points histogram of the deconvoluted data points
   clear h
-  h1 = figure(1);set(h1,'visible',showfig);set(h1,'OuterPosition',[0 sh-fh fw fh]);
-  addToolbarExplorationButtons(gcf);
+  h1 = figure(1);set(h1,'visible',showfig,'Toolbar','None');set(h1,'OuterPosition',[0 sh-fh fw fh]);
   bar(x,counts,1,'EdgeColor','b','Facecolor','b');
   ax = gca;
   ax.Toolbar.Visible = 'off';
@@ -830,7 +829,6 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
 
   % Figure 2: Filtered deconvoluted wave (blue) and detection threshold (green)
   h2 = figure(2);set(h2,'visible',showfig);set(h2,'OuterPosition',[fw sh-fh fw fh]);
-  addToolbarExplorationButtons(gcf);
   if ~isempty(regexpi(vector,figform))
     try
       reduce_plot(t,DEC,'b','linewidth',1.25);
@@ -861,6 +859,8 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   title('Deconvoluted wave (before applying event criterion)');
   ylabel('Deconvoluted wave (SD)');
   xlabel('Time (s)');
+  x_lims = num2cell ([t(1),t(end)]);
+  lpe = LinePlotExplorer (2, x_lims{:});
 
   % Print result summary and escape from the function if no events were detected
   if n == 0
@@ -933,7 +933,6 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   y_minlim = min(min(y_events))-y_autoscale;
   % Figure 3: Identified events (black) aligned and overlayed with the mean event (red)
   h3 = figure(3);set(h3,'visible',showfig);set(h3,'OuterPosition',[fw*2 sh-fh fw fh]);
-  addToolbarExplorationButtons(gcf);
   ylimits = [y_minlim,y_maxlim]; % Encoded y-axis autoscaling
   if ~isempty(regexpi(vector,figform))
     try
@@ -959,7 +958,7 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   hold off;
   xlim(win);
   ylim([ylimits(1),ylimits(2)]);
-  title('Events');
+  title('Events in the current wave');
   xlabel('Time (s)');
   if strcmp(yunit,'A')
     ylabel('Current (A)');
@@ -969,10 +968,11 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
     ylabel('Amplitude');
   end
   box('off'); grid('off');
+  x_lims = num2cell ([t_events(1),t_events(end)]);
+  lpe = LinePlotExplorer (3, x_lims{:});
 
   % Figure 4: Overlay of model template (green) and mean event (red)
   h4 = figure(4);set(h4,'visible',showfig);set(h4,'OuterPosition',[0 0 fw fh]);
-  addToolbarExplorationButtons(gcf);
   if ~isempty(regexpi(vector,figform))
     try
       reduce_plot(t_fit,y_avg,'-g','linewidth',3);
@@ -1007,6 +1007,8 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   end
   grid('off'); box('off');
   title('Template and Mean Event Overlay')
+  x_lims = num2cell ([t_fit(1),t_fit(end)]);
+  lpe = LinePlotExplorer (4, x_lims{:});
 
   % Calculate axes autoscaling for figure 5
   y_autoscale = 0.1*range(Trace);
@@ -1014,7 +1016,6 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   y_minlim = min(Trace)-y_autoscale;
   % Figure 5: Event wave overlaid with template fits
   h5 = figure(5);set(h5,'visible',showfig);set(h5,'OuterPosition',[fw 0 fw fh]);
-  addToolbarExplorationButtons(gcf);
   ylimits = [y_minlim y_maxlim]; % Encoded y-axis autoscaling
   if ~isempty(regexpi(vector,figform))
     try
@@ -1050,6 +1051,8 @@ function [peak,IEI,features] = eventer(arg1,TC,s,SF,varargin)
   else
     ylabel('Amplitude');
   end
+  x_lims = num2cell ([t(1),t(end)]);
+  lpe = LinePlotExplorer (5, x_lims{:});
 
   % Calculate statistics
   ET = Event_time;
@@ -1415,7 +1418,6 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,ex
     y_minlim = min(min(y))-y_autoscale;
     % Figure 6: Identified events aligned and overlayed with the ensemble average event
     h6 = figure(6);set(h6,'OuterPosition',[fw*2 0 fw fh]);
-    addToolbarExplorationButtons(gcf);
     ylimits = [y_minlim y_maxlim]; % Encoded y-axis autoscaling
     if ~isempty(regexpi(vector,figform))
       try
@@ -1448,12 +1450,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,ex
       end
     end
     xlim(win);
-    ylim([ylimits(1), ylimits(2)]);
-    if strcmp(average,'mean')
-      title('Ensemble mean (blue) and fit (red)');
-    elseif strcmp(average,'median')
-      title('Ensemble median (blue) and fit (red)');
-    end
+    ylim([ylimits(1),ylimits(2)]);
+    title(sprintf('Events for all waves: Ensemble %s (blue) and fit (red)',average));
     xlabel('Time (s)');
     if strcmp(yunit,'A')
       ylabel('Current (A)');
@@ -1464,6 +1462,8 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,ex
     end
     box('off'); grid('off');
     hold off;
+    x_lims = num2cell([t(1),t(end)]);
+    lpe = LinePlotExplorer (6, x_lims{:});
     if errflag > 0
        error('Fit to ensemble average event failed');
     end

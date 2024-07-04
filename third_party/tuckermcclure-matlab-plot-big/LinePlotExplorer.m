@@ -91,6 +91,107 @@ classdef LinePlotExplorer < handle
                          'WindowButtonMotionFcn', @o.Motion, ...
                          'WindowKeyPressFcn', @o.KeyPress, ...
                          'WindowKeyReleaseFcn', @o.KeyRelease);
+
+            % Remove matlab's toolbar controls
+            set(o.h_fig,'Toolbar','None')
+            h_axes = get(o.h_fig, 'CurrentAxes');
+            h_axes.Toolbar.Visible = 'off'; 
+
+            % Create custom menu
+            set(o.h_fig,'Menubar','none');
+            m = uimenu(o.h_fig,'Text', 'Main');
+            mHelp   = uimenu(m,'Text','Help');
+            % mReset  = uimenu(m,'Text','Reset controls');
+            mMore   = uimenu(m,'Text','More menus...');
+            mClose   = uimenu(m,'Text','Close figure');
+            % mReset.MenuSelectedFcn = {@ResetFig,o};
+            mMore.MenuSelectedFcn = @MoreMenus;
+            mHelp.MenuSelectedFcn = @HelpInfo;
+            mClose.MenuSelectedFcn = 'close(gcf);';
+  
+            function ResetFig(src,event,o)
+
+                % Disable any existing zoom and pan interactions
+                zoomState = zoom(o.h_fig);
+                zoomState.Enable = 'off';
+                panState = pan(o.h_fig);
+                panState.Enable = 'off';
+
+                % Reset limits on both axes
+                h_axes = get(gcf, 'CurrentAxes');
+                set(h_axes, 'XLim', o.x_reset);
+                set(h_axes, 'YLim', o.y_reset);
+                x_lims = get(h_axes, 'XLim');
+
+                % Remove 'Main' menu if it already exists
+                try
+                    if (strcmpi (o.h_fig.Children(1).Text, 'Main'))
+                        delete(o.h_fig.Children(1))
+                    end
+                catch
+                end
+
+                % Reinitialize rapid navigation controls
+                LinePlotExplorer(gcf,x_lims(1),x_lims(2));
+            
+            end
+            
+            function MoreMenus(src,event)
+                
+                switch get(gcf,'Menubar')
+                    case 'none'
+                        set(gcf,'Menubar','Figure')
+                        set(src,'Text','Fewer menus...');
+                    otherwise
+                        set(gcf,'Menubar','None')
+                        set(src,'Text','More menus...');
+                end
+                
+            
+            end
+            
+            function HelpInfo(src,event)
+            
+                msg = { ...
+                       '\fontname{Arial}\fontsize{18}\color{blue}', ...
+                       '\bfControls for the Navigation of Time Series Plots\rm', ...
+                       '\fontname{Arial}\fontsize{14}\color{black}', ...
+                       '\bfMOUSE CONTROLS:\rm', ...
+                       '\fontname{Courier}\fontsize{12}', ...
+                       '\bfZoom^{$} in X^{\ast}: \rmScroll wheel.', ...
+                       '\bfZoom^{$} in Y : \rmScroll wheel + Right button (or SHIFT).', ...
+                       '\bfPan   in X^{\ast}: \rmLeft  button drag.', ...
+                       '\bfPan   in Y : \rmRight button drag \bfOR\rm Left button drag + SHIFT.', ...
+                       '\bfAutoscale  : \rmDouble click (left or right).', ...
+                       '\fontname{Arial}', ...
+                       '^{$} The zoom focus is the current position of the mouse pointer.', ...
+                       ' ', ...
+                       '\fontname{Arial}\fontsize{14}', ...
+                       '\bfKEYBOARD-ONLY CONTROLS:\rm', ...
+                       '\fontname{Courier}\fontsize{12}', ...
+                       '\bfZoom^{\Phi} in X^{\ast}: \rmLEFT/RIGHT CURSOR + SHIFT.', ...
+                       '\bfZoom^{\Phi} in Y : \rmUP/DOWN    CURSOR + SHIFT.', ...
+                       '\bfPan   in X^{\ast}: \rmLEFT/RIGHT CURSOR.', ...
+                       '\bfPan   in Y : \rmUP/DOWN    CURSOR.', ...
+                       '\bfAutoscale  : \rmESCAPE or RETURN.', ...
+                       '\fontname{Arial}', ...
+                       '^{\Phi} The zoom focus is the center of the current plot view.', ...
+                       ' ', ...
+                       '^{\ast} Pan and zoom along the X-axis may respect the limits of the data.', ...
+                       '\it', ...
+                       'Originally written by Tucker McClure (2013-2018).', ...
+                       'Modified and extended by Andrew Penn (2024).', ...
+                       ' ', ...
+                       };
+                Opt.Interpreter = 'tex';
+                Opt.WindowStyle = 'non-modal';
+                h = msgbox(msg, 'Help', 'none', Opt);
+                set (h,'resize','on');
+
+            
+            end
+
+
  
         end
         
