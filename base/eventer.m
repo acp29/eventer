@@ -1451,7 +1451,7 @@ function merge_data(average,s,win,export,optimoptions,cwd,figform,config,taus,ex
     end
     xlim(win);
     ylim([ylimits(1),ylimits(2)]);
-    title(sprintf('Events for all waves: Ensemble %s (blue) and fit (red)',average));
+    title(sprintf('Events from all waves: Ensemble %s (blue) and fit (red)',average));
     xlabel('Time (s)');
     if strcmp(yunit,'A')
       ylabel('Current (A)');
