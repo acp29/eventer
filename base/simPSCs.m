@@ -32,13 +32,13 @@ function simPSCs(Time,n,A,cv,rise,decay,sdnoise,latency,filename,colour)
   % Example Settings:
   % n=200;                   % number of events
   % A=10;                    % average amplitude of event in pA
- 	% cv=0.15;                 % coefficient of variation 
- 	% rise=0.4;                % template rise in ms                                                
- 	% decay=4;                 % template decay in ms
- 	% sdnoise=2.5;             % standard deviation of noise in pA
+  % cv=0.15;                 % coefficient of variation 
+  % rise=0.4;                % template rise in ms                                                
+  % decay=4;                 % template decay in ms
+  % sdnoise=2.5;             % standard deviation of noise in pA
   % latency=20;              % event latency (in ms); no events closer than this
- 	% filename='wave1';        % Name of your results folder
-  % colour='white';          % Colour of the noise: options are 'white' or 'pink'    
+  % filename='wave1';        % Name of your results folder
+  % colour='pink';           % Colour of the noise: options are 'white' or 'pink'    
 
   
   if (nargin < 10)
