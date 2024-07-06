@@ -62,7 +62,8 @@ classdef LinePlotExplorer < handle
         button_down = false;
         button_down_point;
         button_down_axes;
-        
+        velocity = 0;
+
         wbdf; % Pass-through WindowButtonDownFcn
         wbuf; % Pass-through WindowButtonUpFcn
         wbmf; % Pass-through WindowButtonMotionFcn
@@ -254,8 +255,11 @@ classdef LinePlotExplorer < handle
             h_axes = get(o.h_fig, 'CurrentAxes');
 
             % Disable autoscaling in axes properties
-            set (h_axes, 'XLimMode', 'manual')
-            set (h_axes, 'YLimMode', 'manual')
+            set (h_axes, 'XLimMode', 'manual');
+            set (h_axes, 'YLimMode', 'manual');
+
+            % Set velocity to 0 prevent momentum
+            o.velocity = 0;
             
             % Get where the mouse was when the user scrolled.
             point = get(h_axes, 'CurrentPoint');
@@ -316,7 +320,11 @@ classdef LinePlotExplorer < handle
             point                = get(o.button_down_axes, 'CurrentPoint');
             o.button_down_point  = point(1, 1:2);
             o.button_down        = true;
+            o.velocity           = 0; % Enables user to interupt momentum 
 
+            % Button down timer reset
+            tic
+            
             % If there's a callback attachment, execute it.
             execute_callback(o.wbdf, h, event, varargin{:});
             
@@ -330,14 +338,49 @@ classdef LinePlotExplorer < handle
             % Autoscale axes if double left mouse click
             SelectionType = get (o.h_fig, 'SelectionType');
             switch SelectionType
-                case 'open'
+              
+              case 'normal'
+                
+                % Momentum effect for X-axis panning
+                frame_rate = 30;
+                x_lims    = get(o.button_down_axes, 'XLim');
+                o.velocity = o.velocity * 2; % Boost
+                while (abs(o.velocity) > 1.0e-04)
 
+                    % Wait for one frame
+                    pause (1/frame_rate)
+
+                    % Calculate new xlimits 
+                    x_lims = x_lims - o.velocity / frame_rate;
+                    o.velocity = o.velocity * 0.8; % Slow down
+
+                    % Don't let the user pan too far.
+                    if x_lims(1) < o.x_min
+                        x_lims = o.x_min + [0 diff(x_lims)];
+                    end
+                    if x_lims(2) > o.x_max
+                        x_lims = o.x_max - [diff(x_lims) 0];
+                    end
+
+                    % Update the axes.
+                    if (ishandle (o.h_fig))
+                        set(o.button_down_axes, 'XLim', x_lims);
+                    end
+
+                end
+
+              case 'open'
+
+                    % Autoscale axes
                     h_axes = get(o.h_fig, 'CurrentAxes');
                     set(h_axes, 'XLim', o.x_reset);
                     set(h_axes, 'YLim', o.y_reset);
 
+                    % Reset selection type
+                    set (o.h_fig, 'SelectionType', 'normal');
+
             end
-            set (o.h_fig, 'SelectionType', 'normal');
+
 
             % If there's a callback attachment, execute it.
             execute_callback(o.wbuf, h, event, varargin{:});
@@ -363,10 +406,16 @@ classdef LinePlotExplorer < handle
                         % Get the mouse position and movement from original point.
                         point    = get(o.button_down_axes, 'CurrentPoint');
                         movement = point(1, 1) - o.button_down_point(1);
-                        xlims    = get(o.button_down_axes, 'XLim');
-              
+                        x_lims    = get(o.button_down_axes, 'XLim');
+
+                        % Calculate the velocity of movement
+                        o.velocity = movement / toc;
+
+                        % Reset the time
+                        tic;
+
                         % Don't let the user pan too far.
-                        new_lims = xlims - movement;
+                        new_lims = x_lims - movement;
                         if new_lims(1) < o.x_min
                             new_lims = o.x_min + [0 diff(new_lims)];
                         end
@@ -388,7 +437,8 @@ classdef LinePlotExplorer < handle
                         new_lims = ylims - movement;
         
                         % Update the axes.
-                        set(o.button_down_axes, 'YLim', new_lims);
+                        set(o.button_down_axes, 'YLim', new_lims)
+
                 end
             end
 
