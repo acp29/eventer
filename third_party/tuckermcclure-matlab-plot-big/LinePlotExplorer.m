@@ -62,7 +62,6 @@ classdef LinePlotExplorer < handle
         button_down = false;
         button_down_point;
         button_down_axes;
-        velocity = 0;
 
         wbdf; % Pass-through WindowButtonDownFcn
         wbuf; % Pass-through WindowButtonUpFcn
@@ -257,9 +256,6 @@ classdef LinePlotExplorer < handle
             % Disable autoscaling in axes properties
             set (h_axes, 'XLimMode', 'manual');
             set (h_axes, 'YLimMode', 'manual');
-
-            % Set velocity to 0 stop momentum while scrolling
-            o.velocity = 0;
             
             % Get where the mouse was when the user scrolled.
             point = get(h_axes, 'CurrentPoint');
@@ -314,9 +310,6 @@ classdef LinePlotExplorer < handle
         % The user has clicked and is holding.
         function ButtonDown(o, h, event, varargin)
 
-            % User to interupts momentum 
-            o.velocity           = 0; 
-
             % Record what the axes were when the user clicked and where the
             % user clicked.
             o.button_down_axes   = get(o.h_fig, 'CurrentAxes');
@@ -340,45 +333,6 @@ classdef LinePlotExplorer < handle
             % Autoscale axes if double left mouse click
             SelectionType = get (o.h_fig, 'SelectionType');
             switch SelectionType
-              
-                case 'normal'
-                
-                    % Momentum effect for X-axis panning
-                    frame_rate = 30;
-                    x_lims     = get(o.button_down_axes, 'XLim');
-                    o.velocity = o.velocity * 2; % boost
-                    for i = 1:30
-    
-                        % Wait for one frame
-                        pause (1/frame_rate)
-    
-                        % Calculate new xlimits 
-                        x_lims = x_lims - o.velocity / frame_rate;
-    
-                        % Don't let the user pan too far.
-                        if x_lims(1) < o.x_min
-                            x_lims = o.x_min + [0 diff(x_lims)];
-                        end
-                        if x_lims(2) > o.x_max
-                            x_lims = o.x_max - [diff(x_lims) 0];
-                        end
-
-                        % Break if user interrupts 
-                        % (i.e. o.velocity is set to 0)
-                        if (~ o.velocity)
-                          break
-                        end
- 
-                        % Update the axes.
-                        if (ishandle (o.h_fig))
-                            set(o.button_down_axes, 'XLim', x_lims); 
-                        end
-
-                        % Deceleration
-                        o.velocity = o.velocity * 0.8; % Slow down
-
-                    end
-                    o.velocity = 0;
 
               case 'open'
 
@@ -400,7 +354,7 @@ classdef LinePlotExplorer < handle
         
         % When the user moves the mouse with the button down, pan.
         function Motion(o, h, event, varargin)
-            
+
             % Get current axes for this figure.
             h_axes = get(o.h_fig, 'CurrentAxes');
 
@@ -423,19 +377,15 @@ classdef LinePlotExplorer < handle
                         new_lims = x_lims - movement;
                         if new_lims(1) < o.x_min
                             new_lims = o.x_min + [0 diff(new_lims)];
+                            movement = 0;
                         end
                         if new_lims(2) > o.x_max
                             new_lims = o.x_max - [diff(new_lims) 0];
+                            movement = 0;
                         end
 
                         % Update the axes.
                         set(o.button_down_axes, 'XLim', new_lims);
-
-                        % Calculate the velocity of movement
-                        o.velocity = movement / toc;
-
-                        % Reset the time
-                        tic;
 
                     case {'extend','alt'}
 
