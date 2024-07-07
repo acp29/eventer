@@ -1,4 +1,4 @@
-%  Function File: simPSCs
+% Function File: simPSCs
 % ---------------------------------------------------------------------
 % Simulation for data 
 % 
