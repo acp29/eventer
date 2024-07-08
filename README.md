@@ -27,7 +27,7 @@ Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: 
 
 - **relativepath**, version 1.0.0.0, Copyright © 2003, Jochen Lenz  
 - **parfor_progressbar**, version 2.13.0.0 Copyright © 2016, Daniel Terry  
-- **Plot (Big)**, version 1.6.0.0, Copyright © 2015 Tucker  
+- **Plot (Big)**, version 1.6.0.0, Copyright © 2015 Tucker McClure
 - **abfload**, version 4 Dec 2017, Copyright © 2009, Forrest Collman, 2004, Harald Hentschke 1998, U. Egert  
 - **readMeta** (from ACQ4), version 24 Dec 2013, Copyright © 2013 Luke Campagnola   
 - **IBWread**, version 1.0.0.0, Copyright © 2009, Jakub Bialek  
