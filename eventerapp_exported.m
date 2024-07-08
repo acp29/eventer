@@ -1,183 +1,183 @@
 classdef eventerapp_exported < matlab.apps.AppBase
 
-    % Properties that correspond to app components
-    properties (Access = public)
-        Eventer                         matlab.ui.Figure
-        CreditsButton                   matlab.ui.control.Button
-        StorePanel                      matlab.ui.container.Panel
-        UnsavedLabel                    matlab.ui.control.Label
-        StoreCurrentWaveButton          matlab.ui.control.Button
-        CurrentWaveStoredBox            matlab.ui.control.CheckBox
-        RunDropDown                     matlab.ui.control.DropDown
-        RunButton                       matlab.ui.control.Button
-        RunningLamp                     matlab.ui.control.Lamp
-        PopupGraphButton                matlab.ui.control.Button
-        StoreAllWavesButton             matlab.ui.control.Button
-        WaveDropDown                    matlab.ui.control.DropDown
-        WaveDropDownLabel               matlab.ui.control.Label
-        ParallelPanel                   matlab.ui.container.Panel
-        ParallelsettingsLabel           matlab.ui.control.Label
-        ProfileLabel                    matlab.ui.control.Label
-        ProfileNameButton               matlab.ui.control.Button
-        NoofworkersSpinner              matlab.ui.control.Spinner
-        NoofworkersSpinnerLabel         matlab.ui.control.Label
-        ParallelCheckBox                matlab.ui.control.CheckBox
-        TabGroupEventer                 matlab.ui.container.TabGroup
-        PreviewTab                      matlab.ui.container.Tab
-        WavePreviewAxes                 matlab.ui.control.UIAxes
-        TemplateTab                     matlab.ui.container.Tab
-        SignoftheEventsSwitchLabel_2    matlab.ui.control.Label
-        SignoftheEventsSwitch_2         matlab.ui.control.Switch
-        msLabel                         matlab.ui.control.Label
-        TimeconstantsPanel              matlab.ui.container.Panel
-        ApplyToAllButtonTemplate        matlab.ui.control.Button
-        DecayLabel                      matlab.ui.control.Label
-        RiseLabel                       matlab.ui.control.Label
-        msLabel_2                       matlab.ui.control.Label
-        TimeConstantsEditField1         matlab.ui.control.NumericEditField
-        TimeConstantsEditField2         matlab.ui.control.NumericEditField
-        FitparametersPanel              matlab.ui.container.Panel
-        Button                          matlab.ui.control.Button
-        msLabel_5                       matlab.ui.control.Label
-        msLabel_4                       matlab.ui.control.Label
-        tau2EditField                   matlab.ui.control.NumericEditField
-        tau2EditFieldLabel              matlab.ui.control.Label
-        tau1EditField                   matlab.ui.control.NumericEditField
-        tau1EditFieldLabel              matlab.ui.control.Label
-        SelectLabel                     matlab.ui.control.Label
-        TemplateSelectButton            matlab.ui.control.Button
-        TemplatePreviewAxes             matlab.ui.control.UIAxes
-        ExcludeTab                      matlab.ui.container.Tab
-        cell_ten                        matlab.ui.control.NumericEditField
-        cell_nine                       matlab.ui.control.NumericEditField
-        cell_twelve                     matlab.ui.control.NumericEditField
-        cell_eleven                     matlab.ui.control.NumericEditField
-        cell_six                        matlab.ui.control.NumericEditField
-        cell_five                       matlab.ui.control.NumericEditField
-        cell_eight                      matlab.ui.control.NumericEditField
-        cell_seven                      matlab.ui.control.NumericEditField
-        cell_two                        matlab.ui.control.NumericEditField
-        cell_one                        matlab.ui.control.NumericEditField
-        cell_four                       matlab.ui.control.NumericEditField
-        cell_three                      matlab.ui.control.NumericEditField
-        EditField_9                     matlab.ui.control.NumericEditField
-        EditField_8                     matlab.ui.control.NumericEditField
-        EditField_7                     matlab.ui.control.NumericEditField
-        EditField_6                     matlab.ui.control.NumericEditField
-        EditField_5                     matlab.ui.control.NumericEditField
-        EditField_4                     matlab.ui.control.NumericEditField
-        EditField_3                     matlab.ui.control.EditField
-        EditField_2                     matlab.ui.control.EditField
-        EditField_1                     matlab.ui.control.EditField
-        zone_one_x                      matlab.ui.control.Button
-        ApplyToAllButton_xexclusion     matlab.ui.control.Button
-        ApplyToAllButton_ex_6           matlab.ui.control.Button
-        ApplyToAllButton_ex_5           matlab.ui.control.Button
-        ApplyToAllButton_ex_4           matlab.ui.control.Button
-        ApplyToAllButton_ex_3           matlab.ui.control.Button
-        zone_two_x                      matlab.ui.control.Button
-        ApplyToAllButton_ex_2           matlab.ui.control.Button
-        ApplyToAllButton_ex_1           matlab.ui.control.Button
-        ExtraExclusions                 matlab.ui.control.TextArea
-        zone_eleven_x                   matlab.ui.control.Button
-        exselect_6                      matlab.ui.control.Button
-        exselect_5                      matlab.ui.control.Button
-        exselect_4                      matlab.ui.control.Button
-        exselect_3                      matlab.ui.control.Button
-        exselect_2                      matlab.ui.control.Button
-        exselect_1                      matlab.ui.control.Button
-        zone_six_x                      matlab.ui.control.Button
-        zone_five_x                     matlab.ui.control.Button
-        zone_four_x                     matlab.ui.control.Button
-        zone_three_x                    matlab.ui.control.Button
-        DetectionTab                    matlab.ui.container.Tab
-        ThresholdAbsoluteEditField      matlab.ui.control.NumericEditField
-        ThresholdabsoluteEditFieldLabel  matlab.ui.control.Label
-        ModelfileEditField              matlab.ui.control.EditField
-        ModelfileEditFieldLabel         matlab.ui.control.Label
-        TrainingmodeCheckBox            matlab.ui.control.CheckBox
-        LoadmodelButton                 matlab.ui.control.Button
-        ConfigurationDropDown           matlab.ui.control.DropDown
-        ConfigurationDropDownLabel      matlab.ui.control.Label
-        EventCriterionLabel             matlab.ui.control.Label
-        CorrelationCoefficientSpinner   matlab.ui.control.Spinner
-        CorrelationCoefficientLabel     matlab.ui.control.Label
-        CriterionDropDown               matlab.ui.control.DropDown
-        SignoftheEventsSwitch           matlab.ui.control.Switch
-        SignoftheEventsSwitchLabel      matlab.ui.control.Label
-        WavefilterPanel                 matlab.ui.container.Panel
-        HighpassPreFiltermethodDropDown  matlab.ui.control.DropDown
-        HighpassfiltermethodDropDownLabel  matlab.ui.control.Label
-        OnOffCheckBoxLPF                matlab.ui.control.CheckBox
-        OnOffCheckBoxHPF                matlab.ui.control.CheckBox
-        LowpassPreFilterCutOffSpinner   matlab.ui.control.Spinner
-        LowpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
-        HighpassPreFilterCutOffSpinner  matlab.ui.control.Spinner
-        HighpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
-        HzLabel_2                       matlab.ui.control.Label
-        HzLabel                         matlab.ui.control.Label
-        ThresholdSpinner                matlab.ui.control.Spinner
-        ThresholdSpinnerLabel           matlab.ui.control.Label
-        stdevLabel                      matlab.ui.control.Label
-        AdvancedTab                     matlab.ui.container.Tab
-        DeconvolutedWaveSignalProcessingPanel_2  matlab.ui.container.Panel
-        LowpassFilterCutOffSpinnerLabel_2  matlab.ui.control.Label
-        LowpassFilterCutOffSpinner      matlab.ui.control.Spinner
-        HzLabel_3                       matlab.ui.control.Label
-        HighpassFilterCutOffSpinner     matlab.ui.control.Spinner
-        HzLabel_4                       matlab.ui.control.Label
-        HighpassFilterCutOffSpinner_2Label  matlab.ui.control.Label
-        LevenbergMarquardtSettingsPanel  matlab.ui.container.Panel
-        LambdaDisp                      matlab.ui.control.NumericEditField
-        LambdaSlider                    matlab.ui.control.Slider
-        LambdaSliderLabel               matlab.ui.control.Label
-        ExmodeDropDown                  matlab.ui.control.DropDown
-        ExmodeDropDownLabel             matlab.ui.control.Label
-        msLabel_3                       matlab.ui.control.Label
-        BaselineTimeSpinner             matlab.ui.control.Spinner
-        BaselineTimeSpinnerLabel        matlab.ui.control.Label
-        NoofTausSpinner                 matlab.ui.control.Spinner
-        NoofTausSpinnerLabel            matlab.ui.control.Label
-        EventsettingsPanel              matlab.ui.container.Panel
-        OutputTab                       matlab.ui.container.Tab
-        outdirLabel                     matlab.ui.control.Label
-        SetOutputFolderButton           matlab.ui.control.Button
-        RootdirectoryEditField          matlab.ui.control.EditField
-        RootdirectoryEditFieldLabel     matlab.ui.control.Label
-        sLabel_3                        matlab.ui.control.Label
-        sLabel_2                        matlab.ui.control.Label
-        MinWindowSpinner                matlab.ui.control.Spinner
-        EventwindowLabel                matlab.ui.control.Label
-        MaxWindowSpinner                matlab.ui.control.Spinner
-        GNUZipCompressionCheckBox       matlab.ui.control.CheckBox
-        wavesstackedLabel               matlab.ui.control.Label
-        dpiLabel                        matlab.ui.control.Label
-        FigureFormatDropDown            matlab.ui.control.DropDown
-        FigureFormatDropDownLabel       matlab.ui.control.Label
-        WaveFormatDropDown              matlab.ui.control.DropDown
-        WaveFormatDropDownLabel         matlab.ui.control.Label
-        EnsembleAverageButtonGroup      matlab.ui.container.ButtonGroup
-        MeanButton                      matlab.ui.control.RadioButton
-        MedianButton                    matlab.ui.control.RadioButton
-        SummaryTab                      matlab.ui.container.Tab
-        TabGroupSummary                 matlab.ui.container.TabGroup
-        AllTab                          matlab.ui.container.Tab
-        SummaryAll                      matlab.ui.control.TextArea
-        CurrentTab                      matlab.ui.container.Tab
-        SummaryCurrent                  matlab.ui.control.TextArea
-        FilePanel                       matlab.ui.container.Panel
-        sLabel                          matlab.ui.control.Label
-        SplitSpinner                    matlab.ui.control.Spinner
-        SplitSpinnerLabel               matlab.ui.control.Label
-        ClosefiguresButton              matlab.ui.control.Button
-        ApplypresetsButton              matlab.ui.control.Button
-        PresetsButton                   matlab.ui.control.Button
-        FullPathNameBox                 matlab.ui.control.ListBox
-        CloseButton                     matlab.ui.control.Button
-        ChannelSpinner                  matlab.ui.control.Spinner
-        ChannelSpinnerLabel             matlab.ui.control.Label
-        LoadButton                      matlab.ui.control.Button
-    end
+  % Properties that correspond to app components
+  properties (Access = public)
+    Eventer                         matlab.ui.Figure
+    CreditsButton                   matlab.ui.control.Button
+    StorePanel                      matlab.ui.container.Panel
+    UnsavedLabel                    matlab.ui.control.Label
+    StoreCurrentWaveButton          matlab.ui.control.Button
+    CurrentWaveStoredBox            matlab.ui.control.CheckBox
+    RunDropDown                     matlab.ui.control.DropDown
+    RunButton                       matlab.ui.control.Button
+    RunningLamp                     matlab.ui.control.Lamp
+    PopupGraphButton                matlab.ui.control.Button
+    StoreAllWavesButton             matlab.ui.control.Button
+    WaveDropDown                    matlab.ui.control.DropDown
+    WaveDropDownLabel               matlab.ui.control.Label
+    ParallelPanel                   matlab.ui.container.Panel
+    ParallelsettingsLabel           matlab.ui.control.Label
+    ProfileLabel                    matlab.ui.control.Label
+    ProfileNameButton               matlab.ui.control.Button
+    NoofworkersSpinner              matlab.ui.control.Spinner
+    NoofworkersSpinnerLabel         matlab.ui.control.Label
+    ParallelCheckBox                matlab.ui.control.CheckBox
+    TabGroupEventer                 matlab.ui.container.TabGroup
+    PreviewTab                      matlab.ui.container.Tab
+    WavePreviewAxes                 matlab.ui.control.UIAxes
+    TemplateTab                     matlab.ui.container.Tab
+    SignoftheEventsSwitchLabel_2    matlab.ui.control.Label
+    SignoftheEventsSwitch_2         matlab.ui.control.Switch
+    msLabel                         matlab.ui.control.Label
+    TimeconstantsPanel              matlab.ui.container.Panel
+    ApplyToAllButtonTemplate        matlab.ui.control.Button
+    DecayLabel                      matlab.ui.control.Label
+    RiseLabel                       matlab.ui.control.Label
+    msLabel_2                       matlab.ui.control.Label
+    TimeConstantsEditField1         matlab.ui.control.NumericEditField
+    TimeConstantsEditField2         matlab.ui.control.NumericEditField
+    FitparametersPanel              matlab.ui.container.Panel
+    Button                          matlab.ui.control.Button
+    msLabel_5                       matlab.ui.control.Label
+    msLabel_4                       matlab.ui.control.Label
+    tau2EditField                   matlab.ui.control.NumericEditField
+    tau2EditFieldLabel              matlab.ui.control.Label
+    tau1EditField                   matlab.ui.control.NumericEditField
+    tau1EditFieldLabel              matlab.ui.control.Label
+    SelectLabel                     matlab.ui.control.Label
+    TemplateSelectButton            matlab.ui.control.Button
+    TemplatePreviewAxes             matlab.ui.control.UIAxes
+    ExcludeTab                      matlab.ui.container.Tab
+    cell_ten                        matlab.ui.control.NumericEditField
+    cell_nine                       matlab.ui.control.NumericEditField
+    cell_twelve                     matlab.ui.control.NumericEditField
+    cell_eleven                     matlab.ui.control.NumericEditField
+    cell_six                        matlab.ui.control.NumericEditField
+    cell_five                       matlab.ui.control.NumericEditField
+    cell_eight                      matlab.ui.control.NumericEditField
+    cell_seven                      matlab.ui.control.NumericEditField
+    cell_two                        matlab.ui.control.NumericEditField
+    cell_one                        matlab.ui.control.NumericEditField
+    cell_four                       matlab.ui.control.NumericEditField
+    cell_three                      matlab.ui.control.NumericEditField
+    EditField_9                     matlab.ui.control.NumericEditField
+    EditField_8                     matlab.ui.control.NumericEditField
+    EditField_7                     matlab.ui.control.NumericEditField
+    EditField_6                     matlab.ui.control.NumericEditField
+    EditField_5                     matlab.ui.control.NumericEditField
+    EditField_4                     matlab.ui.control.NumericEditField
+    EditField_3                     matlab.ui.control.EditField
+    EditField_2                     matlab.ui.control.EditField
+    EditField_1                     matlab.ui.control.EditField
+    zone_one_x                      matlab.ui.control.Button
+    ApplyToAllButton_xexclusion     matlab.ui.control.Button
+    ApplyToAllButton_ex_6           matlab.ui.control.Button
+    ApplyToAllButton_ex_5           matlab.ui.control.Button
+    ApplyToAllButton_ex_4           matlab.ui.control.Button
+    ApplyToAllButton_ex_3           matlab.ui.control.Button
+    zone_two_x                      matlab.ui.control.Button
+    ApplyToAllButton_ex_2           matlab.ui.control.Button
+    ApplyToAllButton_ex_1           matlab.ui.control.Button
+    ExtraExclusions                 matlab.ui.control.TextArea
+    zone_eleven_x                   matlab.ui.control.Button
+    exselect_6                      matlab.ui.control.Button
+    exselect_5                      matlab.ui.control.Button
+    exselect_4                      matlab.ui.control.Button
+    exselect_3                      matlab.ui.control.Button
+    exselect_2                      matlab.ui.control.Button
+    exselect_1                      matlab.ui.control.Button
+    zone_six_x                      matlab.ui.control.Button
+    zone_five_x                     matlab.ui.control.Button
+    zone_four_x                     matlab.ui.control.Button
+    zone_three_x                    matlab.ui.control.Button
+    DetectionTab                    matlab.ui.container.Tab
+    ThresholdAbsoluteEditField      matlab.ui.control.NumericEditField
+    ThresholdabsoluteEditFieldLabel  matlab.ui.control.Label
+    ModelfileEditField              matlab.ui.control.EditField
+    ModelfileEditFieldLabel         matlab.ui.control.Label
+    TrainingmodeCheckBox            matlab.ui.control.CheckBox
+    LoadmodelButton                 matlab.ui.control.Button
+    ConfigurationDropDown           matlab.ui.control.DropDown
+    ConfigurationDropDownLabel      matlab.ui.control.Label
+    EventCriterionLabel             matlab.ui.control.Label
+    CorrelationCoefficientSpinner   matlab.ui.control.Spinner
+    CorrelationCoefficientLabel     matlab.ui.control.Label
+    CriterionDropDown               matlab.ui.control.DropDown
+    SignoftheEventsSwitch           matlab.ui.control.Switch
+    SignoftheEventsSwitchLabel      matlab.ui.control.Label
+    WavefilterPanel                 matlab.ui.container.Panel
+    HighpassPreFiltermethodDropDown  matlab.ui.control.DropDown
+    HighpassfiltermethodDropDownLabel  matlab.ui.control.Label
+    OnOffCheckBoxLPF                matlab.ui.control.CheckBox
+    OnOffCheckBoxHPF                matlab.ui.control.CheckBox
+    LowpassPreFilterCutOffSpinner   matlab.ui.control.Spinner
+    LowpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
+    HighpassPreFilterCutOffSpinner  matlab.ui.control.Spinner
+    HighpassFilterCutOffSpinnerLabel  matlab.ui.control.Label
+    HzLabel_2                       matlab.ui.control.Label
+    HzLabel                         matlab.ui.control.Label
+    ThresholdSpinner                matlab.ui.control.Spinner
+    ThresholdSpinnerLabel           matlab.ui.control.Label
+    stdevLabel                      matlab.ui.control.Label
+    AdvancedTab                     matlab.ui.container.Tab
+    DeconvolutedWaveSignalProcessingPanel_2  matlab.ui.container.Panel
+    LowpassFilterCutOffSpinnerLabel_2  matlab.ui.control.Label
+    LowpassFilterCutOffSpinner      matlab.ui.control.Spinner
+    HzLabel_3                       matlab.ui.control.Label
+    HighpassFilterCutOffSpinner     matlab.ui.control.Spinner
+    HzLabel_4                       matlab.ui.control.Label
+    HighpassFilterCutOffSpinner_2Label  matlab.ui.control.Label
+    LevenbergMarquardtSettingsPanel  matlab.ui.container.Panel
+    LambdaDisp                      matlab.ui.control.NumericEditField
+    LambdaSlider                    matlab.ui.control.Slider
+    LambdaSliderLabel               matlab.ui.control.Label
+    ExmodeDropDown                  matlab.ui.control.DropDown
+    ExmodeDropDownLabel             matlab.ui.control.Label
+    msLabel_3                       matlab.ui.control.Label
+    BaselineTimeSpinner             matlab.ui.control.Spinner
+    BaselineTimeSpinnerLabel        matlab.ui.control.Label
+    NoofTausSpinner                 matlab.ui.control.Spinner
+    NoofTausSpinnerLabel            matlab.ui.control.Label
+    EventsettingsPanel              matlab.ui.container.Panel
+    OutputTab                       matlab.ui.container.Tab
+    outdirLabel                     matlab.ui.control.Label
+    SetOutputFolderButton           matlab.ui.control.Button
+    RootdirectoryEditField          matlab.ui.control.EditField
+    RootdirectoryEditFieldLabel     matlab.ui.control.Label
+    sLabel_3                        matlab.ui.control.Label
+    sLabel_2                        matlab.ui.control.Label
+    MinWindowSpinner                matlab.ui.control.Spinner
+    EventwindowLabel                matlab.ui.control.Label
+    MaxWindowSpinner                matlab.ui.control.Spinner
+    GNUZipCompressionCheckBox       matlab.ui.control.CheckBox
+    wavesstackedLabel               matlab.ui.control.Label
+    dpiLabel                        matlab.ui.control.Label
+    FigureFormatDropDown            matlab.ui.control.DropDown
+    FigureFormatDropDownLabel       matlab.ui.control.Label
+    WaveFormatDropDown              matlab.ui.control.DropDown
+    WaveFormatDropDownLabel         matlab.ui.control.Label
+    EnsembleAverageButtonGroup      matlab.ui.container.ButtonGroup
+    MeanButton                      matlab.ui.control.RadioButton
+    MedianButton                    matlab.ui.control.RadioButton
+    SummaryTab                      matlab.ui.container.Tab
+    TabGroupSummary                 matlab.ui.container.TabGroup
+    AllTab                          matlab.ui.container.Tab
+    SummaryAll                      matlab.ui.control.TextArea
+    CurrentTab                      matlab.ui.container.Tab
+    SummaryCurrent                  matlab.ui.control.TextArea
+    FilePanel                       matlab.ui.container.Panel
+    sLabel                          matlab.ui.control.Label
+    SplitSpinner                    matlab.ui.control.Spinner
+    SplitSpinnerLabel               matlab.ui.control.Label
+    ClosefiguresButton              matlab.ui.control.Button
+    ApplypresetsButton              matlab.ui.control.Button
+    PresetsButton                   matlab.ui.control.Button
+    FullPathNameBox                 matlab.ui.control.ListBox
+    CloseButton                     matlab.ui.control.Button
+    ChannelSpinner                  matlab.ui.control.Spinner
+    ChannelSpinnerLabel             matlab.ui.control.Label
+    LoadButton                      matlab.ui.control.Button
+  end
 
     
     properties (Access = private)
@@ -198,7 +198,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
         lambda_default = 1;
         config_default = 'VC';
         average_default = 'median';
-        export_default = 'mat';
+        export_default = 'abf';
         figure_default = 'fig';
         gz_default = 0;
         %file path
@@ -227,6 +227,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
         ch=1;
         template_plot;
         ex_plot;
+        lpe = struct;
         preview_plot;
         prevone;
         prevtwo;
@@ -344,6 +345,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ApplyExclusionZones;
             fig_wave = reduce_data(app.fig_wave,app.WavePreviewAxes.Position(3));
             app.preview_plot = plot(app.WavePreviewAxes,fig_wave(:,1),fig_wave(:,2),'Color',[0 0 0],'LineWidth',0.25);
+            disableDefaultInteractivity(app.WavePreviewAxes)
             app.WavePreviewAxes.XLim = [min(app.fig_wave(:,1)) max(app.fig_wave(:,1))];
             app.WavePreviewAxes.YLim = [min(app.fig_wave(:,2)) max(app.fig_wave(:,2))];
         end
@@ -380,10 +382,11 @@ classdef eventerapp_exported < matlab.apps.AppBase
         function UpdatePopupGraph(app)
             if ishandle(7)
                 figure(7);
-                p = get(gca);
                 app.fig_wave = [app.array(:,1),app.array(:,app.current_wave+1)];
                 app.ApplyExclusionZones;
-                app.ex_plot = plot(app.fig_wave(:,1),app.fig_wave(:,2),'Color',[0 0 0],'linewidth',1.25);xlim(p.XLim);ylim('auto');
+                app.ex_plot = reduce_plot(app.fig_wave(:,1),app.fig_wave(:,2),'Color',[0 0 0],'linewidth',1.25);
+                app.lpe = LinePlotExplorer(f,app.WavePreviewAxes.XLim(1),app.WavePreviewAxes.XLim(2));
+                app.lpe.AttachCallback('WindowKeyPressFcn', @(h,event)app.EventerWindowKeyPress(event));
                 figure(app.Eventer); % reset focus on eventer window
             end 
         end
@@ -805,12 +808,14 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.ref_array = app.array;
 
             %wave numbers
+            items = cell(1, app.nWaves);
             for i = 1:app.nWaves
                 wave_drop = int2str(i);
                 items{1,i} = wave_drop;
-                app.WaveDropDown.Items = items;
             end
-            
+            app.WaveDropDown.Items = items;
+            app.WaveDropDown.ItemsData = items;
+
             %Rename waves
             app.S.names = {'Time'};
             for i = 1:app.nWaves
@@ -833,7 +838,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
             end
             app.ConfigurationDropDownValueChanged;
             app.WaveFormatDropDownValueChanged;
-            
+
             %% check store status of all waves
             %allStoredFlag = 1;
             %for i=1:app.nWaves
@@ -1302,11 +1307,11 @@ classdef eventerapp_exported < matlab.apps.AppBase
     end
     
 
-    % Callbacks that handle component events
-    methods (Access = private)
+  % Callbacks that handle component events
+  methods (Access = private)
 
-        % Code that executes after component creation
-        function startupFcn(app)
+    % Code that executes after component creation
+    function startupFcn(app)
             app.StoreAllWavesButton.Enable = 'off';
             app.StoreCurrentWaveButton.Enable = 'off';
             app.CurrentWaveStoredBox.Enable = 'off';
@@ -1323,10 +1328,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.WavePreviewAxes.Toolbar.Visible = 'off';
             close all
             format short g
-        end
+    end
 
-        % Button pushed function: LoadButton
-        function LoadButtonPushed(app, event)
+    % Button pushed function: LoadButton
+    function LoadButtonPushed(app, event)
             close all % close all existing figures
             % Create invisible dummy figure (disguised as a wait bar/message) 
             % and bring it in to focus then hide it. Required for File Open dialogue to be on top (on macOS and linux platforms).
@@ -1338,7 +1343,8 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 {'*.abf;*.axgx;*.axgd;*.dat;*.nwb;*.cfs;*.smr;*.tdms;*.wcp;*.EDR;*.pxp;*.ibw;*.bwav;*.ma;*.h5;*.mat;*.paq;*.phy;*.itx;*.awav;*.atf;*.txt;*.csv;*.evt','All Types';...
                 '*.abf','Axon binary files v1 and v2 (*.abf)';...
                 '*.axgx;*.axgd','Axograph binary file (*.axgx, *.axgd)';...
-                '*.dat','HEKA PatchMaster,Pulse and ChartMaster binary files (*.dat)';...
+                '*.dat;*.bin','Generic 16-bit integer raw binary files (*.dat, *.bin)';...
+                '*.dat','HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)';...
                 '*.nwb','Neurodata without borders v2 (*.nwb)';...
                 '*.cfs','CED Signal binary files (*.cfs)';...
                 '*.smr','CED Spike2 binary files (*.smr)';...
@@ -1413,7 +1419,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
                         app.refpathlist={};
                     end
                     app.FullPathNameBox.Items = app.fullpathlist;
-                    [errMsg] = lasterr;
+                    [errMsg] = lasterr; 
                     f = errordlg(errMsg,'Error');
                     set(f,'WindowStyle','modal');
                     uiwait(f);
@@ -1460,10 +1466,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             %note that these resets every time a file loads
             app.RootdirectoryEditField.Value = app.path;
             
-        end
+    end
 
-        % Button pushed function: RunButton
-        function RunButtonPushed(app, event)
+    % Button pushed function: RunButton
+    function RunButtonPushed(app, event)
             app.RunningLamp.Enable = 'on';
             chdir(app.path);
             if ~isempty(app.outdir{1})
@@ -1891,10 +1897,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                     app.loadEventClassifier;
                 end
             end
-        end
+    end
 
-        % Button pushed function: ApplypresetsButton
-        function ApplypresetsButtonPushed(app, event)
+    % Button pushed function: ApplypresetsButton
+    function ApplypresetsButtonPushed(app, event)
             h_presets = waitbar(0,'Please wait for the settings to be applied...');
             frames = java.awt.Frame.getFrames(); frames(end).setAlwaysOnTop(1); 
             app.OnOffCheckBoxHPF.Value = 1;
@@ -2010,20 +2016,20 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 waitbar(1,h_presets);
                 close(h_presets);
             end
-        end
+    end
 
-        % Value changed function: LambdaDisp
-        function LambdaDispValueChanged(app, event)
+    % Value changed function: LambdaDisp
+    function LambdaDispValueChanged(app, event)
                 lambda = app.LambdaDisp.Value;                
                 reflambda = power(10,-2:3)';
                 idx = dsearchn(reflambda,lambda);       
                 app.LambdaDisp.Value = reflambda(idx);
                 app.LambdaSlider.Value = log10(reflambda(idx));
                 unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_one_x
-        function zone_one_xButtonPushed(app, event)
+    % Button pushed function: zone_one_x
+    function zone_one_xButtonPushed(app, event)
                 app.cell_one.Value = 0;
                 app.cell_two.Value = 0;
                 app.cell_two.BackgroundColor = [1 1 1];
@@ -2031,10 +2037,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.UpdateWavePreview;
                 app.UpdatePopupGraph;
                 unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_two_x
-        function zone_two_xButtonPushed(app, event)
+    % Button pushed function: zone_two_x
+    function zone_two_xButtonPushed(app, event)
                 app.cell_three.Value = 0;
                 app.cell_four.Value = 0;
                 app.cell_four.BackgroundColor = [1 1 1];
@@ -2042,10 +2048,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.UpdateWavePreview;
                 app.UpdatePopupGraph;
                 unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_three_x
-        function zone_three_xButtonPushed(app, event)
+    % Button pushed function: zone_three_x
+    function zone_three_xButtonPushed(app, event)
                 app.cell_five.Value = 0;
                 app.cell_six.Value = 0;
                 app.cell_six.BackgroundColor = [1 1 1];
@@ -2053,10 +2059,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.UpdateWavePreview;
                 app.UpdatePopupGraph;
                 unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_four_x
-        function zone_four_xButtonPushed(app, event)
+    % Button pushed function: zone_four_x
+    function zone_four_xButtonPushed(app, event)
                 app.cell_seven.Value = 0;
                 app.cell_eight.Value = 0;
                 app.cell_eight.BackgroundColor = [1 1 1];
@@ -2064,10 +2070,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.UpdateWavePreview;
                 app.UpdatePopupGraph;
                 unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_five_x
-        function zone_five_xButtonPushed(app, event)
+    % Button pushed function: zone_five_x
+    function zone_five_xButtonPushed(app, event)
                 app.cell_nine.Value = 0;
                 app.cell_ten.Value = 0;
                 app.cell_ten.BackgroundColor = [1 1 1];
@@ -2075,10 +2081,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.UpdateWavePreview;
                 app.UpdatePopupGraph;
                 unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_six_x
-        function zone_six_xButtonPushed(app, event)
+    % Button pushed function: zone_six_x
+    function zone_six_xButtonPushed(app, event)
                 app.cell_eleven.Value = 0;
                 app.cell_twelve.Value = 0;
                 app.cell_twelve.BackgroundColor = [1 1 1];
@@ -2086,10 +2092,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.UpdateWavePreview;
                 app.UpdatePopupGraph;
                 unstored(app);
-        end
+    end
 
-        % Value changed function: cell_one
-        function cell_oneValueChanged(app, event)
+    % Value changed function: cell_one
+    function cell_oneValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2107,10 +2113,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_two
-        function cell_twoValueChanged(app, event)
+    % Value changed function: cell_two
+    function cell_twoValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2128,10 +2134,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_three
-        function cell_threeValueChanged(app, event)
+    % Value changed function: cell_three
+    function cell_threeValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2149,10 +2155,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_four
-        function cell_fourValueChanged(app, event)
+    % Value changed function: cell_four
+    function cell_fourValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2170,10 +2176,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_five
-        function cell_fiveValueChanged(app, event)
+    % Value changed function: cell_five
+    function cell_fiveValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2191,10 +2197,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_six
-        function cell_sixValueChanged(app, event)
+    % Value changed function: cell_six
+    function cell_sixValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2212,10 +2218,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_seven
-        function cell_sevenValueChanged(app, event)
+    % Value changed function: cell_seven
+    function cell_sevenValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2233,10 +2239,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_eight
-        function cell_eightValueChanged(app, event)
+    % Value changed function: cell_eight
+    function cell_eightValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2254,10 +2260,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_nine
-        function cell_nineValueChanged(app, event)
+    % Value changed function: cell_nine
+    function cell_nineValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2275,10 +2281,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_ten
-        function cell_tenValueChanged(app, event)
+    % Value changed function: cell_ten
+    function cell_tenValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2296,10 +2302,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_eleven
-        function cell_elevenValueChanged(app, event)
+    % Value changed function: cell_eleven
+    function cell_elevenValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2317,10 +2323,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Value changed function: cell_twelve
-        function cell_twelveValueChanged(app, event)
+    % Value changed function: cell_twelve
+    function cell_twelveValueChanged(app, event)
             if isempty(app.FullPathNameBox.Value)
                 return
             end
@@ -2338,10 +2344,11 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdatePopupGraph;
             app.UpdateWavePreview;
             unstored(app);
-        end
+    end
 
-        % Button pushed function: exselect_2
-        function exselect_2ButtonPushed(app, event)
+    % Button pushed function: exselect_2
+    function exselect_2ButtonPushed(app, event)
+            
             if ishandle(7)
                 figure(7);
                 % get axis limits
@@ -2363,10 +2370,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 xlim(app.WavePreviewAxes.XLim)
                 ylim(app.WavePreviewAxes.YLim)
             end
-        end
+    end
 
-        % Button pushed function: exselect_3
-        function exselect_3ButtonPushed(app, event)
+    % Button pushed function: exselect_3
+    function exselect_3ButtonPushed(app, event)
             if ishandle(7)
                 figure(7);
                 % get axis limits
@@ -2388,10 +2395,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 xlim(app.WavePreviewAxes.XLim)
                 ylim(app.WavePreviewAxes.YLim)
             end
-        end
+    end
 
-        % Button pushed function: exselect_4
-        function exselect_4ButtonPushed(app, event)
+    % Button pushed function: exselect_4
+    function exselect_4ButtonPushed(app, event)
             if ishandle(7)
                 figure(7);
                 % get axis limits
@@ -2413,10 +2420,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 xlim(app.WavePreviewAxes.XLim)
                 ylim(app.WavePreviewAxes.YLim)
             end
-        end
+    end
 
-        % Button pushed function: exselect_5
-        function exselect_5ButtonPushed(app, event)
+    % Button pushed function: exselect_5
+    function exselect_5ButtonPushed(app, event)
             if ishandle(7)
                 figure(7);
                 % get axis limits
@@ -2438,10 +2445,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 xlim(app.WavePreviewAxes.XLim)
                 ylim(app.WavePreviewAxes.YLim)
             end
-        end
+    end
 
-        % Button pushed function: exselect_6
-        function exselect_6ButtonPushed(app, event)
+    % Button pushed function: exselect_6
+    function exselect_6ButtonPushed(app, event)
             if ishandle(7)
                 figure(7);
                 % get axis limits
@@ -2463,10 +2470,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 xlim(app.WavePreviewAxes.XLim)
                 ylim(app.WavePreviewAxes.YLim)
             end
-        end
+    end
 
-        % Button pushed function: exselect_1
-        function exselect_1_1ButtonPushed(app, event)
+    % Button pushed function: exselect_1
+    function exselect_1_1ButtonPushed(app, event)
             if ishandle(7)
                 figure(7);
                 % get axis limits
@@ -2493,19 +2500,38 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 xlim(app.WavePreviewAxes.XLim)
                 ylim(app.WavePreviewAxes.YLim)
             end
-        end
+    end
 
-        % Button pushed function: PopupGraphButton
-        function PopupGraphButtonPushed(app, event)
-                figure(7);
-                app.ex_plot = reduce_plot(app.fig_wave(:,1),app.fig_wave(:,2),'Color',[0 0 0],'linewidth',1.25);
-                addToolbarExplorationButtons(gcf);ax = gca; ax.Toolbar.Visible = 'off'; 
-                xlim(app.WavePreviewAxes.XLim);
-                ylim(app.WavePreviewAxes.YLim);
-        end
+    % Button pushed function: PopupGraphButton
+    function PopupGraphButtonPushed(app, event)
 
-        % Button pushed function: TemplateSelectButton
-        function TemplateSelectButtonPushed(app, event)
+            % Create figure handle
+            if ishandle(7)
+                close(7)
+            end
+            f = figure(7); set(7,'Toolbar','None');
+
+            % Plot data and initialize explorer and zoom reset state
+            app.ex_plot = reduce_plot(app.fig_wave(:,1),app.fig_wave(:,2),'Color',[0 0 0],'linewidth',1.25);
+            xlabel('Time (s)');
+            if strcmp(app.ConfigurationDropDown.Value,'VC')
+                ylabel('Current (A)');
+            elseif strcmp(app.ConfigurationDropDown.Value,'CC')
+                ylabel('Voltage (V)');
+            elseif strcmp(app.ConfigurationDropDown.Value,'dummy')
+                ylabel('Amplitude');
+            end
+            app.lpe = LinePlotExplorer(f,app.WavePreviewAxes.XLim(1),app.WavePreviewAxes.XLim(2));
+            app.lpe.AttachCallback('WindowKeyPressFcn', @(h,event)app.EventerWindowKeyPress(event));
+
+            % Remove axis toolbar
+            ax = gca; ax.Toolbar.Visible = 'off'; 
+
+
+    end
+
+    % Button pushed function: TemplateSelectButton
+    function TemplateSelectButtonPushed(app, event)
             if ishandle(7)
                 figure(7)
             else
@@ -2593,10 +2619,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             hold(app.TemplatePreviewAxes,'off')
             ax_x = [app.array(prevone) app.array(prevtwo)];
             app.TemplatePreviewAxes.XLim = ax_x;
-        end
+    end
 
-        % Value changed function: FigureFormatDropDown
-        function FigureFormatDropDownValueChanged(app, event)
+    % Value changed function: FigureFormatDropDown
+    function FigureFormatDropDownValueChanged(app, event)
                 value = app.FigureFormatDropDown.Value;
                 if strcmp('tiff',value) | strcmp('tiffn',value) | strcmp('bmp',value) | strcmp('png',value)
                     set(app.dpiLabel,'Visible','on');
@@ -2609,10 +2635,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                     uiwait(f);
                 end
                 unstored(app);
-        end
+    end
 
-        % Value changed function: WaveFormatDropDown
-        function WaveFormatDropDownValueChanged(app, event)
+    % Value changed function: WaveFormatDropDown
+    function WaveFormatDropDownValueChanged(app, event)
                 value = app.WaveFormatDropDown.Value;
                 if strcmp('asc',value)
                     set(app.wavesstackedLabel,'Visible','on');
@@ -2625,10 +2651,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                     set(app.GNUZipCompressionCheckBox,'Enable','on');
                 end
                 unstored(app);
-        end
+    end
 
-        % Value changed function: WaveDropDown
-        function WaveDropDownValueChanged(app, event)
+    % Value changed function: WaveDropDown
+    function WaveDropDownValueChanged(app, event)
             value = app.WaveDropDown.Value;
             if strcmpi(app.UnsavedLabel.Visible,'on')
                 % Automatically store modified settings 
@@ -2774,15 +2800,15 @@ classdef eventerapp_exported < matlab.apps.AppBase
             end
             unstored(app);
             figure(app.Eventer);
-        end
+    end
 
-        % Button pushed function: CloseButton
-        function CloseButtonPushed(app, event)
+    % Button pushed function: CloseButton
+    function CloseButtonPushed(app, event)
             app.closeEventer;
-        end
+    end
 
-        % Value changed function: CurrentWaveStoredBox
-        function CurrentWaveStoredBoxValueChanged(app, event)
+    % Value changed function: CurrentWaveStoredBox
+    function CurrentWaveStoredBoxValueChanged(app, event)
             %remove current wave's saved data
             value = app.CurrentWaveStoredBox.Value;
             if value == 0
@@ -2855,10 +2881,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             end
             app.UnsavedLabel.Visible = 'off';
             app.UnsavedLabel.Enable = 'off';
-        end
+    end
 
-        % Value changed function: OnOffCheckBoxHPF
-        function OnOffCheckBoxHPFValueChanged(app, event)
+    % Value changed function: OnOffCheckBoxHPF
+    function OnOffCheckBoxHPFValueChanged(app, event)
             value = app.OnOffCheckBoxHPF.Value;
             if value == 0
                 app.HighpassPreFilterCutOffSpinner.Value = 0;
@@ -2867,10 +2893,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             elseif value == 1
                 app.HighpassPreFilterCutOffSpinner.Enable = 'on';
             end
-        end
+    end
 
-        % Value changed function: OnOffCheckBoxLPF
-        function OnOffCheckBoxLPFValueChanged(app, event)
+    % Value changed function: OnOffCheckBoxLPF
+    function OnOffCheckBoxLPFValueChanged(app, event)
             value = app.OnOffCheckBoxLPF.Value;
             if value == 0
                 app.LowpassPreFilterCutOffSpinner.Value = Inf;
@@ -2879,10 +2905,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             elseif value == 1
                 app.LowpassPreFilterCutOffSpinner.Enable = 'on';
             end
-        end
+    end
 
-        % Value changed function: TimeConstantsEditField1
-        function TimeConstantsEditField1ValueChanged(app, event)
+    % Value changed function: TimeConstantsEditField1
+    function TimeConstantsEditField1ValueChanged(app, event)
             tau_rise = app.TimeConstantsEditField1.Value/1000;
             tau_decay = app.TimeConstantsEditField2.Value/1000;
             minPostEventTime = ...
@@ -2892,10 +2918,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 msgbox('Increase post-event time of the Event Window under the ''Output'' tab to avoid errors during the analysis run','Adjust Event Window Size','none')
             end
             unstored(app);
-        end
+    end
 
-        % Value changed function: TimeConstantsEditField2
-        function TimeConstantsEditField2ValueChanged(app, event)
+    % Value changed function: TimeConstantsEditField2
+    function TimeConstantsEditField2ValueChanged(app, event)
             tau_rise = app.TimeConstantsEditField1.Value/1000;
             tau_decay = app.TimeConstantsEditField2.Value/1000;
             minPostEventTime = ...
@@ -2905,10 +2931,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 msgbox('Increase post-event time of the Event Window under the ''Output'' tab to avoid errors during the analysis run','Adjust Event Window Size','none')
             end
             unstored(app);
-        end
+    end
 
-        % Value changed function: ConfigurationDropDown
-        function ConfigurationDropDownValueChanged(app, event)
+    % Value changed function: ConfigurationDropDown
+    function ConfigurationDropDownValueChanged(app, event)
             if strcmp(app.ConfigurationDropDown.Value,'VC')
                 app.WavePreviewAxes.YLabel.String = 'Current (A)';
             elseif strcmp(app.ConfigurationDropDown.Value,'CC')
@@ -2917,72 +2943,72 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.WavePreviewAxes.YLabel.String = 'Amplitude';
             end
             unstored(app);
-        end
+    end
 
-        % Value changed function: ThresholdSpinner
-        function ThresholdSpinnerValueChanged(app, event)
+    % Value changed function: ThresholdSpinner
+    function ThresholdSpinnerValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: CorrelationCoefficientSpinner
-        function CorrelationCoefficientValueChanged(app, event)
+    % Value changed function: CorrelationCoefficientSpinner
+    function CorrelationCoefficientValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: NoofTausSpinner
-        function NoofTausSpinnerValueChanged(app, event)
+    % Value changed function: NoofTausSpinner
+    function NoofTausSpinnerValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: BaselineTimeSpinner
-        function BaselineTimeSpinnerValueChanged(app, event)
+    % Value changed function: BaselineTimeSpinner
+    function BaselineTimeSpinnerValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: ExmodeDropDown
-        function ExmodeDropDownValueChanged(app, event)
+    % Value changed function: ExmodeDropDown
+    function ExmodeDropDownValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: HighpassFilterCutOffSpinner
-        function HighpassFilterCutOffSpinnerValueChanged(app, event)
+    % Value changed function: HighpassFilterCutOffSpinner
+    function HighpassFilterCutOffSpinnerValueChanged(app, event)
             lim = 0.443/(app.xdiff*3);
             if app.HighpassFilterCutOffSpinner.Value > lim
                 app.HighpassFilterCutOffSpinner.Value = lim;
             end
             unstored(app);
-        end
+    end
 
-        % Value changed function: LowpassFilterCutOffSpinner
-        function LowpassFilterCutOffSpinnerValueChanged(app, event)
+    % Value changed function: LowpassFilterCutOffSpinner
+    function LowpassFilterCutOffSpinnerValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Selection changed function: EnsembleAverageButtonGroup
-        function EnsembleAverageButtonGroupSelectionChanged(app, event)
+    % Selection changed function: EnsembleAverageButtonGroup
+    function EnsembleAverageButtonGroupSelectionChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: GNUZipCompressionCheckBox
-        function GNUZipCompressionCheckBoxValueChanged(app, event)
+    % Value changed function: GNUZipCompressionCheckBox
+    function GNUZipCompressionCheckBoxValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: SignoftheEventsSwitch
-        function SignoftheEventsSwitchValueChanged(app, event)
+    % Value changed function: SignoftheEventsSwitch
+    function SignoftheEventsSwitchValueChanged(app, event)
             value1 = app.SignoftheEventsSwitch.Value;
             app.SignoftheEventsSwitch_2.Value = value1;
             unstored(app);
-        end
+    end
 
-        % Button pushed function: StoreCurrentWaveButton
-        function StoreCurrentWaveButtonPushed(app, event)
+    % Button pushed function: StoreCurrentWaveButton
+    function StoreCurrentWaveButtonPushed(app, event)
             app.CurrentWaveStoredBox.Value = 1;
             app.CurrentWaveStoredBoxValueChanged;
-        end
+    end
 
-        % Button pushed function: PresetsButton
-        function LoadSavePresetsButtonPushed(app, event)
+    % Button pushed function: PresetsButton
+    function LoadSavePresetsButtonPushed(app, event)
             if ~isempty(app.predlg)
                if isvalid(app.predlg)
                    figure(app.predlg);
@@ -3004,15 +3030,15 @@ classdef eventerapp_exported < matlab.apps.AppBase
             savebtn = uibutton(dlg); savebtn.Position = [120 10 80 22]; savebtn.Text='Save as';
             savebtn.ButtonPushedFcn = createCallbackFcn(app, @SavePresetsButtonPushed, true);    
             app.predlg = dlg;
-        end
+    end
 
-        % Callback function
-        function HighpassPreFiltermethodDropDownChanged(app, event)
+    % Callback function
+    function HighpassPreFiltermethodDropDownChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: ParallelCheckBox
-        function ParallelCheckBoxValueChanged(app, event)
+    % Value changed function: ParallelCheckBox
+    function ParallelCheckBoxValueChanged(app, event)
             if ~any(any(contains(struct2cell(ver),'Parallel Computing Toolbox')))
                 errMsg = 'Please install the Parallel Computing Toolbox in order to run analysis on multiple cores';
                 f = errordlg(errMsg,'Error');
@@ -3047,34 +3073,34 @@ classdef eventerapp_exported < matlab.apps.AppBase
             if exist('h','var')
                 close(h);
             end
-        end
+    end
 
-        % Button pushed function: ClosefiguresButton
-        function ClosefiguresButtonPushed(app, event)
+    % Button pushed function: ClosefiguresButton
+    function ClosefiguresButtonPushed(app, event)
             close all;
-        end
+    end
 
-        % Selection change function: TabGroupEventer
-        function TabGroupEventerSelectionChanged(app, event)
+    % Selection change function: TabGroupEventer
+    function TabGroupEventerSelectionChanged(app, event)
             if strcmp(app.TabGroupEventer.SelectedTab.Title,'Preview')
                 if ~isempty(app.fullpathlist) 
                     app.UpdateWavePreview;
                 end
             end
-        end
+    end
 
-        % Callback function
-        function TabGroupMainSelectionChanged(app, event)
+    % Callback function
+    function TabGroupMainSelectionChanged(app, event)
             % Nothing to do
-        end
+    end
 
-        % Value changed function: ChannelSpinner
-        function ChannelSpinnerValueChanged(app, event)
+    % Value changed function: ChannelSpinner
+    function ChannelSpinnerValueChanged(app, event)
             % Nothing to do
-        end
+    end
 
-        % Value changed function: ExtraExclusions
-        function ExtraExclusionsValueChanged(app, event)
+    % Value changed function: ExtraExclusions
+    function ExtraExclusionsValueChanged(app, event)
             %auto setting exclusion zones on preview graph
             %run exclusion zone making function
             app.create_xexclusion;
@@ -3085,17 +3111,17 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Button pushed function: zone_eleven_x
-        function zone_eleven_xButtonPushed(app, event)
+    % Button pushed function: zone_eleven_x
+    function zone_eleven_xButtonPushed(app, event)
             app.ExtraExclusions.Value = {'[0 0]'};
             app.ExtraExclusionsValueChanged;
             unstored(app);
-        end
+    end
 
-        % Window key press function: Eventer
-        function EventerWindowKeyPress(app, event)
+    % Window key press function: Eventer
+    function EventerWindowKeyPress(app, event)
                 key = event.Key;
                 % Keyboard shortcuts
                 % eg. key = event.Key;
@@ -3108,7 +3134,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
                                 app.StoreCurrentWaveButtonPushed;
                                 app.SaveAnalysis
                             end
-                            app.WaveDropDown.Value = num2str(max(str2double(app.WaveDropDown.Value)-1,1));
+                            app.WaveDropDown.Value = num2str(max(str2double(app.WaveDropDown.Value)+1,1));
                             app.WaveDropDownValueChanged
                         case 'm'
                             if strcmpi(app.UnsavedLabel.Visible,'on')
@@ -3117,7 +3143,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
                                 app.StoreCurrentWaveButtonPushed;
                                 app.SaveAnalysis
                             end
-                            app.WaveDropDown.Value = num2str(min(str2double(app.WaveDropDown.Value)+1,app.nWaves));
+                            app.WaveDropDown.Value = num2str(min(str2double(app.WaveDropDown.Value)-1,app.nWaves));
                             app.WaveDropDownValueChanged
                         case 'a'
                             app.LoadButtonPushed
@@ -3156,10 +3182,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 catch
                     % do nothing
                 end
-        end
+    end
 
-        % Value changed function: NoofworkersSpinner
-        function NoofworkersSpinnerChanged(app, event)
+    % Value changed function: NoofworkersSpinner
+    function NoofworkersSpinnerChanged(app, event)
             if app.NoofworkersSpinner.Value > feature('numcores')
                 app.NoofworkersSpinner.Value = feature('numcores');
             end
@@ -3174,11 +3200,11 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end                
                 app.ParallelCheckBoxValueChanged
             end
-        end
+    end
 
-        % Value changed function: HighpassPreFilterCutOffSpinner, 
-        % ...and 2 other components
-        function PreFilterCutOffSpinnerValueChanged(app, event)
+    % Value changed function: HighpassPreFilterCutOffSpinner, 
+    % ...and 2 other components
+    function PreFilterCutOffSpinnerValueChanged(app, event)
             if app.HighpassPreFilterCutOffSpinner.Value == 0
                 app.OnOffCheckBoxHPF.Value = 0;
                 app.HighpassPreFilterCutOffSpinner.Enable = 'off';
@@ -3205,33 +3231,33 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.UpdateWavePreview;
             app.UpdatePopupGraph;
             unstored(app);
-        end
+    end
 
-        % Button pushed function: ProfileNameButton
-        function ProfileNameButtonPushed(app, event)
+    % Button pushed function: ProfileNameButton
+    function ProfileNameButtonPushed(app, event)
             app.profile = inputdlg('Enter parallel profile name:');
             if ~isempty(app.profile)               
                app.ProfileLabel.Text = app.profile;
             end
-        end
+    end
 
-        % Value changed function: FullPathNameBox
-        function FullPathNameBoxValueChanged(app, event)
+    % Value changed function: FullPathNameBox
+    function FullPathNameBoxValueChanged(app, event)
             app.FullPathNameBox.Value = app.fullpathlist{app.wavefileidx(app.current_wave)};
-        end
+    end
 
-        % Value changed function: LambdaSlider
-        function LambdaSliderValueChanged(app, event)
+    % Value changed function: LambdaSlider
+    function LambdaSliderValueChanged(app, event)
             lambda = 10^app.LambdaSlider.Value;                
             reflambda = power(10,-2:3)';
             idx = dsearchn(reflambda,lambda);       
             app.LambdaDisp.Value = reflambda(idx);
             app.LambdaSlider.Value = log10(reflambda(idx));
             unstored(app);
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_ex_1
-        function ApplyToAllButtonPushed_ex1(app, event)
+    % Button pushed function: ApplyToAllButton_ex_1
+    function ApplyToAllButtonPushed_ex1(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 1 setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3241,10 +3267,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_ex_2
-        function ApplyToAllButtonPushed_ex_2(app, event)
+    % Button pushed function: ApplyToAllButton_ex_2
+    function ApplyToAllButtonPushed_ex_2(app, event)
             selection = uiconfirm(app.Eventer,'Apply these exclusion zone 2 setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3254,10 +3280,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app); 
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_ex_3
-        function ApplyToAllButtonPushed_ex_3(app, event)
+    % Button pushed function: ApplyToAllButton_ex_3
+    function ApplyToAllButtonPushed_ex_3(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 3 setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3267,10 +3293,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_ex_4
-        function ApplyToAllButtonPushed_ex_4(app, event)
+    % Button pushed function: ApplyToAllButton_ex_4
+    function ApplyToAllButtonPushed_ex_4(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 4 setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3280,10 +3306,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);               
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_ex_5
-        function ApplyToAllButtonPushed_ex_5(app, event)
+    % Button pushed function: ApplyToAllButton_ex_5
+    function ApplyToAllButtonPushed_ex_5(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 5 setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3293,10 +3319,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);               
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_ex_6
-        function ApplyToAllButtonPushed_ex_6(app, event)
+    % Button pushed function: ApplyToAllButton_ex_6
+    function ApplyToAllButtonPushed_ex_6(app, event)
             selection = uiconfirm(app.Eventer,'Apply this exclusion zone 6 setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3306,10 +3332,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);             
-        end
+    end
 
-        % Button pushed function: ApplyToAllButton_xexclusion
-        function ApplyToAllButtonPushed_xexclusion(app, event)
+    % Button pushed function: ApplyToAllButton_xexclusion
+    function ApplyToAllButtonPushed_xexclusion(app, event)
             selection = uiconfirm(app.Eventer,'Apply this extra exclusion zone setting to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3318,25 +3344,25 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);             
-        end
+    end
 
-        % Selection change function: TabGroupSummary
-        function TabGroupSummarySelectionChanged(app, event)
+    % Selection change function: TabGroupSummary
+    function TabGroupSummarySelectionChanged(app, event)
             % Nothing to do
-        end
+    end
 
-        % Value changed function: MinWindowSpinner
-        function MinWindowSpinnerValueChanged(app, event)
+    % Value changed function: MinWindowSpinner
+    function MinWindowSpinnerValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Value changed function: MaxWindowSpinner
-        function MaxWindowSpinnerValueChanged(app, event)
+    % Value changed function: MaxWindowSpinner
+    function MaxWindowSpinnerValueChanged(app, event)
             unstored(app);
-        end
+    end
 
-        % Close request function: Eventer
-        function EventerCloseRequest(app, event)
+    % Close request function: Eventer
+    function EventerCloseRequest(app, event)
             if strcmpi(app.RunButton.Enable,'on')
                 flag = app.closeEventer;
             else 
@@ -3345,10 +3371,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             if flag == 1
                 delete(app);
             end
-        end
+    end
 
-        % Button pushed function: StoreAllWavesButton
-        function StoreAllButtonPushed(app, event)
+    % Button pushed function: StoreAllWavesButton
+    function StoreAllButtonPushed(app, event)
             value = app.WaveDropDown.Value;
             if strcmpi(app.StoreAllWavesButton.Text,'Store all waves')
               state = 1;
@@ -3369,16 +3395,16 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.WaveDropDown.Value = value;
             app.WaveDropDownValueChanged;
             close(h);
-        end
+    end
 
-        % Callback function
-        function SaveButtonPushed(app, event)
+    % Callback function
+    function SaveButtonPushed(app, event)
             app.SaveAnalysis;
             msgbox(sprintf('Analysis settings saved at the following location:\n\n%s\n',app.path),'Save','none')
-        end
+    end
 
-        % Button pushed function: ApplyToAllButtonTemplate
-        function ApplyToAllButtonTemplatePushed(app, event)
+    % Button pushed function: ApplyToAllButtonTemplate
+    function ApplyToAllButtonTemplatePushed(app, event)
             selection = uiconfirm(app.Eventer,'Apply these template settings to all waves?','Confirm apply to all',...
                         'Icon','warning','Options',{'Yes','No'});
             if strcmpi(selection,'Yes')
@@ -3388,17 +3414,17 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end
             unstored(app);            
-        end
+    end
 
-        % Value changed function: SplitSpinner
-        function SplitSpinnerValueChanged(app, event)
+    % Value changed function: SplitSpinner
+    function SplitSpinnerValueChanged(app, event)
             value = app.SplitSpinner.Value;
             app.settings{1,1}.split = value; % automatically store this settings
             unstored(app);
-        end
+    end
 
-        % Value changed function: CriterionDropDown
-        function CriterionDropDownValueChanged(app, event)
+    % Value changed function: CriterionDropDown
+    function CriterionDropDownValueChanged(app, event)
             value = app.CriterionDropDown.Value;
             if strcmpi(value,'Pearson')
                 app.CorrelationCoefficientSpinner.Enable='on';
@@ -3412,15 +3438,15 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.ModelfileEditField.Enable='on';
             end
             unstored(app); 
-        end
+    end
 
-        % Value changed function: RootdirectoryEditField
-        function RootdirectoryEditFieldValueChanged(app, event)
+    % Value changed function: RootdirectoryEditField
+    function RootdirectoryEditFieldValueChanged(app, event)
             app.RootdirectoryEditField.Value = app.path;
-        end
+    end
 
-        % Button pushed function: SetOutputFolderButton
-        function SetOutputFolderButtonPushed(app, event)
+    % Button pushed function: SetOutputFolderButton
+    function SetOutputFolderButtonPushed(app, event)
             outdir = inputdlg('Enter folder name for Eventer output:','',[1 50],app.outdir);
             if ~isempty(outdir)
                 if isempty(outdir{1})
@@ -3440,10 +3466,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 end
             end 
             unstored(app);
-        end
+    end
 
-        % Button pushed function: LoadmodelButton
-        function LoadmodelButtonPushed(app, event)
+    % Button pushed function: LoadmodelButton
+    function LoadmodelButtonPushed(app, event)
             %  Check if a model is already loaded
             if app.model_file ~= 0
                 selection = uiconfirm(app.Eventer,'Close current model?','Close model',...
@@ -3490,10 +3516,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
             app.prefield.Value = fullfile(app.presets_path,app.presets_file);
             app.ApplypresetsButtonPushed;
             delete(app.predlg);
-        end
+    end
 
-        % Value changed function: TrainingmodeCheckBox
-        function TrainingmodeCheckBoxValueChanged(app, event)
+    % Value changed function: TrainingmodeCheckBox
+    function TrainingmodeCheckBoxValueChanged(app, event)
             if app.TrainingmodeCheckBox.Value > 0  
                 if ~any(any(contains(struct2cell(ver),'Statistics and Machine Learning Toolbox')))
                     errMsg = 'Please install the Statistics and Machine Learning Toolbox in order to train a model';
@@ -3538,27 +3564,27 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.outdir = {''};
                 app.outdirLabel.Text = app.outdir{1}; 
             end
-        end
+    end
 
-        % Value changed function: ModelfileEditField
-        function ModelfileEditFieldValueChanged(app, event)
+    % Value changed function: ModelfileEditField
+    function ModelfileEditFieldValueChanged(app, event)
             if ~isempty(app.model)
                 app.ModelfileEditField.Value = fullfile(app.model_path,app.model_file);
             else
                 app.ModelfileEditField.Value = '';
             end
             unstored(app);
-        end
+    end
 
-        % Value changed function: SignoftheEventsSwitch_2
-        function SignoftheEventsSwitch_2ValueChanged(app, event)
+    % Value changed function: SignoftheEventsSwitch_2
+    function SignoftheEventsSwitch_2ValueChanged(app, event)
             value2 = app.SignoftheEventsSwitch_2.Value;
             app.SignoftheEventsSwitch.Value = value2;
             unstored(app)
-        end
+    end
 
-        % Value changed function: ThresholdAbsoluteEditField
-        function ThresholdAbsoluteEditFieldValueChanged(app, event)
+    % Value changed function: ThresholdAbsoluteEditField
+    function ThresholdAbsoluteEditFieldValueChanged(app, event)
             value = app.ThresholdAbsoluteEditField.Value;
             if value > 0
                 app.ThresholdSpinner.Enable = 'off';
@@ -3566,10 +3592,10 @@ classdef eventerapp_exported < matlab.apps.AppBase
                 app.ThresholdSpinner.Enable = 'on';
             end
             unstored(app);
-        end
+    end
 
-        % Button pushed function: CreditsButton
-        function AboutEventerButtonPushed(app, event)
+    % Button pushed function: CreditsButton
+    function AboutEventerButtonPushed(app, event)
             credits=["\fontsize{14}\color{black}\bfEVENTER\rm",...
                    "\fontsize{12}\color{black}v1.4.0",...
                    "\fontsize{10}Compiled for Matlab 2023b Runtime",...
@@ -3582,7 +3608,7 @@ classdef eventerapp_exported < matlab.apps.AppBase
                    "\fontsize{12}Eventer acknowledges code included or modified from:\rm",...
                    "\color{blue}\fontsize{10}\bfrelativepath\rm, version 1.0.0.0","Copyright © 2003, Jochen Lenz",...
                    "\bfparfor\_progressbar\rm, version 2.13.0.0","Copyright © 2016, Daniel Terry",...
-                   "\bfPlot (Big)\rm, version 1.6.0.0","Copyright © 2015 Tucker",...
+                   "\bfPlot (Big)\rm, version 1.6.0.0","Copyright © 2015 Tucker McClure. Modified by Andrew Penn.",...
                    "\bfabfload\rm, version 14 June 2023","Copyright © 2009, Forrest Collman, 2004, Harald Hentschke 1998, U. Egert",...
                    "\bfreadMeta\rm (from ACQ4), version 24 Dec 2013","Copyright © 2013 Luke Campagnola",...
                    "\bfIBWread\rm, version 1.0.0.0","Copyright © 2009, Jakub Bialek",...
@@ -3597,1264 +3623,1264 @@ classdef eventerapp_exported < matlab.apps.AppBase
                    Opt.Interpreter = 'tex';
                    Opt.WindowStyle = 'normal';
                    msgbox(credits, 'Credits', 'none', Opt);
-        end
+    end
 
-        % Button pushed function: Button
-        function CopyFitParametersButtonPushed(app, event)
+    % Button pushed function: Button
+    function CopyFitParametersButtonPushed(app, event)
             app.TimeConstantsEditField1.Value = app.tau1EditField.Value;
             app.TimeConstantsEditField2.Value = app.tau2EditField.Value;
-        end
+    end
+  end
+
+  % Component initialization
+  methods (Access = private)
+
+    % Create UIFigure and components
+    function createComponents(app)
+
+      % Get the file path for locating images
+      pathToMLAPP = fileparts(mfilename('fullpath'));
+
+      % Create Eventer and hide until all components are created
+      app.Eventer = uifigure('Visible', 'off');
+      colormap(app.Eventer, 'parula');
+      app.Eventer.Position = [50 50 564 540];
+      app.Eventer.Name = 'Eventer';
+      app.Eventer.Icon = fullfile(pathToMLAPP, 'misc', 'eventer_logo.png');
+      app.Eventer.CloseRequestFcn = createCallbackFcn(app, @EventerCloseRequest, true);
+      app.Eventer.WindowKeyPressFcn = createCallbackFcn(app, @EventerWindowKeyPress, true);
+
+      % Create FilePanel
+      app.FilePanel = uipanel(app.Eventer);
+      app.FilePanel.Position = [10 415 546 117];
+
+      % Create LoadButton
+      app.LoadButton = uibutton(app.FilePanel, 'push');
+      app.LoadButton.ButtonPushedFcn = createCallbackFcn(app, @LoadButtonPushed, true);
+      app.LoadButton.BusyAction = 'cancel';
+      app.LoadButton.Tooltip = {'Select and add files to the file list. Key: a'};
+      app.LoadButton.Position = [10 89 43 23];
+      app.LoadButton.Text = 'Load';
+
+      % Create ChannelSpinnerLabel
+      app.ChannelSpinnerLabel = uilabel(app.FilePanel);
+      app.ChannelSpinnerLabel.HorizontalAlignment = 'right';
+      app.ChannelSpinnerLabel.Position = [53 89 50 22];
+      app.ChannelSpinnerLabel.Text = 'Channel';
+
+      % Create ChannelSpinner
+      app.ChannelSpinner = uispinner(app.FilePanel);
+      app.ChannelSpinner.Limits = [0 Inf];
+      app.ChannelSpinner.ValueChangedFcn = createCallbackFcn(app, @ChannelSpinnerValueChanged, true);
+      app.ChannelSpinner.Tooltip = {'Select the recording channel before loading files.'};
+      app.ChannelSpinner.Position = [108 89 44 22];
+      app.ChannelSpinner.Value = 1;
+
+      % Create CloseButton
+      app.CloseButton = uibutton(app.FilePanel, 'push');
+      app.CloseButton.ButtonPushedFcn = createCallbackFcn(app, @CloseButtonPushed, true);
+      app.CloseButton.BusyAction = 'cancel';
+      app.CloseButton.Tooltip = {'Close the analysis and clear the file list'};
+      app.CloseButton.Position = [256 89 46 22];
+      app.CloseButton.Text = 'Close';
+
+      % Create FullPathNameBox
+      app.FullPathNameBox = uilistbox(app.FilePanel);
+      app.FullPathNameBox.Items = {};
+      app.FullPathNameBox.ValueChangedFcn = createCallbackFcn(app, @FullPathNameBoxValueChanged, true);
+      app.FullPathNameBox.Tooltip = {'File paths'};
+      app.FullPathNameBox.Position = [10 9 526 75];
+      app.FullPathNameBox.Value = {};
+
+      % Create PresetsButton
+      app.PresetsButton = uibutton(app.FilePanel, 'push');
+      app.PresetsButton.ButtonPushedFcn = createCallbackFcn(app, @LoadSavePresetsButtonPushed, true);
+      app.PresetsButton.BusyAction = 'cancel';
+      app.PresetsButton.Tooltip = {'Select and load a presets file'};
+      app.PresetsButton.Position = [308 89 51 22];
+      app.PresetsButton.Text = 'Presets';
+
+      % Create ApplypresetsButton
+      app.ApplypresetsButton = uibutton(app.FilePanel, 'push');
+      app.ApplypresetsButton.ButtonPushedFcn = createCallbackFcn(app, @ApplypresetsButtonPushed, true);
+      app.ApplypresetsButton.BusyAction = 'cancel';
+      app.ApplypresetsButton.Tooltip = {'Apply loaded presets'};
+      app.ApplypresetsButton.Position = [364 89 83 22];
+      app.ApplypresetsButton.Text = 'Apply presets';
+
+      % Create ClosefiguresButton
+      app.ClosefiguresButton = uibutton(app.FilePanel, 'push');
+      app.ClosefiguresButton.ButtonPushedFcn = createCallbackFcn(app, @ClosefiguresButtonPushed, true);
+      app.ClosefiguresButton.BusyAction = 'cancel';
+      app.ClosefiguresButton.Tooltip = {'Close all figures'};
+      app.ClosefiguresButton.Position = [452 89 83 22];
+      app.ClosefiguresButton.Text = 'Close figures';
+
+      % Create SplitSpinnerLabel
+      app.SplitSpinnerLabel = uilabel(app.FilePanel);
+      app.SplitSpinnerLabel.HorizontalAlignment = 'right';
+      app.SplitSpinnerLabel.Position = [154 89 29 22];
+      app.SplitSpinnerLabel.Text = 'Split';
+
+      % Create SplitSpinner
+      app.SplitSpinner = uispinner(app.FilePanel);
+      app.SplitSpinner.Step = 0.1;
+      app.SplitSpinner.Limits = [0 Inf];
+      app.SplitSpinner.ValueChangedFcn = createCallbackFcn(app, @SplitSpinnerValueChanged, true);
+      app.SplitSpinner.Tooltip = {'Split a continuous recording trace into episodes of the following length (in seconds). Define the split interval before loading files.'};
+      app.SplitSpinner.Position = [186 89 57 22];
+
+      % Create sLabel
+      app.sLabel = uilabel(app.FilePanel);
+      app.sLabel.Position = [245 89 10 22];
+      app.sLabel.Text = 's';
+
+      % Create TabGroupEventer
+      app.TabGroupEventer = uitabgroup(app.Eventer);
+      app.TabGroupEventer.Tooltip = {''};
+      app.TabGroupEventer.SelectionChangedFcn = createCallbackFcn(app, @TabGroupEventerSelectionChanged, true);
+      app.TabGroupEventer.Position = [10 42 546 323];
+
+      % Create PreviewTab
+      app.PreviewTab = uitab(app.TabGroupEventer);
+      app.PreviewTab.Title = 'Preview';
+
+      % Create WavePreviewAxes
+      app.WavePreviewAxes = uiaxes(app.PreviewTab);
+      xlabel(app.WavePreviewAxes, 'Time (s)')
+      ylabel(app.WavePreviewAxes, 'Current (A)')
+      app.WavePreviewAxes.PlotBoxAspectRatio = [2 1 1];
+      app.WavePreviewAxes.XTickLabelRotation = 0;
+      app.WavePreviewAxes.YTickLabelRotation = 0;
+      app.WavePreviewAxes.ZTickLabelRotation = 0;
+      app.WavePreviewAxes.LineWidth = 0.25;
+      app.WavePreviewAxes.Color = 'none';
+      app.WavePreviewAxes.Position = [1 16 543 272];
+
+      % Create TemplateTab
+      app.TemplateTab = uitab(app.TabGroupEventer);
+      app.TemplateTab.Title = 'Template';
+      app.TemplateTab.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.TemplateTab.ForegroundColor = [0.6392 0.0784 0.1804];
+
+      % Create TemplatePreviewAxes
+      app.TemplatePreviewAxes = uiaxes(app.TemplateTab);
+      xlabel(app.TemplatePreviewAxes, 'Time (s)')
+      ylabel(app.TemplatePreviewAxes, 'Normalised Amplitude')
+      app.TemplatePreviewAxes.PlotBoxAspectRatio = [1.47 1 1];
+      app.TemplatePreviewAxes.XTickLabelRotation = 0;
+      app.TemplatePreviewAxes.YTickLabelRotation = 0;
+      app.TemplatePreviewAxes.ZTickLabelRotation = 0;
+      app.TemplatePreviewAxes.LineWidth = 0.25;
+      app.TemplatePreviewAxes.Color = 'none';
+      app.TemplatePreviewAxes.Position = [14 13 380 269];
+
+      % Create FitparametersPanel
+      app.FitparametersPanel = uipanel(app.TemplateTab);
+      app.FitparametersPanel.TitlePosition = 'centertop';
+      app.FitparametersPanel.Title = 'Fit parameters';
+      app.FitparametersPanel.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.FitparametersPanel.Position = [406 49 129 122];
+
+      % Create TemplateSelectButton
+      app.TemplateSelectButton = uibutton(app.FitparametersPanel, 'push');
+      app.TemplateSelectButton.ButtonPushedFcn = createCallbackFcn(app, @TemplateSelectButtonPushed, true);
+      app.TemplateSelectButton.BusyAction = 'cancel';
+      app.TemplateSelectButton.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.TemplateSelectButton.Tooltip = {'Select lower and upper limits on the pop-up graph around an event of interest for fitting'};
+      app.TemplateSelectButton.Position = [45 71 48 20];
+      app.TemplateSelectButton.Text = '';
+
+      % Create SelectLabel
+      app.SelectLabel = uilabel(app.FitparametersPanel);
+      app.SelectLabel.Position = [6 70 39 22];
+      app.SelectLabel.Text = 'Select';
+
+      % Create tau1EditFieldLabel
+      app.tau1EditFieldLabel = uilabel(app.FitparametersPanel);
+      app.tau1EditFieldLabel.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.tau1EditFieldLabel.Position = [6 41 29 22];
+      app.tau1EditFieldLabel.Text = 'Rise';
+
+      % Create tau1EditField
+      app.tau1EditField = uieditfield(app.FitparametersPanel, 'numeric');
+      app.tau1EditField.ValueDisplayFormat = '%11.3g';
+      app.tau1EditField.Editable = 'off';
+      app.tau1EditField.FontColor = [0.502 0.502 0.502];
+      app.tau1EditField.Tooltip = {'Fitted rise time constant'};
+      app.tau1EditField.Position = [45 41 48 22];
+
+      % Create tau2EditFieldLabel
+      app.tau2EditFieldLabel = uilabel(app.FitparametersPanel);
+      app.tau2EditFieldLabel.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.tau2EditFieldLabel.Position = [6 11 39 22];
+      app.tau2EditFieldLabel.Text = 'Decay';
+
+      % Create tau2EditField
+      app.tau2EditField = uieditfield(app.FitparametersPanel, 'numeric');
+      app.tau2EditField.ValueDisplayFormat = '%11.3g';
+      app.tau2EditField.Editable = 'off';
+      app.tau2EditField.FontColor = [0.502 0.502 0.502];
+      app.tau2EditField.Tooltip = {'Fitted decay time constant'};
+      app.tau2EditField.Position = [45 11 48 22];
+
+      % Create msLabel_4
+      app.msLabel_4 = uilabel(app.FitparametersPanel);
+      app.msLabel_4.Position = [98 40 25 22];
+      app.msLabel_4.Text = 'ms';
+
+      % Create msLabel_5
+      app.msLabel_5 = uilabel(app.FitparametersPanel);
+      app.msLabel_5.Position = [98 10 25 22];
+      app.msLabel_5.Text = 'ms';
+
+      % Create Button
+      app.Button = uibutton(app.FitparametersPanel, 'push');
+      app.Button.ButtonPushedFcn = createCallbackFcn(app, @CopyFitParametersButtonPushed, true);
+      app.Button.Icon = fullfile(pathToMLAPP, 'misc', 'copy.png');
+      app.Button.Tooltip = {'Copy over fitted parameters to template time constant settings'};
+      app.Button.Position = [99 71 22 20];
+      app.Button.Text = '';
+
+      % Create TimeconstantsPanel
+      app.TimeconstantsPanel = uipanel(app.TemplateTab);
+      app.TimeconstantsPanel.TitlePosition = 'centertop';
+      app.TimeconstantsPanel.Title = 'Time constants';
+      app.TimeconstantsPanel.Position = [406 179 128 112];
+
+      % Create TimeConstantsEditField2
+      app.TimeConstantsEditField2 = uieditfield(app.TimeconstantsPanel, 'numeric');
+      app.TimeConstantsEditField2.ValueDisplayFormat = '%11.3g';
+      app.TimeConstantsEditField2.ValueChangedFcn = createCallbackFcn(app, @TimeConstantsEditField2ValueChanged, true);
+      app.TimeConstantsEditField2.Tooltip = {'Decay time constant of the template'};
+      app.TimeConstantsEditField2.Position = [46 36 52 22];
+      app.TimeConstantsEditField2.Value = 3;
+
+      % Create TimeConstantsEditField1
+      app.TimeConstantsEditField1 = uieditfield(app.TimeconstantsPanel, 'numeric');
+      app.TimeConstantsEditField1.ValueDisplayFormat = '%11.3g';
+      app.TimeConstantsEditField1.ValueChangedFcn = createCallbackFcn(app, @TimeConstantsEditField1ValueChanged, true);
+      app.TimeConstantsEditField1.Tooltip = {'Rise time constant of the template'};
+      app.TimeConstantsEditField1.Position = [46 64 52 22];
+      app.TimeConstantsEditField1.Value = 0.45;
+
+      % Create msLabel_2
+      app.msLabel_2 = uilabel(app.TimeconstantsPanel);
+      app.msLabel_2.Position = [102 64 25 22];
+      app.msLabel_2.Text = 'ms';
+
+      % Create RiseLabel
+      app.RiseLabel = uilabel(app.TimeconstantsPanel);
+      app.RiseLabel.HorizontalAlignment = 'center';
+      app.RiseLabel.Position = [5 65 29 22];
+      app.RiseLabel.Text = 'Rise';
+
+      % Create DecayLabel
+      app.DecayLabel = uilabel(app.TimeconstantsPanel);
+      app.DecayLabel.HorizontalAlignment = 'center';
+      app.DecayLabel.Position = [4 37 39 22];
+      app.DecayLabel.Text = 'Decay';
+
+      % Create ApplyToAllButtonTemplate
+      app.ApplyToAllButtonTemplate = uibutton(app.TimeconstantsPanel, 'push');
+      app.ApplyToAllButtonTemplate.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonTemplatePushed, true);
+      app.ApplyToAllButtonTemplate.BusyAction = 'cancel';
+      app.ApplyToAllButtonTemplate.Tooltip = {'Apply these template settings to all waves'};
+      app.ApplyToAllButtonTemplate.Position = [6 8 113 22];
+      app.ApplyToAllButtonTemplate.Text = 'Apply to all waves';
+
+      % Create msLabel
+      app.msLabel = uilabel(app.TemplateTab);
+      app.msLabel.Position = [508 215 25 22];
+      app.msLabel.Text = 'ms';
+
+      % Create SignoftheEventsSwitch_2
+      app.SignoftheEventsSwitch_2 = uiswitch(app.TemplateTab, 'slider');
+      app.SignoftheEventsSwitch_2.Items = {'-', '+'};
+      app.SignoftheEventsSwitch_2.ValueChangedFcn = createCallbackFcn(app, @SignoftheEventsSwitch_2ValueChanged, true);
+      app.SignoftheEventsSwitch_2.Tooltip = {'Select the sign of the event deflections'};
+      app.SignoftheEventsSwitch_2.FontSize = 15;
+      app.SignoftheEventsSwitch_2.FontAngle = 'italic';
+      app.SignoftheEventsSwitch_2.Position = [451 8 41 18];
+      app.SignoftheEventsSwitch_2.Value = '-';
+
+      % Create SignoftheEventsSwitchLabel_2
+      app.SignoftheEventsSwitchLabel_2 = uilabel(app.TemplateTab);
+      app.SignoftheEventsSwitchLabel_2.Position = [417 26 106 22];
+      app.SignoftheEventsSwitchLabel_2.Text = 'Sign of the Events:';
+
+      % Create ExcludeTab
+      app.ExcludeTab = uitab(app.TabGroupEventer);
+      app.ExcludeTab.Title = 'Exclude';
+      app.ExcludeTab.ForegroundColor = [0.6392 0.0784 0.1804];
+
+      % Create zone_three_x
+      app.zone_three_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_three_x.ButtonPushedFcn = createCallbackFcn(app, @zone_three_xButtonPushed, true);
+      app.zone_three_x.IconAlignment = 'center';
+      app.zone_three_x.BackgroundColor = [1 1 1];
+      app.zone_three_x.Tooltip = {'Reset exclusion zone 3'};
+      app.zone_three_x.Position = [357 204 35 22];
+      app.zone_three_x.Text = 'X';
+
+      % Create zone_four_x
+      app.zone_four_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_four_x.ButtonPushedFcn = createCallbackFcn(app, @zone_four_xButtonPushed, true);
+      app.zone_four_x.IconAlignment = 'center';
+      app.zone_four_x.BackgroundColor = [1 1 1];
+      app.zone_four_x.Tooltip = {'Reset exclusion zone 4'};
+      app.zone_four_x.Position = [357 183 35 22];
+      app.zone_four_x.Text = 'X';
+
+      % Create zone_five_x
+      app.zone_five_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_five_x.ButtonPushedFcn = createCallbackFcn(app, @zone_five_xButtonPushed, true);
+      app.zone_five_x.IconAlignment = 'center';
+      app.zone_five_x.BackgroundColor = [1 1 1];
+      app.zone_five_x.Tooltip = {'Reset exclusion zone 5'};
+      app.zone_five_x.Position = [357 162 35 22];
+      app.zone_five_x.Text = 'X';
+
+      % Create zone_six_x
+      app.zone_six_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_six_x.ButtonPushedFcn = createCallbackFcn(app, @zone_six_xButtonPushed, true);
+      app.zone_six_x.IconAlignment = 'center';
+      app.zone_six_x.BackgroundColor = [1 1 1];
+      app.zone_six_x.Tooltip = {'Reset exclusion zone 6'};
+      app.zone_six_x.Position = [357 141 35 22];
+      app.zone_six_x.Text = 'X';
+
+      % Create exselect_1
+      app.exselect_1 = uibutton(app.ExcludeTab, 'push');
+      app.exselect_1.ButtonPushedFcn = createCallbackFcn(app, @exselect_1_1ButtonPushed, true);
+      app.exselect_1.BusyAction = 'cancel';
+      app.exselect_1.Interruptible = 'off';
+      app.exselect_1.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.exselect_1.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 1'};
+      app.exselect_1.Position = [45 246 16 21];
+      app.exselect_1.Text = '';
+
+      % Create exselect_2
+      app.exselect_2 = uibutton(app.ExcludeTab, 'push');
+      app.exselect_2.ButtonPushedFcn = createCallbackFcn(app, @exselect_2ButtonPushed, true);
+      app.exselect_2.BusyAction = 'cancel';
+      app.exselect_2.Interruptible = 'off';
+      app.exselect_2.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.exselect_2.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 2'};
+      app.exselect_2.Position = [45 225 16 21];
+      app.exselect_2.Text = '';
+
+      % Create exselect_3
+      app.exselect_3 = uibutton(app.ExcludeTab, 'push');
+      app.exselect_3.ButtonPushedFcn = createCallbackFcn(app, @exselect_3ButtonPushed, true);
+      app.exselect_3.BusyAction = 'cancel';
+      app.exselect_3.Interruptible = 'off';
+      app.exselect_3.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.exselect_3.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 3'};
+      app.exselect_3.Position = [45 205 16 21];
+      app.exselect_3.Text = '';
+
+      % Create exselect_4
+      app.exselect_4 = uibutton(app.ExcludeTab, 'push');
+      app.exselect_4.ButtonPushedFcn = createCallbackFcn(app, @exselect_4ButtonPushed, true);
+      app.exselect_4.BusyAction = 'cancel';
+      app.exselect_4.Interruptible = 'off';
+      app.exselect_4.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.exselect_4.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 4'};
+      app.exselect_4.Position = [45 184 16 21];
+      app.exselect_4.Text = '';
+
+      % Create exselect_5
+      app.exselect_5 = uibutton(app.ExcludeTab, 'push');
+      app.exselect_5.ButtonPushedFcn = createCallbackFcn(app, @exselect_5ButtonPushed, true);
+      app.exselect_5.BusyAction = 'cancel';
+      app.exselect_5.Interruptible = 'off';
+      app.exselect_5.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.exselect_5.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 5'};
+      app.exselect_5.Position = [45 163 16 21];
+      app.exselect_5.Text = '';
+
+      % Create exselect_6
+      app.exselect_6 = uibutton(app.ExcludeTab, 'push');
+      app.exselect_6.ButtonPushedFcn = createCallbackFcn(app, @exselect_6ButtonPushed, true);
+      app.exselect_6.BusyAction = 'cancel';
+      app.exselect_6.Interruptible = 'off';
+      app.exselect_6.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
+      app.exselect_6.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 6'};
+      app.exselect_6.Position = [45 142 16 21];
+      app.exselect_6.Text = '';
+
+      % Create zone_eleven_x
+      app.zone_eleven_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_eleven_x.ButtonPushedFcn = createCallbackFcn(app, @zone_eleven_xButtonPushed, true);
+      app.zone_eleven_x.IconAlignment = 'center';
+      app.zone_eleven_x.BackgroundColor = [1 1 1];
+      app.zone_eleven_x.Tooltip = {'Reset extra exclusion zones'};
+      app.zone_eleven_x.Position = [357 120 35 22];
+      app.zone_eleven_x.Text = 'X';
+
+      % Create ExtraExclusions
+      app.ExtraExclusions = uitextarea(app.ExcludeTab);
+      app.ExtraExclusions.ValueChangedFcn = createCallbackFcn(app, @ExtraExclusionsValueChanged, true);
+      app.ExtraExclusions.Tooltip = {'Define exclusion zones using matlab matrix notation. The input must be a two column matrix.'};
+      app.ExtraExclusions.Position = [60 19 298 123];
+
+      % Create ApplyToAllButton_ex_1
+      app.ApplyToAllButton_ex_1 = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_ex_1.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex1, true);
+      app.ApplyToAllButton_ex_1.BusyAction = 'cancel';
+      app.ApplyToAllButton_ex_1.Tooltip = {'Apply this exclusion zone 1 setting to all waves'};
+      app.ApplyToAllButton_ex_1.Position = [402 246 113 22];
+      app.ApplyToAllButton_ex_1.Text = 'Apply to all waves';
+
+      % Create ApplyToAllButton_ex_2
+      app.ApplyToAllButton_ex_2 = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_ex_2.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_2, true);
+      app.ApplyToAllButton_ex_2.BusyAction = 'cancel';
+      app.ApplyToAllButton_ex_2.Tooltip = {'Apply this exclusion zone 2 setting to all waves'};
+      app.ApplyToAllButton_ex_2.Position = [402 225 113 22];
+      app.ApplyToAllButton_ex_2.Text = 'Apply to all waves';
+
+      % Create zone_two_x
+      app.zone_two_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_two_x.ButtonPushedFcn = createCallbackFcn(app, @zone_two_xButtonPushed, true);
+      app.zone_two_x.IconAlignment = 'center';
+      app.zone_two_x.BackgroundColor = [1 1 1];
+      app.zone_two_x.Tooltip = {'Reset exclusion zone 2'};
+      app.zone_two_x.Position = [357 225 35 22];
+      app.zone_two_x.Text = 'X';
+
+      % Create ApplyToAllButton_ex_3
+      app.ApplyToAllButton_ex_3 = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_ex_3.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_3, true);
+      app.ApplyToAllButton_ex_3.BusyAction = 'cancel';
+      app.ApplyToAllButton_ex_3.Tooltip = {'Apply this exclusion zone 3 setting to all waves'};
+      app.ApplyToAllButton_ex_3.Position = [402 203 113 23];
+      app.ApplyToAllButton_ex_3.Text = 'Apply to all waves';
+
+      % Create ApplyToAllButton_ex_4
+      app.ApplyToAllButton_ex_4 = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_ex_4.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_4, true);
+      app.ApplyToAllButton_ex_4.BusyAction = 'cancel';
+      app.ApplyToAllButton_ex_4.Tooltip = {'Apply this exclusion zone 4 setting to all waves'};
+      app.ApplyToAllButton_ex_4.Position = [402 183 113 22];
+      app.ApplyToAllButton_ex_4.Text = 'Apply to all waves';
+
+      % Create ApplyToAllButton_ex_5
+      app.ApplyToAllButton_ex_5 = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_ex_5.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_5, true);
+      app.ApplyToAllButton_ex_5.BusyAction = 'cancel';
+      app.ApplyToAllButton_ex_5.Tooltip = {'Apply this exclusion zone 5 setting to all waves'};
+      app.ApplyToAllButton_ex_5.Position = [402 162 113 22];
+      app.ApplyToAllButton_ex_5.Text = 'Apply to all waves';
+
+      % Create ApplyToAllButton_ex_6
+      app.ApplyToAllButton_ex_6 = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_ex_6.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_6, true);
+      app.ApplyToAllButton_ex_6.BusyAction = 'cancel';
+      app.ApplyToAllButton_ex_6.Tooltip = {'Apply this exclusion zone 6 setting to all waves'};
+      app.ApplyToAllButton_ex_6.Position = [402 141 113 22];
+      app.ApplyToAllButton_ex_6.Text = 'Apply to all waves';
+
+      % Create ApplyToAllButton_xexclusion
+      app.ApplyToAllButton_xexclusion = uibutton(app.ExcludeTab, 'push');
+      app.ApplyToAllButton_xexclusion.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_xexclusion, true);
+      app.ApplyToAllButton_xexclusion.BusyAction = 'cancel';
+      app.ApplyToAllButton_xexclusion.Tooltip = {'Apply this exclusion zones setting to all waves'};
+      app.ApplyToAllButton_xexclusion.Position = [402 120 113 22];
+      app.ApplyToAllButton_xexclusion.Text = 'Apply to all waves';
+
+      % Create zone_one_x
+      app.zone_one_x = uibutton(app.ExcludeTab, 'push');
+      app.zone_one_x.ButtonPushedFcn = createCallbackFcn(app, @zone_one_xButtonPushed, true);
+      app.zone_one_x.IconAlignment = 'center';
+      app.zone_one_x.BackgroundColor = [1 1 1];
+      app.zone_one_x.Tooltip = {'Reset exclusion zone 1'};
+      app.zone_one_x.Position = [357 246 35 22];
+      app.zone_one_x.Text = 'X';
+
+      % Create EditField_1
+      app.EditField_1 = uieditfield(app.ExcludeTab, 'text');
+      app.EditField_1.Editable = 'off';
+      app.EditField_1.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.EditField_1.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_1.Position = [159 267 100 22];
+      app.EditField_1.Value = 'Start Time';
+
+      % Create EditField_2
+      app.EditField_2 = uieditfield(app.ExcludeTab, 'text');
+      app.EditField_2.Editable = 'off';
+      app.EditField_2.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.EditField_2.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_2.Position = [258 267 100 22];
+      app.EditField_2.Value = 'Stop Time';
+
+      % Create EditField_3
+      app.EditField_3 = uieditfield(app.ExcludeTab, 'text');
+      app.EditField_3.Editable = 'off';
+      app.EditField_3.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.EditField_3.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_3.Position = [60 267 100 22];
+      app.EditField_3.Value = 'Exclusion Zones';
+
+      % Create EditField_4
+      app.EditField_4 = uieditfield(app.ExcludeTab, 'numeric');
+      app.EditField_4.Editable = 'off';
+      app.EditField_4.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_4.Position = [60 225 100 22];
+      app.EditField_4.Value = 2;
+
+      % Create EditField_5
+      app.EditField_5 = uieditfield(app.ExcludeTab, 'numeric');
+      app.EditField_5.Editable = 'off';
+      app.EditField_5.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_5.Position = [60 246 100 22];
+      app.EditField_5.Value = 1;
+
+      % Create EditField_6
+      app.EditField_6 = uieditfield(app.ExcludeTab, 'numeric');
+      app.EditField_6.Editable = 'off';
+      app.EditField_6.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_6.Position = [60 183 100 22];
+      app.EditField_6.Value = 4;
+
+      % Create EditField_7
+      app.EditField_7 = uieditfield(app.ExcludeTab, 'numeric');
+      app.EditField_7.Editable = 'off';
+      app.EditField_7.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_7.Position = [60 204 100 22];
+      app.EditField_7.Value = 3;
+
+      % Create EditField_8
+      app.EditField_8 = uieditfield(app.ExcludeTab, 'numeric');
+      app.EditField_8.Editable = 'off';
+      app.EditField_8.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_8.Position = [60 141 100 22];
+      app.EditField_8.Value = 6;
+
+      % Create EditField_9
+      app.EditField_9 = uieditfield(app.ExcludeTab, 'numeric');
+      app.EditField_9.Editable = 'off';
+      app.EditField_9.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.EditField_9.Position = [60 162 100 22];
+      app.EditField_9.Value = 5;
+
+      % Create cell_three
+      app.cell_three = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_three.ValueChangedFcn = createCallbackFcn(app, @cell_threeValueChanged, true);
+      app.cell_three.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_three.Position = [159 225 100 22];
+
+      % Create cell_four
+      app.cell_four = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_four.ValueChangedFcn = createCallbackFcn(app, @cell_fourValueChanged, true);
+      app.cell_four.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_four.Position = [258 225 100 22];
+
+      % Create cell_one
+      app.cell_one = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_one.ValueChangedFcn = createCallbackFcn(app, @cell_oneValueChanged, true);
+      app.cell_one.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_one.Position = [159 246 100 22];
+
+      % Create cell_two
+      app.cell_two = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_two.ValueChangedFcn = createCallbackFcn(app, @cell_twoValueChanged, true);
+      app.cell_two.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_two.Position = [258 246 100 22];
+
+      % Create cell_seven
+      app.cell_seven = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_seven.ValueChangedFcn = createCallbackFcn(app, @cell_sevenValueChanged, true);
+      app.cell_seven.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_seven.Position = [159 183 100 22];
+
+      % Create cell_eight
+      app.cell_eight = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_eight.ValueChangedFcn = createCallbackFcn(app, @cell_eightValueChanged, true);
+      app.cell_eight.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_eight.Position = [258 183 100 22];
+
+      % Create cell_five
+      app.cell_five = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_five.ValueChangedFcn = createCallbackFcn(app, @cell_fiveValueChanged, true);
+      app.cell_five.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_five.Position = [159 204 100 22];
+
+      % Create cell_six
+      app.cell_six = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_six.ValueChangedFcn = createCallbackFcn(app, @cell_sixValueChanged, true);
+      app.cell_six.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_six.Position = [258 204 100 22];
+
+      % Create cell_eleven
+      app.cell_eleven = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_eleven.ValueChangedFcn = createCallbackFcn(app, @cell_elevenValueChanged, true);
+      app.cell_eleven.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_eleven.Position = [159 141 100 22];
+
+      % Create cell_twelve
+      app.cell_twelve = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_twelve.ValueChangedFcn = createCallbackFcn(app, @cell_twelveValueChanged, true);
+      app.cell_twelve.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_twelve.Position = [258 141 100 22];
+
+      % Create cell_nine
+      app.cell_nine = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_nine.ValueChangedFcn = createCallbackFcn(app, @cell_nineValueChanged, true);
+      app.cell_nine.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_nine.Position = [159 162 100 22];
+
+      % Create cell_ten
+      app.cell_ten = uieditfield(app.ExcludeTab, 'numeric');
+      app.cell_ten.ValueChangedFcn = createCallbackFcn(app, @cell_tenValueChanged, true);
+      app.cell_ten.Tooltip = {'Set exclusion zones to be used by eventer.'};
+      app.cell_ten.Position = [258 162 100 22];
+
+      % Create DetectionTab
+      app.DetectionTab = uitab(app.TabGroupEventer);
+      app.DetectionTab.Title = 'Detection';
+      app.DetectionTab.ForegroundColor = [0 0 1];
+
+      % Create stdevLabel
+      app.stdevLabel = uilabel(app.DetectionTab);
+      app.stdevLabel.Position = [240 196 35 22];
+      app.stdevLabel.Text = 'stdev';
+
+      % Create ThresholdSpinnerLabel
+      app.ThresholdSpinnerLabel = uilabel(app.DetectionTab);
+      app.ThresholdSpinnerLabel.Position = [27 195 106 22];
+      app.ThresholdSpinnerLabel.Text = 'Threshold (relative)';
+
+      % Create ThresholdSpinner
+      app.ThresholdSpinner = uispinner(app.DetectionTab);
+      app.ThresholdSpinner.Step = 0.1;
+      app.ThresholdSpinner.ValueChangedFcn = createCallbackFcn(app, @ThresholdSpinnerValueChanged, true);
+      app.ThresholdSpinner.Tooltip = {'Tells eventer to set the threshold for event detection at this number times the standard deviation of the noise of the deconvoluted wave.'};
+      app.ThresholdSpinner.Position = [167 196 69 22];
+      app.ThresholdSpinner.Value = 4;
+
+      % Create WavefilterPanel
+      app.WavefilterPanel = uipanel(app.DetectionTab);
+      app.WavefilterPanel.TitlePosition = 'centertop';
+      app.WavefilterPanel.Title = 'Wave filter';
+      app.WavefilterPanel.Position = [28 21 490 127];
+
+      % Create HzLabel
+      app.HzLabel = uilabel(app.WavefilterPanel);
+      app.HzLabel.Position = [275 7 25 22];
+      app.HzLabel.Text = 'Hz';
+
+      % Create HzLabel_2
+      app.HzLabel_2 = uilabel(app.WavefilterPanel);
+      app.HzLabel_2.Position = [275 41 25 22];
+      app.HzLabel_2.Text = 'Hz';
+
+      % Create HighpassFilterCutOffSpinnerLabel
+      app.HighpassFilterCutOffSpinnerLabel = uilabel(app.WavefilterPanel);
+      app.HighpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
+      app.HighpassFilterCutOffSpinnerLabel.Position = [17 41 128 22];
+      app.HighpassFilterCutOffSpinnerLabel.Text = 'High-pass filter cut-off:';
+
+      % Create HighpassPreFilterCutOffSpinner
+      app.HighpassPreFilterCutOffSpinner = uispinner(app.WavefilterPanel);
+      app.HighpassPreFilterCutOffSpinner.Limits = [0 1.79769313486232e+308];
+      app.HighpassPreFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
+      app.HighpassPreFilterCutOffSpinner.BusyAction = 'cancel';
+      app.HighpassPreFilterCutOffSpinner.Enable = 'off';
+      app.HighpassPreFilterCutOffSpinner.Tooltip = {'Sets the cut-off of the high-pass filter'};
+      app.HighpassPreFilterCutOffSpinner.Position = [155 41 115 22];
+
+      % Create LowpassFilterCutOffSpinnerLabel
+      app.LowpassFilterCutOffSpinnerLabel = uilabel(app.WavefilterPanel);
+      app.LowpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
+      app.LowpassFilterCutOffSpinnerLabel.Position = [18 7 125 22];
+      app.LowpassFilterCutOffSpinnerLabel.Text = 'Low-pass filter cut-off:';
+
+      % Create LowpassPreFilterCutOffSpinner
+      app.LowpassPreFilterCutOffSpinner = uispinner(app.WavefilterPanel);
+      app.LowpassPreFilterCutOffSpinner.Limits = [2.22044604925031e-16 Inf];
+      app.LowpassPreFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
+      app.LowpassPreFilterCutOffSpinner.BusyAction = 'cancel';
+      app.LowpassPreFilterCutOffSpinner.Enable = 'off';
+      app.LowpassPreFilterCutOffSpinner.Tooltip = {'Sets the cut-off of the low-pass Gaussian filter'};
+      app.LowpassPreFilterCutOffSpinner.Position = [155 7 115 22];
+      app.LowpassPreFilterCutOffSpinner.Value = Inf;
+
+      % Create OnOffCheckBoxHPF
+      app.OnOffCheckBoxHPF = uicheckbox(app.WavefilterPanel);
+      app.OnOffCheckBoxHPF.ValueChangedFcn = createCallbackFcn(app, @OnOffCheckBoxHPFValueChanged, true);
+      app.OnOffCheckBoxHPF.BusyAction = 'cancel';
+      app.OnOffCheckBoxHPF.Tooltip = {'Turns on/off the high-pass filter'};
+      app.OnOffCheckBoxHPF.Text = 'On/Off';
+      app.OnOffCheckBoxHPF.Position = [326 41 58 22];
+
+      % Create OnOffCheckBoxLPF
+      app.OnOffCheckBoxLPF = uicheckbox(app.WavefilterPanel);
+      app.OnOffCheckBoxLPF.ValueChangedFcn = createCallbackFcn(app, @OnOffCheckBoxLPFValueChanged, true);
+      app.OnOffCheckBoxLPF.BusyAction = 'cancel';
+      app.OnOffCheckBoxLPF.Tooltip = {'Turns on/off the low-pass Gaussian filter'};
+      app.OnOffCheckBoxLPF.Text = 'On/Off';
+      app.OnOffCheckBoxLPF.Position = [326 7 58 22];
+
+      % Create HighpassfiltermethodDropDownLabel
+      app.HighpassfiltermethodDropDownLabel = uilabel(app.WavefilterPanel);
+      app.HighpassfiltermethodDropDownLabel.HorizontalAlignment = 'right';
+      app.HighpassfiltermethodDropDownLabel.Position = [9 76 135 22];
+      app.HighpassfiltermethodDropDownLabel.Text = 'High-pass filter method:';
+
+      % Create HighpassPreFiltermethodDropDown
+      app.HighpassPreFiltermethodDropDown = uidropdown(app.WavefilterPanel);
+      app.HighpassPreFiltermethodDropDown.Items = {'Median', 'Binomial'};
+      app.HighpassPreFiltermethodDropDown.ItemsData = {'median', 'binomial'};
+      app.HighpassPreFiltermethodDropDown.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
+      app.HighpassPreFiltermethodDropDown.BusyAction = 'cancel';
+      app.HighpassPreFiltermethodDropDown.Tooltip = {'Select which high pass filter to use.'};
+      app.HighpassPreFiltermethodDropDown.Position = [155 76 115 22];
+      app.HighpassPreFiltermethodDropDown.Value = 'binomial';
+
+      % Create SignoftheEventsSwitchLabel
+      app.SignoftheEventsSwitchLabel = uilabel(app.DetectionTab);
+      app.SignoftheEventsSwitchLabel.Position = [28 228 106 22];
+      app.SignoftheEventsSwitchLabel.Text = 'Sign of the Events:';
+
+      % Create SignoftheEventsSwitch
+      app.SignoftheEventsSwitch = uiswitch(app.DetectionTab, 'slider');
+      app.SignoftheEventsSwitch.Items = {'-', '+'};
+      app.SignoftheEventsSwitch.ValueChangedFcn = createCallbackFcn(app, @SignoftheEventsSwitchValueChanged, true);
+      app.SignoftheEventsSwitch.Tooltip = {'Select the sign of the event deflections'};
+      app.SignoftheEventsSwitch.FontSize = 15;
+      app.SignoftheEventsSwitch.FontAngle = 'italic';
+      app.SignoftheEventsSwitch.Position = [180 232 41 18];
+      app.SignoftheEventsSwitch.Value = '-';
+
+      % Create CriterionDropDown
+      app.CriterionDropDown = uidropdown(app.DetectionTab);
+      app.CriterionDropDown.Items = {'Pearson', 'Machine learning'};
+      app.CriterionDropDown.ValueChangedFcn = createCallbackFcn(app, @CriterionDropDownValueChanged, true);
+      app.CriterionDropDown.Position = [384 262 134 22];
+      app.CriterionDropDown.Value = 'Pearson';
+
+      % Create CorrelationCoefficientLabel
+      app.CorrelationCoefficientLabel = uilabel(app.DetectionTab);
+      app.CorrelationCoefficientLabel.Position = [297 228 134 22];
+      app.CorrelationCoefficientLabel.Text = 'Correlation Coefficient';
+
+      % Create CorrelationCoefficientSpinner
+      app.CorrelationCoefficientSpinner = uispinner(app.DetectionTab);
+      app.CorrelationCoefficientSpinner.Step = 0.01;
+      app.CorrelationCoefficientSpinner.Limits = [-1 1];
+      app.CorrelationCoefficientSpinner.ValueChangedFcn = createCallbackFcn(app, @CorrelationCoefficientValueChanged, true);
+      app.CorrelationCoefficientSpinner.Position = [440 228 78 22];
+      app.CorrelationCoefficientSpinner.Value = 0.4;
+
+      % Create EventCriterionLabel
+      app.EventCriterionLabel = uilabel(app.DetectionTab);
+      app.EventCriterionLabel.Position = [297 262 85 22];
+      app.EventCriterionLabel.Text = 'Event Criterion';
+
+      % Create ConfigurationDropDownLabel
+      app.ConfigurationDropDownLabel = uilabel(app.DetectionTab);
+      app.ConfigurationDropDownLabel.Position = [28 262 83 22];
+      app.ConfigurationDropDownLabel.Text = 'Configuration:';
+
+      % Create ConfigurationDropDown
+      app.ConfigurationDropDown = uidropdown(app.DetectionTab);
+      app.ConfigurationDropDown.Items = {'Voltage Clamp', 'Current Clamp', 'Generic', 'Fluor. (a.u.) ', 'Fluor. (dF/F0) ', 'Fluor. (Z-score)', ''};
+      app.ConfigurationDropDown.ItemsData = {'VC', 'CC', 'dummy'};
+      app.ConfigurationDropDown.ValueChangedFcn = createCallbackFcn(app, @ConfigurationDropDownValueChanged, true);
+      app.ConfigurationDropDown.Tooltip = {'Select the damping factor used in the Levenberg-Marquardt ordinary non-linear least-squares fitting procedures.'};
+      app.ConfigurationDropDown.BackgroundColor = [1 1 1];
+      app.ConfigurationDropDown.Position = [121 262 115 22];
+      app.ConfigurationDropDown.Value = 'VC';
+
+      % Create LoadmodelButton
+      app.LoadmodelButton = uibutton(app.DetectionTab, 'push');
+      app.LoadmodelButton.ButtonPushedFcn = createCallbackFcn(app, @LoadmodelButtonPushed, true);
+      app.LoadmodelButton.Position = [417 194 101 22];
+      app.LoadmodelButton.Text = 'Load model';
+
+      % Create TrainingmodeCheckBox
+      app.TrainingmodeCheckBox = uicheckbox(app.DetectionTab);
+      app.TrainingmodeCheckBox.ValueChangedFcn = createCallbackFcn(app, @TrainingmodeCheckBoxValueChanged, true);
+      app.TrainingmodeCheckBox.Text = ' Training mode';
+      app.TrainingmodeCheckBox.Position = [297 194 103 22];
+
+      % Create ModelfileEditFieldLabel
+      app.ModelfileEditFieldLabel = uilabel(app.DetectionTab);
+      app.ModelfileEditFieldLabel.HorizontalAlignment = 'right';
+      app.ModelfileEditFieldLabel.Position = [290 160 58 22];
+      app.ModelfileEditFieldLabel.Text = 'Model file';
+
+      % Create ModelfileEditField
+      app.ModelfileEditField = uieditfield(app.DetectionTab, 'text');
+      app.ModelfileEditField.ValueChangedFcn = createCallbackFcn(app, @ModelfileEditFieldValueChanged, true);
+      app.ModelfileEditField.Position = [361 160 157 22];
+
+      % Create ThresholdabsoluteEditFieldLabel
+      app.ThresholdabsoluteEditFieldLabel = uilabel(app.DetectionTab);
+      app.ThresholdabsoluteEditFieldLabel.Position = [27 163 129 22];
+      app.ThresholdabsoluteEditFieldLabel.Text = 'Threshold (absolute)';
+
+      % Create ThresholdAbsoluteEditField
+      app.ThresholdAbsoluteEditField = uieditfield(app.DetectionTab, 'numeric');
+      app.ThresholdAbsoluteEditField.Limits = [0 Inf];
+      app.ThresholdAbsoluteEditField.ValueChangedFcn = createCallbackFcn(app, @ThresholdAbsoluteEditFieldValueChanged, true);
+      app.ThresholdAbsoluteEditField.Tooltip = {'Absolute threshold in the original units of the deconvoluted wave. When this value is > 0 it overides the relative threshold setting.'};
+      app.ThresholdAbsoluteEditField.Position = [167 165 66 21];
+
+      % Create AdvancedTab
+      app.AdvancedTab = uitab(app.TabGroupEventer);
+      app.AdvancedTab.Title = 'Advanced';
+      app.AdvancedTab.ForegroundColor = [0 0 1];
+
+      % Create EventsettingsPanel
+      app.EventsettingsPanel = uipanel(app.AdvancedTab);
+      app.EventsettingsPanel.TitlePosition = 'centertop';
+      app.EventsettingsPanel.Title = 'Event settings';
+      app.EventsettingsPanel.Position = [14 130 225 161];
+
+      % Create NoofTausSpinnerLabel
+      app.NoofTausSpinnerLabel = uilabel(app.AdvancedTab);
+      app.NoofTausSpinnerLabel.HorizontalAlignment = 'right';
+      app.NoofTausSpinnerLabel.Position = [20 232 66 22];
+      app.NoofTausSpinnerLabel.Text = 'No. of Taus';
+
+      % Create NoofTausSpinner
+      app.NoofTausSpinner = uispinner(app.AdvancedTab);
+      app.NoofTausSpinner.Step = 0.1;
+      app.NoofTausSpinner.ValueChangedFcn = createCallbackFcn(app, @NoofTausSpinnerValueChanged, true);
+      app.NoofTausSpinner.Tooltip = {'Sets the number of decay time constants after the peak of the template to use when fitting the template to the detected events.'};
+      app.NoofTausSpinner.Position = [108 232 98 22];
+      app.NoofTausSpinner.Value = 2;
+
+      % Create BaselineTimeSpinnerLabel
+      app.BaselineTimeSpinnerLabel = uilabel(app.AdvancedTab);
+      app.BaselineTimeSpinnerLabel.HorizontalAlignment = 'right';
+      app.BaselineTimeSpinnerLabel.Position = [20 190 81 22];
+      app.BaselineTimeSpinnerLabel.Text = 'Baseline Time';
+
+      % Create BaselineTimeSpinner
+      app.BaselineTimeSpinner = uispinner(app.AdvancedTab);
+      app.BaselineTimeSpinner.Step = 0.1;
+      app.BaselineTimeSpinner.ValueChangedFcn = createCallbackFcn(app, @BaselineTimeSpinnerValueChanged, true);
+      app.BaselineTimeSpinner.Tooltip = {'Sets the length of time to use as the pre-event baseline for the template fit in seconds'};
+      app.BaselineTimeSpinner.Position = [108 190 100 22];
+      app.BaselineTimeSpinner.Value = 1;
+
+      % Create msLabel_3
+      app.msLabel_3 = uilabel(app.AdvancedTab);
+      app.msLabel_3.Position = [212 190 25 22];
+      app.msLabel_3.Text = 'ms';
+
+      % Create ExmodeDropDownLabel
+      app.ExmodeDropDownLabel = uilabel(app.AdvancedTab);
+      app.ExmodeDropDownLabel.HorizontalAlignment = 'right';
+      app.ExmodeDropDownLabel.Position = [20 147 50 22];
+      app.ExmodeDropDownLabel.Text = 'Exmode';
+
+      % Create ExmodeDropDown
+      app.ExmodeDropDown = uidropdown(app.AdvancedTab);
+      app.ExmodeDropDown.Items = {'Mode 1', 'Mode 2'};
+      app.ExmodeDropDown.ItemsData = {'1', '2'};
+      app.ExmodeDropDown.ValueChangedFcn = createCallbackFcn(app, @ExmodeDropDownValueChanged, true);
+      app.ExmodeDropDown.Tooltip = {'Tells eventer what to do in relation to calculation of interevent intervals after each exclusion zone, and for the first event in each wave. With mode = 1, IEIs are calculated for these events from the last event preceding the exclusion zone under the assumption that no events occurred during the exclusion zone. When merging multiple waves, eventer also assumes there was no gap between waves. With mode = 2, the occurrence of an event during these times is considered ambiguous and so is assigned a value of NaN.'};
+      app.ExmodeDropDown.Position = [108 147 100 22];
+      app.ExmodeDropDown.Value = '1';
+
+      % Create LevenbergMarquardtSettingsPanel
+      app.LevenbergMarquardtSettingsPanel = uipanel(app.AdvancedTab);
+      app.LevenbergMarquardtSettingsPanel.TitlePosition = 'centertop';
+      app.LevenbergMarquardtSettingsPanel.Title = 'Levenberg-Marquardt Settings';
+      app.LevenbergMarquardtSettingsPanel.Position = [14 13 521 107];
+
+      % Create LambdaSliderLabel
+      app.LambdaSliderLabel = uilabel(app.LevenbergMarquardtSettingsPanel);
+      app.LambdaSliderLabel.HorizontalAlignment = 'right';
+      app.LambdaSliderLabel.Position = [120 39 50 22];
+      app.LambdaSliderLabel.Text = 'Lambda';
+
+      % Create LambdaSlider
+      app.LambdaSlider = uislider(app.LevenbergMarquardtSettingsPanel);
+      app.LambdaSlider.Limits = [-2 3];
+      app.LambdaSlider.MajorTicks = [-2 -1 0 1 2 3];
+      app.LambdaSlider.MajorTickLabels = {'0.01', '0.1', '1.0', '10', '100', '1000'};
+      app.LambdaSlider.ValueChangedFcn = createCallbackFcn(app, @LambdaSliderValueChanged, true);
+      app.LambdaSlider.MinorTicks = [];
+      app.LambdaSlider.Tooltip = {'Select the damping factor used in the Levenberg-Marquardt ordinary non-linear least-squares fitting procedures.'};
+      app.LambdaSlider.Position = [191 49 150 3];
+
+      % Create LambdaDisp
+      app.LambdaDisp = uieditfield(app.LevenbergMarquardtSettingsPanel, 'numeric');
+      app.LambdaDisp.ValueChangedFcn = createCallbackFcn(app, @LambdaDispValueChanged, true);
+      app.LambdaDisp.Position = [361 39 47 22];
+      app.LambdaDisp.Value = 1;
+
+      % Create DeconvolutedWaveSignalProcessingPanel_2
+      app.DeconvolutedWaveSignalProcessingPanel_2 = uipanel(app.AdvancedTab);
+      app.DeconvolutedWaveSignalProcessingPanel_2.TitlePosition = 'centertop';
+      app.DeconvolutedWaveSignalProcessingPanel_2.Title = 'Deconvoluted Wave Signal-Processing';
+      app.DeconvolutedWaveSignalProcessingPanel_2.Position = [249 130 286 161];
+
+      % Create HighpassFilterCutOffSpinner_2Label
+      app.HighpassFilterCutOffSpinner_2Label = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
+      app.HighpassFilterCutOffSpinner_2Label.HorizontalAlignment = 'right';
+      app.HighpassFilterCutOffSpinner_2Label.Position = [73 100 137 22];
+      app.HighpassFilterCutOffSpinner_2Label.Text = 'High-pass Filter Cut-Off:';
+
+      % Create HzLabel_4
+      app.HzLabel_4 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
+      app.HzLabel_4.Position = [203 74 25 22];
+      app.HzLabel_4.Text = 'Hz';
+
+      % Create HighpassFilterCutOffSpinner
+      app.HighpassFilterCutOffSpinner = uispinner(app.DeconvolutedWaveSignalProcessingPanel_2);
+      app.HighpassFilterCutOffSpinner.Limits = [0 1.79769313486232e+308];
+      app.HighpassFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @HighpassFilterCutOffSpinnerValueChanged, true);
+      app.HighpassFilterCutOffSpinner.Tooltip = {'High-pass median filter. The cut-off is estimated according to the cutoff of a boxcar filter with the same smoothing window size.'};
+      app.HighpassFilterCutOffSpinner.Position = [86 74 108 22];
+      app.HighpassFilterCutOffSpinner.Value = 1;
+
+      % Create HzLabel_3
+      app.HzLabel_3 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
+      app.HzLabel_3.Position = [203 8 25 22];
+      app.HzLabel_3.Text = 'Hz';
+
+      % Create LowpassFilterCutOffSpinner
+      app.LowpassFilterCutOffSpinner = uispinner(app.DeconvolutedWaveSignalProcessingPanel_2);
+      app.LowpassFilterCutOffSpinner.Limits = [2.22044604925031e-16 Inf];
+      app.LowpassFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @LowpassFilterCutOffSpinnerValueChanged, true);
+      app.LowpassFilterCutOffSpinner.Tooltip = {'Low pass Gaussian filter'};
+      app.LowpassFilterCutOffSpinner.Position = [86 8 108 22];
+      app.LowpassFilterCutOffSpinner.Value = 200;
+
+      % Create LowpassFilterCutOffSpinnerLabel_2
+      app.LowpassFilterCutOffSpinnerLabel_2 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
+      app.LowpassFilterCutOffSpinnerLabel_2.HorizontalAlignment = 'right';
+      app.LowpassFilterCutOffSpinnerLabel_2.Position = [73 34 135 22];
+      app.LowpassFilterCutOffSpinnerLabel_2.Text = 'Low-pass Filter Cut-Off:';
+
+      % Create OutputTab
+      app.OutputTab = uitab(app.TabGroupEventer);
+      app.OutputTab.Title = 'Output';
+      app.OutputTab.ForegroundColor = [0 0 1];
+
+      % Create EnsembleAverageButtonGroup
+      app.EnsembleAverageButtonGroup = uibuttongroup(app.OutputTab);
+      app.EnsembleAverageButtonGroup.SelectionChangedFcn = createCallbackFcn(app, @EnsembleAverageButtonGroupSelectionChanged, true);
+      app.EnsembleAverageButtonGroup.Tooltip = {'Select whether you want the ensemble average waveform to be calculated using the arithmetic mean or the median'};
+      app.EnsembleAverageButtonGroup.TitlePosition = 'centertop';
+      app.EnsembleAverageButtonGroup.Title = 'Ensemble Average';
+      app.EnsembleAverageButtonGroup.Position = [35 183 181 87];
+
+      % Create MedianButton
+      app.MedianButton = uiradiobutton(app.EnsembleAverageButtonGroup);
+      app.MedianButton.Text = 'Median';
+      app.MedianButton.Position = [11 35 62 22];
+      app.MedianButton.Value = true;
+
+      % Create MeanButton
+      app.MeanButton = uiradiobutton(app.EnsembleAverageButtonGroup);
+      app.MeanButton.Text = 'Mean';
+      app.MeanButton.Position = [11 10 52 22];
+
+      % Create WaveFormatDropDownLabel
+      app.WaveFormatDropDownLabel = uilabel(app.OutputTab);
+      app.WaveFormatDropDownLabel.HorizontalAlignment = 'right';
+      app.WaveFormatDropDownLabel.Position = [30 133 80 22];
+      app.WaveFormatDropDownLabel.Text = 'Wave Format:';
+
+      % Create WaveFormatDropDown
+      app.WaveFormatDropDown = uidropdown(app.OutputTab);
+      app.WaveFormatDropDown.Items = {'Axon binary file v1.83 (.abf)', 'Neurodata without borders 2.4.0 (.nwb)', 'Stimfit binary (.h5)', 'ephysIO binary (.phy)', 'Axon Text File (.atf)', 'Igor Text File (.itx)', 'ASCII CSV File (.csv)', 'ASCII TSV File (.txt)', 'ASCII TSV File (.asc)'};
+      app.WaveFormatDropDown.ItemsData = {'abf', 'nwb', 'h5', 'phy', 'atf', 'itx', 'csv', 'txt', 'asc'};
+      app.WaveFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @WaveFormatDropDownValueChanged, true);
+      app.WaveFormatDropDown.Tooltip = {'Tells eventer to export the episodic wave data of all detected events in the specified format.'};
+      app.WaveFormatDropDown.Position = [115 133 250 22];
+      app.WaveFormatDropDown.Value = 'abf';
+
+      % Create FigureFormatDropDownLabel
+      app.FigureFormatDropDownLabel = uilabel(app.OutputTab);
+      app.FigureFormatDropDownLabel.HorizontalAlignment = 'right';
+      app.FigureFormatDropDownLabel.Position = [234 194 80 22];
+      app.FigureFormatDropDownLabel.Text = 'Figure Format';
+
+      % Create FigureFormatDropDown
+      app.FigureFormatDropDown = uidropdown(app.OutputTab);
+      app.FigureFormatDropDown.Items = {'None', 'Matlab (fig)', 'tiff (compressed)', 'tiff (not compressed)', 'png', 'bmp', 'svg', 'eps', 'emf'};
+      app.FigureFormatDropDown.ItemsData = {'none', 'fig', 'tiff', 'tiffn', 'png', 'bmp', 'svg', 'eps', 'emf'};
+      app.FigureFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @FigureFormatDropDownValueChanged, true);
+      app.FigureFormatDropDown.Tooltip = {'Tells eventer what format to use when saving figures. Bitmap images are saved at 300 dpi resolution. Note that viewing *.fig files requires MATLAB. Set to ''none'' for speed if figures are not required.'};
+      app.FigureFormatDropDown.Position = [325 193 184 22];
+      app.FigureFormatDropDown.Value = 'fig';
+
+      % Create dpiLabel
+      app.dpiLabel = uilabel(app.OutputTab);
+      app.dpiLabel.FontColor = [0.651 0.651 0.651];
+      app.dpiLabel.Visible = 'off';
+      app.dpiLabel.Position = [326 170 52 22];
+      app.dpiLabel.Text = '(300 dpi)';
+
+      % Create wavesstackedLabel
+      app.wavesstackedLabel = uilabel(app.OutputTab);
+      app.wavesstackedLabel.FontColor = [0.651 0.651 0.651];
+      app.wavesstackedLabel.Visible = 'off';
+      app.wavesstackedLabel.Position = [116 109 91 22];
+      app.wavesstackedLabel.Text = '(waves stacked)';
+
+      % Create GNUZipCompressionCheckBox
+      app.GNUZipCompressionCheckBox = uicheckbox(app.OutputTab);
+      app.GNUZipCompressionCheckBox.ValueChangedFcn = createCallbackFcn(app, @GNUZipCompressionCheckBoxValueChanged, true);
+      app.GNUZipCompressionCheckBox.Tooltip = {'Compress resulting data file by GNU zip. Note that NWB already uses data compression internally.'};
+      app.GNUZipCompressionCheckBox.Text = 'GNU Zip Compression';
+      app.GNUZipCompressionCheckBox.Position = [375 133 144 22];
+
+      % Create MaxWindowSpinner
+      app.MaxWindowSpinner = uispinner(app.OutputTab);
+      app.MaxWindowSpinner.Step = 0.01;
+      app.MaxWindowSpinner.Limits = [0 1.79769313486232e+308];
+      app.MaxWindowSpinner.ValueChangedFcn = createCallbackFcn(app, @MaxWindowSpinnerValueChanged, true);
+      app.MaxWindowSpinner.Tooltip = {'Events are aligned and exported. Set the post event time in seconds'};
+      app.MaxWindowSpinner.Position = [426 241 85 22];
+      app.MaxWindowSpinner.Value = 0.04;
+
+      % Create EventwindowLabel
+      app.EventwindowLabel = uilabel(app.OutputTab);
+      app.EventwindowLabel.Position = [238 241 83 22];
+      app.EventwindowLabel.Text = 'Event window ';
+
+      % Create MinWindowSpinner
+      app.MinWindowSpinner = uispinner(app.OutputTab);
+      app.MinWindowSpinner.Step = 0.01;
+      app.MinWindowSpinner.Limits = [-1.79769313486232e+308 0];
+      app.MinWindowSpinner.ValueChangedFcn = createCallbackFcn(app, @MinWindowSpinnerValueChanged, true);
+      app.MinWindowSpinner.Tooltip = {'Events are aligned and exported. Set the pre event time in seconds'};
+      app.MinWindowSpinner.Position = [324 241 85 22];
+      app.MinWindowSpinner.Value = -0.01;
+
+      % Create sLabel_2
+      app.sLabel_2 = uilabel(app.OutputTab);
+      app.sLabel_2.Position = [411 240 25 22];
+      app.sLabel_2.Text = 's';
+
+      % Create sLabel_3
+      app.sLabel_3 = uilabel(app.OutputTab);
+      app.sLabel_3.Position = [512 240 13 22];
+      app.sLabel_3.Text = 's';
+
+      % Create RootdirectoryEditFieldLabel
+      app.RootdirectoryEditFieldLabel = uilabel(app.OutputTab);
+      app.RootdirectoryEditFieldLabel.Tooltip = {'Path to the root directory for the analysis. This is determined by the location of the first file loaded. It cannot be changed by the user.'};
+      app.RootdirectoryEditFieldLabel.Position = [36 88 82 22];
+      app.RootdirectoryEditFieldLabel.Text = 'Root directory';
+
+      % Create RootdirectoryEditField
+      app.RootdirectoryEditField = uieditfield(app.OutputTab, 'text');
+      app.RootdirectoryEditField.ValueChangedFcn = createCallbackFcn(app, @RootdirectoryEditFieldValueChanged, true);
+      app.RootdirectoryEditField.Editable = 'off';
+      app.RootdirectoryEditField.Enable = 'off';
+      app.RootdirectoryEditField.Tooltip = {'Path to root'};
+      app.RootdirectoryEditField.Position = [36 63 441 22];
+
+      % Create SetOutputFolderButton
+      app.SetOutputFolderButton = uibutton(app.OutputTab, 'push');
+      app.SetOutputFolderButton.ButtonPushedFcn = createCallbackFcn(app, @SetOutputFolderButtonPushed, true);
+      app.SetOutputFolderButton.Tooltip = {'Enter the folder name to store Eventer output'};
+      app.SetOutputFolderButton.Position = [35 24 106 22];
+      app.SetOutputFolderButton.Text = 'Set output folder';
+
+      % Create outdirLabel
+      app.outdirLabel = uilabel(app.OutputTab);
+      app.outdirLabel.Position = [150 24 327 22];
+      app.outdirLabel.Text = '';
+
+      % Create SummaryTab
+      app.SummaryTab = uitab(app.TabGroupEventer);
+      app.SummaryTab.Title = 'Summary';
+
+      % Create TabGroupSummary
+      app.TabGroupSummary = uitabgroup(app.SummaryTab);
+      app.TabGroupSummary.SelectionChangedFcn = createCallbackFcn(app, @TabGroupSummarySelectionChanged, true);
+      app.TabGroupSummary.Position = [0 5 547 293];
+
+      % Create AllTab
+      app.AllTab = uitab(app.TabGroupSummary);
+      app.AllTab.Title = 'All';
+
+      % Create SummaryAll
+      app.SummaryAll = uitextarea(app.AllTab);
+      app.SummaryAll.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.SummaryAll.Position = [22 2 502 264];
+
+      % Create CurrentTab
+      app.CurrentTab = uitab(app.TabGroupSummary);
+      app.CurrentTab.Title = 'Current ';
+      app.CurrentTab.Scrollable = 'on';
+
+      % Create SummaryCurrent
+      app.SummaryCurrent = uitextarea(app.CurrentTab);
+      app.SummaryCurrent.BackgroundColor = [0.9412 0.9412 0.9412];
+      app.SummaryCurrent.Position = [22 2 502 264];
+
+      % Create ParallelPanel
+      app.ParallelPanel = uipanel(app.Eventer);
+      app.ParallelPanel.Position = [10 10 469 33];
+
+      % Create ParallelCheckBox
+      app.ParallelCheckBox = uicheckbox(app.ParallelPanel);
+      app.ParallelCheckBox.ValueChangedFcn = createCallbackFcn(app, @ParallelCheckBoxValueChanged, true);
+      app.ParallelCheckBox.BusyAction = 'cancel';
+      app.ParallelCheckBox.Tooltip = {'Turn on/off parallel process to speed up batch analysis'};
+      app.ParallelCheckBox.Text = 'Parallel';
+      app.ParallelCheckBox.Position = [109 5 68 22];
+
+      % Create NoofworkersSpinnerLabel
+      app.NoofworkersSpinnerLabel = uilabel(app.ParallelPanel);
+      app.NoofworkersSpinnerLabel.HorizontalAlignment = 'right';
+      app.NoofworkersSpinnerLabel.Position = [225 5 90 22];
+      app.NoofworkersSpinnerLabel.Text = 'No. of workers';
+
+      % Create NoofworkersSpinner
+      app.NoofworkersSpinner = uispinner(app.ParallelPanel);
+      app.NoofworkersSpinner.Limits = [0 Inf];
+      app.NoofworkersSpinner.ValueChangedFcn = createCallbackFcn(app, @NoofworkersSpinnerChanged, true);
+      app.NoofworkersSpinner.BusyAction = 'cancel';
+      app.NoofworkersSpinner.Tooltip = {'Select the number of workers (e.g. cores)'};
+      app.NoofworkersSpinner.Position = [180 5 51 22];
+
+      % Create ProfileNameButton
+      app.ProfileNameButton = uibutton(app.ParallelPanel, 'push');
+      app.ProfileNameButton.ButtonPushedFcn = createCallbackFcn(app, @ProfileNameButtonPushed, true);
+      app.ProfileNameButton.BusyAction = 'cancel';
+      app.ProfileNameButton.Position = [323 5 78 22];
+      app.ProfileNameButton.Text = 'Profile name';
+
+      % Create ProfileLabel
+      app.ProfileLabel = uilabel(app.ParallelPanel);
+      app.ProfileLabel.Position = [406 5 53 22];
+      app.ProfileLabel.Text = 'local';
+
+      % Create ParallelsettingsLabel
+      app.ParallelsettingsLabel = uilabel(app.ParallelPanel);
+      app.ParallelsettingsLabel.Position = [8 5 90 22];
+      app.ParallelsettingsLabel.Text = 'Parallel settings';
+
+      % Create StorePanel
+      app.StorePanel = uipanel(app.Eventer);
+      app.StorePanel.Position = [10 373 546 33];
+
+      % Create WaveDropDownLabel
+      app.WaveDropDownLabel = uilabel(app.StorePanel);
+      app.WaveDropDownLabel.HorizontalAlignment = 'right';
+      app.WaveDropDownLabel.Position = [3 5 35 22];
+      app.WaveDropDownLabel.Text = 'Wave';
+
+      % Create WaveDropDown
+      app.WaveDropDown = uidropdown(app.StorePanel);
+      app.WaveDropDown.Items = {};
+      app.WaveDropDown.ValueChangedFcn = createCallbackFcn(app, @WaveDropDownValueChanged, true);
+      app.WaveDropDown.Tooltip = {'Select current wave. Key: k (up) and'; ' m (down)'};
+      app.WaveDropDown.Position = [43 5 55 22];
+      app.WaveDropDown.Value = {};
+
+      % Create StoreAllWavesButton
+      app.StoreAllWavesButton = uibutton(app.StorePanel, 'push');
+      app.StoreAllWavesButton.ButtonPushedFcn = createCallbackFcn(app, @StoreAllButtonPushed, true);
+      app.StoreAllWavesButton.Interruptible = 'off';
+      app.StoreAllWavesButton.Tooltip = {'Toggle store or unstore all wave settings for analysis'};
+      app.StoreAllWavesButton.Position = [179 5 105 22];
+      app.StoreAllWavesButton.Text = 'Store all waves';
+
+      % Create PopupGraphButton
+      app.PopupGraphButton = uibutton(app.StorePanel, 'push');
+      app.PopupGraphButton.ButtonPushedFcn = createCallbackFcn(app, @PopupGraphButtonPushed, true);
+      app.PopupGraphButton.BusyAction = 'cancel';
+      app.PopupGraphButton.Tooltip = {'Open a pop-up graph of the wave. Zoom into a region of interest and use the cursor buttons to initiate selection of lower and upper time limits for sections of the wave to use for template fitting or exclusion. Key: g'};
+      app.PopupGraphButton.Position = [288 5 92 22];
+      app.PopupGraphButton.Text = 'Pop-up Graph';
+
+      % Create RunningLamp
+      app.RunningLamp = uilamp(app.StorePanel);
+      app.RunningLamp.Enable = 'off';
+      app.RunningLamp.Position = [516 6 20 20];
+
+      % Create RunButton
+      app.RunButton = uibutton(app.StorePanel, 'push');
+      app.RunButton.ButtonPushedFcn = createCallbackFcn(app, @RunButtonPushed, true);
+      app.RunButton.BusyAction = 'cancel';
+      app.RunButton.Interruptible = 'off';
+      app.RunButton.Tooltip = {'Run eventer. Key: p'};
+      app.RunButton.Position = [384 5 45 22];
+      app.RunButton.Text = 'Run';
+
+      % Create RunDropDown
+      app.RunDropDown = uidropdown(app.StorePanel);
+      app.RunDropDown.Items = {'Current', 'Batch'};
+      app.RunDropDown.Tooltip = {'Set eventer run mode to current wave or batch'};
+      app.RunDropDown.Position = [433 5 77 22];
+      app.RunDropDown.Value = 'Current';
+
+      % Create CurrentWaveStoredBox
+      app.CurrentWaveStoredBox = uicheckbox(app.StorePanel);
+      app.CurrentWaveStoredBox.ValueChangedFcn = createCallbackFcn(app, @CurrentWaveStoredBoxValueChanged, true);
+      app.CurrentWaveStoredBox.BusyAction = 'cancel';
+      app.CurrentWaveStoredBox.Tooltip = {'Toggle on/off the store settings checkbox. Key: s (store) and d (delete)'};
+      app.CurrentWaveStoredBox.Text = '';
+      app.CurrentWaveStoredBox.Position = [161 5 15 22];
+
+      % Create StoreCurrentWaveButton
+      app.StoreCurrentWaveButton = uibutton(app.StorePanel, 'push');
+      app.StoreCurrentWaveButton.ButtonPushedFcn = createCallbackFcn(app, @StoreCurrentWaveButtonPushed, true);
+      app.StoreCurrentWaveButton.Interruptible = 'off';
+      app.StoreCurrentWaveButton.Tooltip = {'Select and store current wave settings for analysis. Key: s'};
+      app.StoreCurrentWaveButton.Position = [102 5 55 22];
+      app.StoreCurrentWaveButton.Text = 'Store';
+
+      % Create UnsavedLabel
+      app.UnsavedLabel = uilabel(app.StorePanel);
+      app.UnsavedLabel.VerticalAlignment = 'top';
+      app.UnsavedLabel.FontSize = 16;
+      app.UnsavedLabel.FontColor = [1 0 0];
+      app.UnsavedLabel.Visible = 'off';
+      app.UnsavedLabel.Position = [147 17 25 13];
+      app.UnsavedLabel.Text = '*';
+
+      % Create CreditsButton
+      app.CreditsButton = uibutton(app.Eventer, 'push');
+      app.CreditsButton.ButtonPushedFcn = createCallbackFcn(app, @AboutEventerButtonPushed, true);
+      app.CreditsButton.Position = [491 14 55 22];
+      app.CreditsButton.Text = 'Credits';
+
+      % Show the figure after all components are created
+      app.Eventer.Visible = 'on';
+    end
+  end
+
+  % App creation and deletion
+  methods (Access = public)
+
+    % Construct app
+    function app = eventerapp_exported
+
+      % Create UIFigure and components
+      createComponents(app)
+
+      % Register the app with App Designer
+      registerApp(app, app.Eventer)
+
+      % Execute the startup function
+      runStartupFcn(app, @startupFcn)
+
+      if nargout == 0
+        clear app
+      end
     end
 
-    % Component initialization
-    methods (Access = private)
-
-        % Create UIFigure and components
-        function createComponents(app)
-
-            % Get the file path for locating images
-            pathToMLAPP = fileparts(mfilename('fullpath'));
-
-            % Create Eventer and hide until all components are created
-            app.Eventer = uifigure('Visible', 'off');
-            colormap(app.Eventer, 'parula');
-            app.Eventer.Position = [50 50 564 540];
-            app.Eventer.Name = 'Eventer';
-            app.Eventer.Icon = fullfile(pathToMLAPP, 'misc', 'eventer_logo.png');
-            app.Eventer.CloseRequestFcn = createCallbackFcn(app, @EventerCloseRequest, true);
-            app.Eventer.WindowKeyPressFcn = createCallbackFcn(app, @EventerWindowKeyPress, true);
-
-            % Create FilePanel
-            app.FilePanel = uipanel(app.Eventer);
-            app.FilePanel.Position = [10 415 546 117];
-
-            % Create LoadButton
-            app.LoadButton = uibutton(app.FilePanel, 'push');
-            app.LoadButton.ButtonPushedFcn = createCallbackFcn(app, @LoadButtonPushed, true);
-            app.LoadButton.BusyAction = 'cancel';
-            app.LoadButton.Tooltip = {'Select and add files to the file list. Key: a'};
-            app.LoadButton.Position = [10 89 43 23];
-            app.LoadButton.Text = 'Load';
-
-            % Create ChannelSpinnerLabel
-            app.ChannelSpinnerLabel = uilabel(app.FilePanel);
-            app.ChannelSpinnerLabel.HorizontalAlignment = 'right';
-            app.ChannelSpinnerLabel.Position = [53 89 50 22];
-            app.ChannelSpinnerLabel.Text = 'Channel';
-
-            % Create ChannelSpinner
-            app.ChannelSpinner = uispinner(app.FilePanel);
-            app.ChannelSpinner.Limits = [0 Inf];
-            app.ChannelSpinner.ValueChangedFcn = createCallbackFcn(app, @ChannelSpinnerValueChanged, true);
-            app.ChannelSpinner.Tooltip = {'Select the recording channel before loading files.'};
-            app.ChannelSpinner.Position = [108 89 44 22];
-            app.ChannelSpinner.Value = 1;
-
-            % Create CloseButton
-            app.CloseButton = uibutton(app.FilePanel, 'push');
-            app.CloseButton.ButtonPushedFcn = createCallbackFcn(app, @CloseButtonPushed, true);
-            app.CloseButton.BusyAction = 'cancel';
-            app.CloseButton.Tooltip = {'Close the analysis and clear the file list'};
-            app.CloseButton.Position = [256 89 46 22];
-            app.CloseButton.Text = 'Close';
-
-            % Create FullPathNameBox
-            app.FullPathNameBox = uilistbox(app.FilePanel);
-            app.FullPathNameBox.Items = {};
-            app.FullPathNameBox.ValueChangedFcn = createCallbackFcn(app, @FullPathNameBoxValueChanged, true);
-            app.FullPathNameBox.Tooltip = {'File paths'};
-            app.FullPathNameBox.Position = [10 9 526 75];
-            app.FullPathNameBox.Value = {};
-
-            % Create PresetsButton
-            app.PresetsButton = uibutton(app.FilePanel, 'push');
-            app.PresetsButton.ButtonPushedFcn = createCallbackFcn(app, @LoadSavePresetsButtonPushed, true);
-            app.PresetsButton.BusyAction = 'cancel';
-            app.PresetsButton.Tooltip = {'Select and load a presets file'};
-            app.PresetsButton.Position = [308 89 51 22];
-            app.PresetsButton.Text = 'Presets';
-
-            % Create ApplypresetsButton
-            app.ApplypresetsButton = uibutton(app.FilePanel, 'push');
-            app.ApplypresetsButton.ButtonPushedFcn = createCallbackFcn(app, @ApplypresetsButtonPushed, true);
-            app.ApplypresetsButton.BusyAction = 'cancel';
-            app.ApplypresetsButton.Tooltip = {'Apply loaded presets'};
-            app.ApplypresetsButton.Position = [364 89 83 22];
-            app.ApplypresetsButton.Text = 'Apply presets';
-
-            % Create ClosefiguresButton
-            app.ClosefiguresButton = uibutton(app.FilePanel, 'push');
-            app.ClosefiguresButton.ButtonPushedFcn = createCallbackFcn(app, @ClosefiguresButtonPushed, true);
-            app.ClosefiguresButton.BusyAction = 'cancel';
-            app.ClosefiguresButton.Tooltip = {'Close all figures'};
-            app.ClosefiguresButton.Position = [452 89 83 22];
-            app.ClosefiguresButton.Text = 'Close figures';
-
-            % Create SplitSpinnerLabel
-            app.SplitSpinnerLabel = uilabel(app.FilePanel);
-            app.SplitSpinnerLabel.HorizontalAlignment = 'right';
-            app.SplitSpinnerLabel.Position = [154 89 29 22];
-            app.SplitSpinnerLabel.Text = 'Split';
-
-            % Create SplitSpinner
-            app.SplitSpinner = uispinner(app.FilePanel);
-            app.SplitSpinner.Step = 0.1;
-            app.SplitSpinner.Limits = [0 Inf];
-            app.SplitSpinner.ValueChangedFcn = createCallbackFcn(app, @SplitSpinnerValueChanged, true);
-            app.SplitSpinner.Tooltip = {'Split a continuous recording trace into episodes of the following length (in seconds). Define the split interval before loading files.'};
-            app.SplitSpinner.Position = [186 89 57 22];
-
-            % Create sLabel
-            app.sLabel = uilabel(app.FilePanel);
-            app.sLabel.Position = [245 89 10 22];
-            app.sLabel.Text = 's';
-
-            % Create TabGroupEventer
-            app.TabGroupEventer = uitabgroup(app.Eventer);
-            app.TabGroupEventer.Tooltip = {''};
-            app.TabGroupEventer.SelectionChangedFcn = createCallbackFcn(app, @TabGroupEventerSelectionChanged, true);
-            app.TabGroupEventer.Position = [10 42 546 323];
-
-            % Create PreviewTab
-            app.PreviewTab = uitab(app.TabGroupEventer);
-            app.PreviewTab.Title = 'Preview';
-
-            % Create WavePreviewAxes
-            app.WavePreviewAxes = uiaxes(app.PreviewTab);
-            xlabel(app.WavePreviewAxes, 'Time (s)')
-            ylabel(app.WavePreviewAxes, 'Current (A)')
-            app.WavePreviewAxes.PlotBoxAspectRatio = [2 1 1];
-            app.WavePreviewAxes.XTickLabelRotation = 0;
-            app.WavePreviewAxes.YTickLabelRotation = 0;
-            app.WavePreviewAxes.ZTickLabelRotation = 0;
-            app.WavePreviewAxes.LineWidth = 0.25;
-            app.WavePreviewAxes.Color = 'none';
-            app.WavePreviewAxes.Position = [1 16 543 272];
-
-            % Create TemplateTab
-            app.TemplateTab = uitab(app.TabGroupEventer);
-            app.TemplateTab.Title = 'Template';
-            app.TemplateTab.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.TemplateTab.ForegroundColor = [0.6392 0.0784 0.1804];
-
-            % Create TemplatePreviewAxes
-            app.TemplatePreviewAxes = uiaxes(app.TemplateTab);
-            xlabel(app.TemplatePreviewAxes, 'Time (s)')
-            ylabel(app.TemplatePreviewAxes, 'Normalised Amplitude')
-            app.TemplatePreviewAxes.PlotBoxAspectRatio = [1.47 1 1];
-            app.TemplatePreviewAxes.XTickLabelRotation = 0;
-            app.TemplatePreviewAxes.YTickLabelRotation = 0;
-            app.TemplatePreviewAxes.ZTickLabelRotation = 0;
-            app.TemplatePreviewAxes.LineWidth = 0.25;
-            app.TemplatePreviewAxes.Color = 'none';
-            app.TemplatePreviewAxes.Position = [14 13 380 269];
-
-            % Create FitparametersPanel
-            app.FitparametersPanel = uipanel(app.TemplateTab);
-            app.FitparametersPanel.TitlePosition = 'centertop';
-            app.FitparametersPanel.Title = 'Fit parameters';
-            app.FitparametersPanel.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.FitparametersPanel.Position = [406 49 129 122];
-
-            % Create TemplateSelectButton
-            app.TemplateSelectButton = uibutton(app.FitparametersPanel, 'push');
-            app.TemplateSelectButton.ButtonPushedFcn = createCallbackFcn(app, @TemplateSelectButtonPushed, true);
-            app.TemplateSelectButton.BusyAction = 'cancel';
-            app.TemplateSelectButton.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.TemplateSelectButton.Tooltip = {'Select lower and upper limits on the pop-up graph around an event of interest for fitting'};
-            app.TemplateSelectButton.Position = [45 71 48 20];
-            app.TemplateSelectButton.Text = '';
-
-            % Create SelectLabel
-            app.SelectLabel = uilabel(app.FitparametersPanel);
-            app.SelectLabel.Position = [6 70 39 22];
-            app.SelectLabel.Text = 'Select';
-
-            % Create tau1EditFieldLabel
-            app.tau1EditFieldLabel = uilabel(app.FitparametersPanel);
-            app.tau1EditFieldLabel.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.tau1EditFieldLabel.Position = [6 41 29 22];
-            app.tau1EditFieldLabel.Text = 'Rise';
-
-            % Create tau1EditField
-            app.tau1EditField = uieditfield(app.FitparametersPanel, 'numeric');
-            app.tau1EditField.ValueDisplayFormat = '%11.3g';
-            app.tau1EditField.Editable = 'off';
-            app.tau1EditField.FontColor = [0.502 0.502 0.502];
-            app.tau1EditField.Tooltip = {'Fitted rise time constant'};
-            app.tau1EditField.Position = [45 41 48 22];
-
-            % Create tau2EditFieldLabel
-            app.tau2EditFieldLabel = uilabel(app.FitparametersPanel);
-            app.tau2EditFieldLabel.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.tau2EditFieldLabel.Position = [6 11 39 22];
-            app.tau2EditFieldLabel.Text = 'Decay';
-
-            % Create tau2EditField
-            app.tau2EditField = uieditfield(app.FitparametersPanel, 'numeric');
-            app.tau2EditField.ValueDisplayFormat = '%11.3g';
-            app.tau2EditField.Editable = 'off';
-            app.tau2EditField.FontColor = [0.502 0.502 0.502];
-            app.tau2EditField.Tooltip = {'Fitted decay time constant'};
-            app.tau2EditField.Position = [45 11 48 22];
-
-            % Create msLabel_4
-            app.msLabel_4 = uilabel(app.FitparametersPanel);
-            app.msLabel_4.Position = [98 40 25 22];
-            app.msLabel_4.Text = 'ms';
-
-            % Create msLabel_5
-            app.msLabel_5 = uilabel(app.FitparametersPanel);
-            app.msLabel_5.Position = [98 10 25 22];
-            app.msLabel_5.Text = 'ms';
-
-            % Create Button
-            app.Button = uibutton(app.FitparametersPanel, 'push');
-            app.Button.ButtonPushedFcn = createCallbackFcn(app, @CopyFitParametersButtonPushed, true);
-            app.Button.Icon = fullfile(pathToMLAPP, 'misc', 'copy.png');
-            app.Button.Tooltip = {'Copy over fitted parameters to template time constant settings'};
-            app.Button.Position = [99 71 22 20];
-            app.Button.Text = '';
-
-            % Create TimeconstantsPanel
-            app.TimeconstantsPanel = uipanel(app.TemplateTab);
-            app.TimeconstantsPanel.TitlePosition = 'centertop';
-            app.TimeconstantsPanel.Title = 'Time constants';
-            app.TimeconstantsPanel.Position = [406 179 128 112];
-
-            % Create TimeConstantsEditField2
-            app.TimeConstantsEditField2 = uieditfield(app.TimeconstantsPanel, 'numeric');
-            app.TimeConstantsEditField2.ValueDisplayFormat = '%11.3g';
-            app.TimeConstantsEditField2.ValueChangedFcn = createCallbackFcn(app, @TimeConstantsEditField2ValueChanged, true);
-            app.TimeConstantsEditField2.Tooltip = {'Decay time constant of the template'};
-            app.TimeConstantsEditField2.Position = [46 36 52 22];
-            app.TimeConstantsEditField2.Value = 3;
-
-            % Create TimeConstantsEditField1
-            app.TimeConstantsEditField1 = uieditfield(app.TimeconstantsPanel, 'numeric');
-            app.TimeConstantsEditField1.ValueDisplayFormat = '%11.3g';
-            app.TimeConstantsEditField1.ValueChangedFcn = createCallbackFcn(app, @TimeConstantsEditField1ValueChanged, true);
-            app.TimeConstantsEditField1.Tooltip = {'Rise time constant of the template'};
-            app.TimeConstantsEditField1.Position = [46 64 52 22];
-            app.TimeConstantsEditField1.Value = 0.45;
-
-            % Create msLabel_2
-            app.msLabel_2 = uilabel(app.TimeconstantsPanel);
-            app.msLabel_2.Position = [102 64 25 22];
-            app.msLabel_2.Text = 'ms';
-
-            % Create RiseLabel
-            app.RiseLabel = uilabel(app.TimeconstantsPanel);
-            app.RiseLabel.HorizontalAlignment = 'center';
-            app.RiseLabel.Position = [5 65 29 22];
-            app.RiseLabel.Text = 'Rise';
-
-            % Create DecayLabel
-            app.DecayLabel = uilabel(app.TimeconstantsPanel);
-            app.DecayLabel.HorizontalAlignment = 'center';
-            app.DecayLabel.Position = [4 37 39 22];
-            app.DecayLabel.Text = 'Decay';
-
-            % Create ApplyToAllButtonTemplate
-            app.ApplyToAllButtonTemplate = uibutton(app.TimeconstantsPanel, 'push');
-            app.ApplyToAllButtonTemplate.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonTemplatePushed, true);
-            app.ApplyToAllButtonTemplate.BusyAction = 'cancel';
-            app.ApplyToAllButtonTemplate.Tooltip = {'Apply these template settings to all waves'};
-            app.ApplyToAllButtonTemplate.Position = [6 8 113 22];
-            app.ApplyToAllButtonTemplate.Text = 'Apply to all waves';
-
-            % Create msLabel
-            app.msLabel = uilabel(app.TemplateTab);
-            app.msLabel.Position = [508 215 25 22];
-            app.msLabel.Text = 'ms';
-
-            % Create SignoftheEventsSwitch_2
-            app.SignoftheEventsSwitch_2 = uiswitch(app.TemplateTab, 'slider');
-            app.SignoftheEventsSwitch_2.Items = {'-', '+'};
-            app.SignoftheEventsSwitch_2.ValueChangedFcn = createCallbackFcn(app, @SignoftheEventsSwitch_2ValueChanged, true);
-            app.SignoftheEventsSwitch_2.Tooltip = {'Select the sign of the event deflections'};
-            app.SignoftheEventsSwitch_2.FontSize = 15;
-            app.SignoftheEventsSwitch_2.FontAngle = 'italic';
-            app.SignoftheEventsSwitch_2.Position = [451 8 41 18];
-            app.SignoftheEventsSwitch_2.Value = '-';
-
-            % Create SignoftheEventsSwitchLabel_2
-            app.SignoftheEventsSwitchLabel_2 = uilabel(app.TemplateTab);
-            app.SignoftheEventsSwitchLabel_2.Position = [417 26 106 22];
-            app.SignoftheEventsSwitchLabel_2.Text = 'Sign of the Events:';
-
-            % Create ExcludeTab
-            app.ExcludeTab = uitab(app.TabGroupEventer);
-            app.ExcludeTab.Title = 'Exclude';
-            app.ExcludeTab.ForegroundColor = [0.6392 0.0784 0.1804];
-
-            % Create zone_three_x
-            app.zone_three_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_three_x.ButtonPushedFcn = createCallbackFcn(app, @zone_three_xButtonPushed, true);
-            app.zone_three_x.IconAlignment = 'center';
-            app.zone_three_x.BackgroundColor = [1 1 1];
-            app.zone_three_x.Tooltip = {'Reset exclusion zone 3'};
-            app.zone_three_x.Position = [357 204 35 22];
-            app.zone_three_x.Text = 'X';
-
-            % Create zone_four_x
-            app.zone_four_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_four_x.ButtonPushedFcn = createCallbackFcn(app, @zone_four_xButtonPushed, true);
-            app.zone_four_x.IconAlignment = 'center';
-            app.zone_four_x.BackgroundColor = [1 1 1];
-            app.zone_four_x.Tooltip = {'Reset exclusion zone 4'};
-            app.zone_four_x.Position = [357 183 35 22];
-            app.zone_four_x.Text = 'X';
-
-            % Create zone_five_x
-            app.zone_five_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_five_x.ButtonPushedFcn = createCallbackFcn(app, @zone_five_xButtonPushed, true);
-            app.zone_five_x.IconAlignment = 'center';
-            app.zone_five_x.BackgroundColor = [1 1 1];
-            app.zone_five_x.Tooltip = {'Reset exclusion zone 5'};
-            app.zone_five_x.Position = [357 162 35 22];
-            app.zone_five_x.Text = 'X';
-
-            % Create zone_six_x
-            app.zone_six_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_six_x.ButtonPushedFcn = createCallbackFcn(app, @zone_six_xButtonPushed, true);
-            app.zone_six_x.IconAlignment = 'center';
-            app.zone_six_x.BackgroundColor = [1 1 1];
-            app.zone_six_x.Tooltip = {'Reset exclusion zone 6'};
-            app.zone_six_x.Position = [357 141 35 22];
-            app.zone_six_x.Text = 'X';
-
-            % Create exselect_1
-            app.exselect_1 = uibutton(app.ExcludeTab, 'push');
-            app.exselect_1.ButtonPushedFcn = createCallbackFcn(app, @exselect_1_1ButtonPushed, true);
-            app.exselect_1.BusyAction = 'cancel';
-            app.exselect_1.Interruptible = 'off';
-            app.exselect_1.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.exselect_1.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 1'};
-            app.exselect_1.Position = [45 246 16 21];
-            app.exselect_1.Text = '';
-
-            % Create exselect_2
-            app.exselect_2 = uibutton(app.ExcludeTab, 'push');
-            app.exselect_2.ButtonPushedFcn = createCallbackFcn(app, @exselect_2ButtonPushed, true);
-            app.exselect_2.BusyAction = 'cancel';
-            app.exselect_2.Interruptible = 'off';
-            app.exselect_2.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.exselect_2.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 2'};
-            app.exselect_2.Position = [45 225 16 21];
-            app.exselect_2.Text = '';
-
-            % Create exselect_3
-            app.exselect_3 = uibutton(app.ExcludeTab, 'push');
-            app.exselect_3.ButtonPushedFcn = createCallbackFcn(app, @exselect_3ButtonPushed, true);
-            app.exselect_3.BusyAction = 'cancel';
-            app.exselect_3.Interruptible = 'off';
-            app.exselect_3.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.exselect_3.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 3'};
-            app.exselect_3.Position = [45 205 16 21];
-            app.exselect_3.Text = '';
-
-            % Create exselect_4
-            app.exselect_4 = uibutton(app.ExcludeTab, 'push');
-            app.exselect_4.ButtonPushedFcn = createCallbackFcn(app, @exselect_4ButtonPushed, true);
-            app.exselect_4.BusyAction = 'cancel';
-            app.exselect_4.Interruptible = 'off';
-            app.exselect_4.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.exselect_4.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 4'};
-            app.exselect_4.Position = [45 184 16 21];
-            app.exselect_4.Text = '';
-
-            % Create exselect_5
-            app.exselect_5 = uibutton(app.ExcludeTab, 'push');
-            app.exselect_5.ButtonPushedFcn = createCallbackFcn(app, @exselect_5ButtonPushed, true);
-            app.exselect_5.BusyAction = 'cancel';
-            app.exselect_5.Interruptible = 'off';
-            app.exselect_5.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.exselect_5.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 5'};
-            app.exselect_5.Position = [45 163 16 21];
-            app.exselect_5.Text = '';
-
-            % Create exselect_6
-            app.exselect_6 = uibutton(app.ExcludeTab, 'push');
-            app.exselect_6.ButtonPushedFcn = createCallbackFcn(app, @exselect_6ButtonPushed, true);
-            app.exselect_6.BusyAction = 'cancel';
-            app.exselect_6.Interruptible = 'off';
-            app.exselect_6.Icon = fullfile(pathToMLAPP, 'misc', 'cursor-23231_1280.png');
-            app.exselect_6.Tooltip = {'Select lower and upper limits on the pop-up graph around a region for exclusion zone 6'};
-            app.exselect_6.Position = [45 142 16 21];
-            app.exselect_6.Text = '';
-
-            % Create zone_eleven_x
-            app.zone_eleven_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_eleven_x.ButtonPushedFcn = createCallbackFcn(app, @zone_eleven_xButtonPushed, true);
-            app.zone_eleven_x.IconAlignment = 'center';
-            app.zone_eleven_x.BackgroundColor = [1 1 1];
-            app.zone_eleven_x.Tooltip = {'Reset extra exclusion zones'};
-            app.zone_eleven_x.Position = [357 120 35 22];
-            app.zone_eleven_x.Text = 'X';
-
-            % Create ExtraExclusions
-            app.ExtraExclusions = uitextarea(app.ExcludeTab);
-            app.ExtraExclusions.ValueChangedFcn = createCallbackFcn(app, @ExtraExclusionsValueChanged, true);
-            app.ExtraExclusions.Tooltip = {'Define exclusion zones using matlab matrix notation. The input must be a two column matrix.'};
-            app.ExtraExclusions.Position = [60 19 298 123];
-
-            % Create ApplyToAllButton_ex_1
-            app.ApplyToAllButton_ex_1 = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_ex_1.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex1, true);
-            app.ApplyToAllButton_ex_1.BusyAction = 'cancel';
-            app.ApplyToAllButton_ex_1.Tooltip = {'Apply this exclusion zone 1 setting to all waves'};
-            app.ApplyToAllButton_ex_1.Position = [402 246 113 22];
-            app.ApplyToAllButton_ex_1.Text = 'Apply to all waves';
-
-            % Create ApplyToAllButton_ex_2
-            app.ApplyToAllButton_ex_2 = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_ex_2.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_2, true);
-            app.ApplyToAllButton_ex_2.BusyAction = 'cancel';
-            app.ApplyToAllButton_ex_2.Tooltip = {'Apply this exclusion zone 2 setting to all waves'};
-            app.ApplyToAllButton_ex_2.Position = [402 225 113 22];
-            app.ApplyToAllButton_ex_2.Text = 'Apply to all waves';
-
-            % Create zone_two_x
-            app.zone_two_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_two_x.ButtonPushedFcn = createCallbackFcn(app, @zone_two_xButtonPushed, true);
-            app.zone_two_x.IconAlignment = 'center';
-            app.zone_two_x.BackgroundColor = [1 1 1];
-            app.zone_two_x.Tooltip = {'Reset exclusion zone 2'};
-            app.zone_two_x.Position = [357 225 35 22];
-            app.zone_two_x.Text = 'X';
-
-            % Create ApplyToAllButton_ex_3
-            app.ApplyToAllButton_ex_3 = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_ex_3.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_3, true);
-            app.ApplyToAllButton_ex_3.BusyAction = 'cancel';
-            app.ApplyToAllButton_ex_3.Tooltip = {'Apply this exclusion zone 3 setting to all waves'};
-            app.ApplyToAllButton_ex_3.Position = [402 203 113 23];
-            app.ApplyToAllButton_ex_3.Text = 'Apply to all waves';
-
-            % Create ApplyToAllButton_ex_4
-            app.ApplyToAllButton_ex_4 = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_ex_4.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_4, true);
-            app.ApplyToAllButton_ex_4.BusyAction = 'cancel';
-            app.ApplyToAllButton_ex_4.Tooltip = {'Apply this exclusion zone 4 setting to all waves'};
-            app.ApplyToAllButton_ex_4.Position = [402 183 113 22];
-            app.ApplyToAllButton_ex_4.Text = 'Apply to all waves';
-
-            % Create ApplyToAllButton_ex_5
-            app.ApplyToAllButton_ex_5 = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_ex_5.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_5, true);
-            app.ApplyToAllButton_ex_5.BusyAction = 'cancel';
-            app.ApplyToAllButton_ex_5.Tooltip = {'Apply this exclusion zone 5 setting to all waves'};
-            app.ApplyToAllButton_ex_5.Position = [402 162 113 22];
-            app.ApplyToAllButton_ex_5.Text = 'Apply to all waves';
-
-            % Create ApplyToAllButton_ex_6
-            app.ApplyToAllButton_ex_6 = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_ex_6.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_ex_6, true);
-            app.ApplyToAllButton_ex_6.BusyAction = 'cancel';
-            app.ApplyToAllButton_ex_6.Tooltip = {'Apply this exclusion zone 6 setting to all waves'};
-            app.ApplyToAllButton_ex_6.Position = [402 141 113 22];
-            app.ApplyToAllButton_ex_6.Text = 'Apply to all waves';
-
-            % Create ApplyToAllButton_xexclusion
-            app.ApplyToAllButton_xexclusion = uibutton(app.ExcludeTab, 'push');
-            app.ApplyToAllButton_xexclusion.ButtonPushedFcn = createCallbackFcn(app, @ApplyToAllButtonPushed_xexclusion, true);
-            app.ApplyToAllButton_xexclusion.BusyAction = 'cancel';
-            app.ApplyToAllButton_xexclusion.Tooltip = {'Apply this exclusion zones setting to all waves'};
-            app.ApplyToAllButton_xexclusion.Position = [402 120 113 22];
-            app.ApplyToAllButton_xexclusion.Text = 'Apply to all waves';
-
-            % Create zone_one_x
-            app.zone_one_x = uibutton(app.ExcludeTab, 'push');
-            app.zone_one_x.ButtonPushedFcn = createCallbackFcn(app, @zone_one_xButtonPushed, true);
-            app.zone_one_x.IconAlignment = 'center';
-            app.zone_one_x.BackgroundColor = [1 1 1];
-            app.zone_one_x.Tooltip = {'Reset exclusion zone 1'};
-            app.zone_one_x.Position = [357 246 35 22];
-            app.zone_one_x.Text = 'X';
-
-            % Create EditField_1
-            app.EditField_1 = uieditfield(app.ExcludeTab, 'text');
-            app.EditField_1.Editable = 'off';
-            app.EditField_1.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.EditField_1.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_1.Position = [159 267 100 22];
-            app.EditField_1.Value = 'Start Time';
-
-            % Create EditField_2
-            app.EditField_2 = uieditfield(app.ExcludeTab, 'text');
-            app.EditField_2.Editable = 'off';
-            app.EditField_2.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.EditField_2.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_2.Position = [258 267 100 22];
-            app.EditField_2.Value = 'Stop Time';
-
-            % Create EditField_3
-            app.EditField_3 = uieditfield(app.ExcludeTab, 'text');
-            app.EditField_3.Editable = 'off';
-            app.EditField_3.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.EditField_3.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_3.Position = [60 267 100 22];
-            app.EditField_3.Value = 'Exclusion Zones';
-
-            % Create EditField_4
-            app.EditField_4 = uieditfield(app.ExcludeTab, 'numeric');
-            app.EditField_4.Editable = 'off';
-            app.EditField_4.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_4.Position = [60 225 100 22];
-            app.EditField_4.Value = 2;
-
-            % Create EditField_5
-            app.EditField_5 = uieditfield(app.ExcludeTab, 'numeric');
-            app.EditField_5.Editable = 'off';
-            app.EditField_5.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_5.Position = [60 246 100 22];
-            app.EditField_5.Value = 1;
-
-            % Create EditField_6
-            app.EditField_6 = uieditfield(app.ExcludeTab, 'numeric');
-            app.EditField_6.Editable = 'off';
-            app.EditField_6.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_6.Position = [60 183 100 22];
-            app.EditField_6.Value = 4;
-
-            % Create EditField_7
-            app.EditField_7 = uieditfield(app.ExcludeTab, 'numeric');
-            app.EditField_7.Editable = 'off';
-            app.EditField_7.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_7.Position = [60 204 100 22];
-            app.EditField_7.Value = 3;
-
-            % Create EditField_8
-            app.EditField_8 = uieditfield(app.ExcludeTab, 'numeric');
-            app.EditField_8.Editable = 'off';
-            app.EditField_8.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_8.Position = [60 141 100 22];
-            app.EditField_8.Value = 6;
-
-            % Create EditField_9
-            app.EditField_9 = uieditfield(app.ExcludeTab, 'numeric');
-            app.EditField_9.Editable = 'off';
-            app.EditField_9.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.EditField_9.Position = [60 162 100 22];
-            app.EditField_9.Value = 5;
-
-            % Create cell_three
-            app.cell_three = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_three.ValueChangedFcn = createCallbackFcn(app, @cell_threeValueChanged, true);
-            app.cell_three.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_three.Position = [159 225 100 22];
-
-            % Create cell_four
-            app.cell_four = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_four.ValueChangedFcn = createCallbackFcn(app, @cell_fourValueChanged, true);
-            app.cell_four.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_four.Position = [258 225 100 22];
-
-            % Create cell_one
-            app.cell_one = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_one.ValueChangedFcn = createCallbackFcn(app, @cell_oneValueChanged, true);
-            app.cell_one.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_one.Position = [159 246 100 22];
-
-            % Create cell_two
-            app.cell_two = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_two.ValueChangedFcn = createCallbackFcn(app, @cell_twoValueChanged, true);
-            app.cell_two.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_two.Position = [258 246 100 22];
-
-            % Create cell_seven
-            app.cell_seven = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_seven.ValueChangedFcn = createCallbackFcn(app, @cell_sevenValueChanged, true);
-            app.cell_seven.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_seven.Position = [159 183 100 22];
-
-            % Create cell_eight
-            app.cell_eight = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_eight.ValueChangedFcn = createCallbackFcn(app, @cell_eightValueChanged, true);
-            app.cell_eight.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_eight.Position = [258 183 100 22];
-
-            % Create cell_five
-            app.cell_five = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_five.ValueChangedFcn = createCallbackFcn(app, @cell_fiveValueChanged, true);
-            app.cell_five.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_five.Position = [159 204 100 22];
-
-            % Create cell_six
-            app.cell_six = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_six.ValueChangedFcn = createCallbackFcn(app, @cell_sixValueChanged, true);
-            app.cell_six.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_six.Position = [258 204 100 22];
-
-            % Create cell_eleven
-            app.cell_eleven = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_eleven.ValueChangedFcn = createCallbackFcn(app, @cell_elevenValueChanged, true);
-            app.cell_eleven.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_eleven.Position = [159 141 100 22];
-
-            % Create cell_twelve
-            app.cell_twelve = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_twelve.ValueChangedFcn = createCallbackFcn(app, @cell_twelveValueChanged, true);
-            app.cell_twelve.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_twelve.Position = [258 141 100 22];
-
-            % Create cell_nine
-            app.cell_nine = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_nine.ValueChangedFcn = createCallbackFcn(app, @cell_nineValueChanged, true);
-            app.cell_nine.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_nine.Position = [159 162 100 22];
-
-            % Create cell_ten
-            app.cell_ten = uieditfield(app.ExcludeTab, 'numeric');
-            app.cell_ten.ValueChangedFcn = createCallbackFcn(app, @cell_tenValueChanged, true);
-            app.cell_ten.Tooltip = {'Set exclusion zones to be used by eventer.'};
-            app.cell_ten.Position = [258 162 100 22];
-
-            % Create DetectionTab
-            app.DetectionTab = uitab(app.TabGroupEventer);
-            app.DetectionTab.Title = 'Detection';
-            app.DetectionTab.ForegroundColor = [0 0 1];
-
-            % Create stdevLabel
-            app.stdevLabel = uilabel(app.DetectionTab);
-            app.stdevLabel.Position = [240 196 35 22];
-            app.stdevLabel.Text = 'stdev';
-
-            % Create ThresholdSpinnerLabel
-            app.ThresholdSpinnerLabel = uilabel(app.DetectionTab);
-            app.ThresholdSpinnerLabel.Position = [27 195 106 22];
-            app.ThresholdSpinnerLabel.Text = 'Threshold (relative)';
-
-            % Create ThresholdSpinner
-            app.ThresholdSpinner = uispinner(app.DetectionTab);
-            app.ThresholdSpinner.Step = 0.1;
-            app.ThresholdSpinner.ValueChangedFcn = createCallbackFcn(app, @ThresholdSpinnerValueChanged, true);
-            app.ThresholdSpinner.Tooltip = {'Tells eventer to set the threshold for event detection at this number times the standard deviation of the noise of the deconvoluted wave.'};
-            app.ThresholdSpinner.Position = [167 196 69 22];
-            app.ThresholdSpinner.Value = 4;
-
-            % Create WavefilterPanel
-            app.WavefilterPanel = uipanel(app.DetectionTab);
-            app.WavefilterPanel.TitlePosition = 'centertop';
-            app.WavefilterPanel.Title = 'Wave filter';
-            app.WavefilterPanel.Position = [28 21 490 127];
-
-            % Create HzLabel
-            app.HzLabel = uilabel(app.WavefilterPanel);
-            app.HzLabel.Position = [275 7 25 22];
-            app.HzLabel.Text = 'Hz';
-
-            % Create HzLabel_2
-            app.HzLabel_2 = uilabel(app.WavefilterPanel);
-            app.HzLabel_2.Position = [275 41 25 22];
-            app.HzLabel_2.Text = 'Hz';
-
-            % Create HighpassFilterCutOffSpinnerLabel
-            app.HighpassFilterCutOffSpinnerLabel = uilabel(app.WavefilterPanel);
-            app.HighpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
-            app.HighpassFilterCutOffSpinnerLabel.Position = [17 41 128 22];
-            app.HighpassFilterCutOffSpinnerLabel.Text = 'High-pass filter cut-off:';
-
-            % Create HighpassPreFilterCutOffSpinner
-            app.HighpassPreFilterCutOffSpinner = uispinner(app.WavefilterPanel);
-            app.HighpassPreFilterCutOffSpinner.Limits = [0 1.79769313486232e+308];
-            app.HighpassPreFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
-            app.HighpassPreFilterCutOffSpinner.BusyAction = 'cancel';
-            app.HighpassPreFilterCutOffSpinner.Enable = 'off';
-            app.HighpassPreFilterCutOffSpinner.Tooltip = {'Sets the cut-off of the high-pass filter'};
-            app.HighpassPreFilterCutOffSpinner.Position = [155 41 115 22];
-
-            % Create LowpassFilterCutOffSpinnerLabel
-            app.LowpassFilterCutOffSpinnerLabel = uilabel(app.WavefilterPanel);
-            app.LowpassFilterCutOffSpinnerLabel.HorizontalAlignment = 'right';
-            app.LowpassFilterCutOffSpinnerLabel.Position = [18 7 125 22];
-            app.LowpassFilterCutOffSpinnerLabel.Text = 'Low-pass filter cut-off:';
-
-            % Create LowpassPreFilterCutOffSpinner
-            app.LowpassPreFilterCutOffSpinner = uispinner(app.WavefilterPanel);
-            app.LowpassPreFilterCutOffSpinner.Limits = [2.22044604925031e-16 Inf];
-            app.LowpassPreFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
-            app.LowpassPreFilterCutOffSpinner.BusyAction = 'cancel';
-            app.LowpassPreFilterCutOffSpinner.Enable = 'off';
-            app.LowpassPreFilterCutOffSpinner.Tooltip = {'Sets the cut-off of the low-pass Gaussian filter'};
-            app.LowpassPreFilterCutOffSpinner.Position = [155 7 115 22];
-            app.LowpassPreFilterCutOffSpinner.Value = Inf;
-
-            % Create OnOffCheckBoxHPF
-            app.OnOffCheckBoxHPF = uicheckbox(app.WavefilterPanel);
-            app.OnOffCheckBoxHPF.ValueChangedFcn = createCallbackFcn(app, @OnOffCheckBoxHPFValueChanged, true);
-            app.OnOffCheckBoxHPF.BusyAction = 'cancel';
-            app.OnOffCheckBoxHPF.Tooltip = {'Turns on/off the high-pass filter'};
-            app.OnOffCheckBoxHPF.Text = 'On/Off';
-            app.OnOffCheckBoxHPF.Position = [326 41 58 22];
-
-            % Create OnOffCheckBoxLPF
-            app.OnOffCheckBoxLPF = uicheckbox(app.WavefilterPanel);
-            app.OnOffCheckBoxLPF.ValueChangedFcn = createCallbackFcn(app, @OnOffCheckBoxLPFValueChanged, true);
-            app.OnOffCheckBoxLPF.BusyAction = 'cancel';
-            app.OnOffCheckBoxLPF.Tooltip = {'Turns on/off the low-pass Gaussian filter'};
-            app.OnOffCheckBoxLPF.Text = 'On/Off';
-            app.OnOffCheckBoxLPF.Position = [326 7 58 22];
-
-            % Create HighpassfiltermethodDropDownLabel
-            app.HighpassfiltermethodDropDownLabel = uilabel(app.WavefilterPanel);
-            app.HighpassfiltermethodDropDownLabel.HorizontalAlignment = 'right';
-            app.HighpassfiltermethodDropDownLabel.Position = [9 76 135 22];
-            app.HighpassfiltermethodDropDownLabel.Text = 'High-pass filter method:';
-
-            % Create HighpassPreFiltermethodDropDown
-            app.HighpassPreFiltermethodDropDown = uidropdown(app.WavefilterPanel);
-            app.HighpassPreFiltermethodDropDown.Items = {'Median', 'Binomial'};
-            app.HighpassPreFiltermethodDropDown.ItemsData = {'median', 'binomial'};
-            app.HighpassPreFiltermethodDropDown.ValueChangedFcn = createCallbackFcn(app, @PreFilterCutOffSpinnerValueChanged, true);
-            app.HighpassPreFiltermethodDropDown.BusyAction = 'cancel';
-            app.HighpassPreFiltermethodDropDown.Tooltip = {'Select which high pass filter to use.'};
-            app.HighpassPreFiltermethodDropDown.Position = [155 76 115 22];
-            app.HighpassPreFiltermethodDropDown.Value = 'binomial';
-
-            % Create SignoftheEventsSwitchLabel
-            app.SignoftheEventsSwitchLabel = uilabel(app.DetectionTab);
-            app.SignoftheEventsSwitchLabel.Position = [28 228 106 22];
-            app.SignoftheEventsSwitchLabel.Text = 'Sign of the Events:';
-
-            % Create SignoftheEventsSwitch
-            app.SignoftheEventsSwitch = uiswitch(app.DetectionTab, 'slider');
-            app.SignoftheEventsSwitch.Items = {'-', '+'};
-            app.SignoftheEventsSwitch.ValueChangedFcn = createCallbackFcn(app, @SignoftheEventsSwitchValueChanged, true);
-            app.SignoftheEventsSwitch.Tooltip = {'Select the sign of the event deflections'};
-            app.SignoftheEventsSwitch.FontSize = 15;
-            app.SignoftheEventsSwitch.FontAngle = 'italic';
-            app.SignoftheEventsSwitch.Position = [180 232 41 18];
-            app.SignoftheEventsSwitch.Value = '-';
-
-            % Create CriterionDropDown
-            app.CriterionDropDown = uidropdown(app.DetectionTab);
-            app.CriterionDropDown.Items = {'Pearson', 'Machine learning'};
-            app.CriterionDropDown.ValueChangedFcn = createCallbackFcn(app, @CriterionDropDownValueChanged, true);
-            app.CriterionDropDown.Position = [384 262 134 22];
-            app.CriterionDropDown.Value = 'Pearson';
-
-            % Create CorrelationCoefficientLabel
-            app.CorrelationCoefficientLabel = uilabel(app.DetectionTab);
-            app.CorrelationCoefficientLabel.Position = [297 228 134 22];
-            app.CorrelationCoefficientLabel.Text = 'Correlation Coefficient';
-
-            % Create CorrelationCoefficientSpinner
-            app.CorrelationCoefficientSpinner = uispinner(app.DetectionTab);
-            app.CorrelationCoefficientSpinner.Step = 0.01;
-            app.CorrelationCoefficientSpinner.Limits = [-1 1];
-            app.CorrelationCoefficientSpinner.ValueChangedFcn = createCallbackFcn(app, @CorrelationCoefficientValueChanged, true);
-            app.CorrelationCoefficientSpinner.Position = [440 228 78 22];
-            app.CorrelationCoefficientSpinner.Value = 0.4;
-
-            % Create EventCriterionLabel
-            app.EventCriterionLabel = uilabel(app.DetectionTab);
-            app.EventCriterionLabel.Position = [297 262 85 22];
-            app.EventCriterionLabel.Text = 'Event Criterion';
-
-            % Create ConfigurationDropDownLabel
-            app.ConfigurationDropDownLabel = uilabel(app.DetectionTab);
-            app.ConfigurationDropDownLabel.Position = [28 262 83 22];
-            app.ConfigurationDropDownLabel.Text = 'Configuration:';
-
-            % Create ConfigurationDropDown
-            app.ConfigurationDropDown = uidropdown(app.DetectionTab);
-            app.ConfigurationDropDown.Items = {'Voltage Clamp', 'Current Clamp', 'Generic', 'Fluor. (a.u.) ', 'Fluor. (dF/F0) ', 'Fluor. (Z-score)', ''};
-            app.ConfigurationDropDown.ItemsData = {'VC', 'CC', 'dummy'};
-            app.ConfigurationDropDown.ValueChangedFcn = createCallbackFcn(app, @ConfigurationDropDownValueChanged, true);
-            app.ConfigurationDropDown.Tooltip = {'Select the damping factor used in the Levenberg-Marquardt ordinary non-linear least-squares fitting procedures.'};
-            app.ConfigurationDropDown.BackgroundColor = [1 1 1];
-            app.ConfigurationDropDown.Position = [121 262 115 22];
-            app.ConfigurationDropDown.Value = 'VC';
-
-            % Create LoadmodelButton
-            app.LoadmodelButton = uibutton(app.DetectionTab, 'push');
-            app.LoadmodelButton.ButtonPushedFcn = createCallbackFcn(app, @LoadmodelButtonPushed, true);
-            app.LoadmodelButton.Position = [417 194 101 22];
-            app.LoadmodelButton.Text = 'Load model';
-
-            % Create TrainingmodeCheckBox
-            app.TrainingmodeCheckBox = uicheckbox(app.DetectionTab);
-            app.TrainingmodeCheckBox.ValueChangedFcn = createCallbackFcn(app, @TrainingmodeCheckBoxValueChanged, true);
-            app.TrainingmodeCheckBox.Text = ' Training mode';
-            app.TrainingmodeCheckBox.Position = [297 194 103 22];
-
-            % Create ModelfileEditFieldLabel
-            app.ModelfileEditFieldLabel = uilabel(app.DetectionTab);
-            app.ModelfileEditFieldLabel.HorizontalAlignment = 'right';
-            app.ModelfileEditFieldLabel.Position = [290 160 58 22];
-            app.ModelfileEditFieldLabel.Text = 'Model file';
-
-            % Create ModelfileEditField
-            app.ModelfileEditField = uieditfield(app.DetectionTab, 'text');
-            app.ModelfileEditField.ValueChangedFcn = createCallbackFcn(app, @ModelfileEditFieldValueChanged, true);
-            app.ModelfileEditField.Position = [361 160 157 22];
-
-            % Create ThresholdabsoluteEditFieldLabel
-            app.ThresholdabsoluteEditFieldLabel = uilabel(app.DetectionTab);
-            app.ThresholdabsoluteEditFieldLabel.Position = [27 163 129 22];
-            app.ThresholdabsoluteEditFieldLabel.Text = 'Threshold (absolute)';
-
-            % Create ThresholdAbsoluteEditField
-            app.ThresholdAbsoluteEditField = uieditfield(app.DetectionTab, 'numeric');
-            app.ThresholdAbsoluteEditField.Limits = [0 Inf];
-            app.ThresholdAbsoluteEditField.ValueChangedFcn = createCallbackFcn(app, @ThresholdAbsoluteEditFieldValueChanged, true);
-            app.ThresholdAbsoluteEditField.Tooltip = {'Absolute threshold in the original units of the deconvoluted wave. When this value is > 0 it overides the relative threshold setting.'};
-            app.ThresholdAbsoluteEditField.Position = [167 165 66 21];
-
-            % Create AdvancedTab
-            app.AdvancedTab = uitab(app.TabGroupEventer);
-            app.AdvancedTab.Title = 'Advanced';
-            app.AdvancedTab.ForegroundColor = [0 0 1];
-
-            % Create EventsettingsPanel
-            app.EventsettingsPanel = uipanel(app.AdvancedTab);
-            app.EventsettingsPanel.TitlePosition = 'centertop';
-            app.EventsettingsPanel.Title = 'Event settings';
-            app.EventsettingsPanel.Position = [14 130 225 161];
-
-            % Create NoofTausSpinnerLabel
-            app.NoofTausSpinnerLabel = uilabel(app.AdvancedTab);
-            app.NoofTausSpinnerLabel.HorizontalAlignment = 'right';
-            app.NoofTausSpinnerLabel.Position = [20 232 66 22];
-            app.NoofTausSpinnerLabel.Text = 'No. of Taus';
-
-            % Create NoofTausSpinner
-            app.NoofTausSpinner = uispinner(app.AdvancedTab);
-            app.NoofTausSpinner.Step = 0.1;
-            app.NoofTausSpinner.ValueChangedFcn = createCallbackFcn(app, @NoofTausSpinnerValueChanged, true);
-            app.NoofTausSpinner.Tooltip = {'Sets the number of decay time constants after the peak of the template to use when fitting the template to the detected events.'};
-            app.NoofTausSpinner.Position = [108 232 98 22];
-            app.NoofTausSpinner.Value = 2;
-
-            % Create BaselineTimeSpinnerLabel
-            app.BaselineTimeSpinnerLabel = uilabel(app.AdvancedTab);
-            app.BaselineTimeSpinnerLabel.HorizontalAlignment = 'right';
-            app.BaselineTimeSpinnerLabel.Position = [20 190 81 22];
-            app.BaselineTimeSpinnerLabel.Text = 'Baseline Time';
-
-            % Create BaselineTimeSpinner
-            app.BaselineTimeSpinner = uispinner(app.AdvancedTab);
-            app.BaselineTimeSpinner.Step = 0.1;
-            app.BaselineTimeSpinner.ValueChangedFcn = createCallbackFcn(app, @BaselineTimeSpinnerValueChanged, true);
-            app.BaselineTimeSpinner.Tooltip = {'Sets the length of time to use as the pre-event baseline for the template fit in seconds'};
-            app.BaselineTimeSpinner.Position = [108 190 100 22];
-            app.BaselineTimeSpinner.Value = 1;
-
-            % Create msLabel_3
-            app.msLabel_3 = uilabel(app.AdvancedTab);
-            app.msLabel_3.Position = [212 190 25 22];
-            app.msLabel_3.Text = 'ms';
-
-            % Create ExmodeDropDownLabel
-            app.ExmodeDropDownLabel = uilabel(app.AdvancedTab);
-            app.ExmodeDropDownLabel.HorizontalAlignment = 'right';
-            app.ExmodeDropDownLabel.Position = [20 147 50 22];
-            app.ExmodeDropDownLabel.Text = 'Exmode';
-
-            % Create ExmodeDropDown
-            app.ExmodeDropDown = uidropdown(app.AdvancedTab);
-            app.ExmodeDropDown.Items = {'Mode 1', 'Mode 2'};
-            app.ExmodeDropDown.ItemsData = {'1', '2'};
-            app.ExmodeDropDown.ValueChangedFcn = createCallbackFcn(app, @ExmodeDropDownValueChanged, true);
-            app.ExmodeDropDown.Tooltip = {'Tells eventer what to do in relation to calculation of interevent intervals after each exclusion zone, and for the first event in each wave. With mode = 1, IEIs are calculated for these events from the last event preceeding the exclusion zone under the assumption that no events occurred during the exclusion zone. When merging multiple waves, eventer also assumes there was no gap between waves. With mode = 2, the occurence of an event during these times is considered ambiguous and so is assign a value of NaN.'};
-            app.ExmodeDropDown.Position = [108 147 100 22];
-            app.ExmodeDropDown.Value = '2';
-
-            % Create LevenbergMarquardtSettingsPanel
-            app.LevenbergMarquardtSettingsPanel = uipanel(app.AdvancedTab);
-            app.LevenbergMarquardtSettingsPanel.TitlePosition = 'centertop';
-            app.LevenbergMarquardtSettingsPanel.Title = 'Levenberg-Marquardt Settings';
-            app.LevenbergMarquardtSettingsPanel.Position = [14 13 521 107];
-
-            % Create LambdaSliderLabel
-            app.LambdaSliderLabel = uilabel(app.LevenbergMarquardtSettingsPanel);
-            app.LambdaSliderLabel.HorizontalAlignment = 'right';
-            app.LambdaSliderLabel.Position = [120 39 50 22];
-            app.LambdaSliderLabel.Text = 'Lambda';
-
-            % Create LambdaSlider
-            app.LambdaSlider = uislider(app.LevenbergMarquardtSettingsPanel);
-            app.LambdaSlider.Limits = [-2 3];
-            app.LambdaSlider.MajorTicks = [-2 -1 0 1 2 3];
-            app.LambdaSlider.MajorTickLabels = {'0.01', '0.1', '1.0', '10', '100', '1000'};
-            app.LambdaSlider.ValueChangedFcn = createCallbackFcn(app, @LambdaSliderValueChanged, true);
-            app.LambdaSlider.MinorTicks = [];
-            app.LambdaSlider.Tooltip = {'Select the damping factor used in the Levenberg-Marquardt ordinary non-linear least-squares fitting procedures.'};
-            app.LambdaSlider.Position = [191 49 150 3];
-
-            % Create LambdaDisp
-            app.LambdaDisp = uieditfield(app.LevenbergMarquardtSettingsPanel, 'numeric');
-            app.LambdaDisp.ValueChangedFcn = createCallbackFcn(app, @LambdaDispValueChanged, true);
-            app.LambdaDisp.Position = [361 39 47 22];
-            app.LambdaDisp.Value = 1;
-
-            % Create DeconvolutedWaveSignalProcessingPanel_2
-            app.DeconvolutedWaveSignalProcessingPanel_2 = uipanel(app.AdvancedTab);
-            app.DeconvolutedWaveSignalProcessingPanel_2.TitlePosition = 'centertop';
-            app.DeconvolutedWaveSignalProcessingPanel_2.Title = 'Deconvoluted Wave Signal-Processing';
-            app.DeconvolutedWaveSignalProcessingPanel_2.Position = [249 130 286 161];
-
-            % Create HighpassFilterCutOffSpinner_2Label
-            app.HighpassFilterCutOffSpinner_2Label = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.HighpassFilterCutOffSpinner_2Label.HorizontalAlignment = 'right';
-            app.HighpassFilterCutOffSpinner_2Label.Position = [73 100 137 22];
-            app.HighpassFilterCutOffSpinner_2Label.Text = 'High-pass Filter Cut-Off:';
-
-            % Create HzLabel_4
-            app.HzLabel_4 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.HzLabel_4.Position = [203 74 25 22];
-            app.HzLabel_4.Text = 'Hz';
-
-            % Create HighpassFilterCutOffSpinner
-            app.HighpassFilterCutOffSpinner = uispinner(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.HighpassFilterCutOffSpinner.Limits = [0 1.79769313486232e+308];
-            app.HighpassFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @HighpassFilterCutOffSpinnerValueChanged, true);
-            app.HighpassFilterCutOffSpinner.Tooltip = {'High-pass median filter. The cut-off is estimated according to the cutoff of a boxcar filter with the same smoothing window size.'};
-            app.HighpassFilterCutOffSpinner.Position = [86 74 108 22];
-            app.HighpassFilterCutOffSpinner.Value = 1;
-
-            % Create HzLabel_3
-            app.HzLabel_3 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.HzLabel_3.Position = [203 8 25 22];
-            app.HzLabel_3.Text = 'Hz';
-
-            % Create LowpassFilterCutOffSpinner
-            app.LowpassFilterCutOffSpinner = uispinner(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.LowpassFilterCutOffSpinner.Limits = [2.22044604925031e-16 Inf];
-            app.LowpassFilterCutOffSpinner.ValueChangedFcn = createCallbackFcn(app, @LowpassFilterCutOffSpinnerValueChanged, true);
-            app.LowpassFilterCutOffSpinner.Tooltip = {'Low pass Gaussian filter'};
-            app.LowpassFilterCutOffSpinner.Position = [86 8 108 22];
-            app.LowpassFilterCutOffSpinner.Value = 200;
-
-            % Create LowpassFilterCutOffSpinnerLabel_2
-            app.LowpassFilterCutOffSpinnerLabel_2 = uilabel(app.DeconvolutedWaveSignalProcessingPanel_2);
-            app.LowpassFilterCutOffSpinnerLabel_2.HorizontalAlignment = 'right';
-            app.LowpassFilterCutOffSpinnerLabel_2.Position = [73 34 135 22];
-            app.LowpassFilterCutOffSpinnerLabel_2.Text = 'Low-pass Filter Cut-Off:';
-
-            % Create OutputTab
-            app.OutputTab = uitab(app.TabGroupEventer);
-            app.OutputTab.Title = 'Output';
-            app.OutputTab.ForegroundColor = [0 0 1];
-
-            % Create EnsembleAverageButtonGroup
-            app.EnsembleAverageButtonGroup = uibuttongroup(app.OutputTab);
-            app.EnsembleAverageButtonGroup.SelectionChangedFcn = createCallbackFcn(app, @EnsembleAverageButtonGroupSelectionChanged, true);
-            app.EnsembleAverageButtonGroup.Tooltip = {'Select whether you want the ensemble average waveform to be calculated using the arithmetic mean or the median'};
-            app.EnsembleAverageButtonGroup.TitlePosition = 'centertop';
-            app.EnsembleAverageButtonGroup.Title = 'Ensemble Average';
-            app.EnsembleAverageButtonGroup.Position = [35 183 181 87];
-
-            % Create MedianButton
-            app.MedianButton = uiradiobutton(app.EnsembleAverageButtonGroup);
-            app.MedianButton.Text = 'Median';
-            app.MedianButton.Position = [11 35 62 22];
-            app.MedianButton.Value = true;
-
-            % Create MeanButton
-            app.MeanButton = uiradiobutton(app.EnsembleAverageButtonGroup);
-            app.MeanButton.Text = 'Mean';
-            app.MeanButton.Position = [11 10 52 22];
-
-            % Create WaveFormatDropDownLabel
-            app.WaveFormatDropDownLabel = uilabel(app.OutputTab);
-            app.WaveFormatDropDownLabel.HorizontalAlignment = 'right';
-            app.WaveFormatDropDownLabel.Position = [30 133 80 22];
-            app.WaveFormatDropDownLabel.Text = 'Wave Format:';
-
-            % Create WaveFormatDropDown
-            app.WaveFormatDropDown = uidropdown(app.OutputTab);
-            app.WaveFormatDropDown.Items = {'Axon binary file v1.83 (.abf)', 'Neurodata without borders 2.4.0 (.nwb)', 'Stimfit binary (.h5)', 'ephysIO binary (.phy)', 'Axon Text File (.atf)', 'Igor Text File (.itx)', 'ASCII CSV File (.csv)', 'ASCII TSV File (.txt)', 'ASCII TSV File (.asc)'};
-            app.WaveFormatDropDown.ItemsData = {'abf', 'nwb', 'h5', 'phy', 'atf', 'itx', 'csv', 'txt', 'asc'};
-            app.WaveFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @WaveFormatDropDownValueChanged, true);
-            app.WaveFormatDropDown.Tooltip = {'Tells eventer to export the episodic wave data of all detected events in the specified format.'};
-            app.WaveFormatDropDown.Position = [115 133 250 22];
-            app.WaveFormatDropDown.Value = 'abf';
-
-            % Create FigureFormatDropDownLabel
-            app.FigureFormatDropDownLabel = uilabel(app.OutputTab);
-            app.FigureFormatDropDownLabel.HorizontalAlignment = 'right';
-            app.FigureFormatDropDownLabel.Position = [234 194 80 22];
-            app.FigureFormatDropDownLabel.Text = 'Figure Format';
-
-            % Create FigureFormatDropDown
-            app.FigureFormatDropDown = uidropdown(app.OutputTab);
-            app.FigureFormatDropDown.Items = {'None', 'Matlab (fig)', 'tiff (compressed)', 'tiff (not compressed)', 'png', 'bmp', 'svg', 'eps', 'emf'};
-            app.FigureFormatDropDown.ItemsData = {'none', 'fig', 'tiff', 'tiffn', 'png', 'bmp', 'svg', 'eps', 'emf'};
-            app.FigureFormatDropDown.ValueChangedFcn = createCallbackFcn(app, @FigureFormatDropDownValueChanged, true);
-            app.FigureFormatDropDown.Tooltip = {'Tells eventer what format to use when saving figures. Bitmap images are saved at 300 dpi resolution. Note that viewing *.fig files requires MATLAB. Set to ''none'' for speed if figures are not required.'};
-            app.FigureFormatDropDown.Position = [325 193 184 22];
-            app.FigureFormatDropDown.Value = 'fig';
-
-            % Create dpiLabel
-            app.dpiLabel = uilabel(app.OutputTab);
-            app.dpiLabel.FontColor = [0.651 0.651 0.651];
-            app.dpiLabel.Visible = 'off';
-            app.dpiLabel.Position = [326 170 52 22];
-            app.dpiLabel.Text = '(300 dpi)';
-
-            % Create wavesstackedLabel
-            app.wavesstackedLabel = uilabel(app.OutputTab);
-            app.wavesstackedLabel.FontColor = [0.651 0.651 0.651];
-            app.wavesstackedLabel.Visible = 'off';
-            app.wavesstackedLabel.Position = [116 109 91 22];
-            app.wavesstackedLabel.Text = '(waves stacked)';
-
-            % Create GNUZipCompressionCheckBox
-            app.GNUZipCompressionCheckBox = uicheckbox(app.OutputTab);
-            app.GNUZipCompressionCheckBox.ValueChangedFcn = createCallbackFcn(app, @GNUZipCompressionCheckBoxValueChanged, true);
-            app.GNUZipCompressionCheckBox.Tooltip = {'Compress resulting data file by GNU zip. Note that NWB already uses data compression internally.'};
-            app.GNUZipCompressionCheckBox.Text = 'GNU Zip Compression';
-            app.GNUZipCompressionCheckBox.Position = [375 133 144 22];
-
-            % Create MaxWindowSpinner
-            app.MaxWindowSpinner = uispinner(app.OutputTab);
-            app.MaxWindowSpinner.Step = 0.01;
-            app.MaxWindowSpinner.Limits = [0 1.79769313486232e+308];
-            app.MaxWindowSpinner.ValueChangedFcn = createCallbackFcn(app, @MaxWindowSpinnerValueChanged, true);
-            app.MaxWindowSpinner.Tooltip = {'Events are aligned and exported. Set the post event time in seconds'};
-            app.MaxWindowSpinner.Position = [426 241 85 22];
-            app.MaxWindowSpinner.Value = 0.04;
-
-            % Create EventwindowLabel
-            app.EventwindowLabel = uilabel(app.OutputTab);
-            app.EventwindowLabel.Position = [238 241 83 22];
-            app.EventwindowLabel.Text = 'Event window ';
-
-            % Create MinWindowSpinner
-            app.MinWindowSpinner = uispinner(app.OutputTab);
-            app.MinWindowSpinner.Step = 0.01;
-            app.MinWindowSpinner.Limits = [-1.79769313486232e+308 0];
-            app.MinWindowSpinner.ValueChangedFcn = createCallbackFcn(app, @MinWindowSpinnerValueChanged, true);
-            app.MinWindowSpinner.Tooltip = {'Events are aligned and exported. Set the pre event time in seconds'};
-            app.MinWindowSpinner.Position = [324 241 85 22];
-            app.MinWindowSpinner.Value = -0.01;
-
-            % Create sLabel_2
-            app.sLabel_2 = uilabel(app.OutputTab);
-            app.sLabel_2.Position = [411 240 25 22];
-            app.sLabel_2.Text = 's';
-
-            % Create sLabel_3
-            app.sLabel_3 = uilabel(app.OutputTab);
-            app.sLabel_3.Position = [512 240 13 22];
-            app.sLabel_3.Text = 's';
-
-            % Create RootdirectoryEditFieldLabel
-            app.RootdirectoryEditFieldLabel = uilabel(app.OutputTab);
-            app.RootdirectoryEditFieldLabel.Tooltip = {'Path to the root directory for the analysis. This is determined by the location of the first file loaded. It cannot be changed by the user.'};
-            app.RootdirectoryEditFieldLabel.Position = [36 88 82 22];
-            app.RootdirectoryEditFieldLabel.Text = 'Root directory';
-
-            % Create RootdirectoryEditField
-            app.RootdirectoryEditField = uieditfield(app.OutputTab, 'text');
-            app.RootdirectoryEditField.ValueChangedFcn = createCallbackFcn(app, @RootdirectoryEditFieldValueChanged, true);
-            app.RootdirectoryEditField.Editable = 'off';
-            app.RootdirectoryEditField.Enable = 'off';
-            app.RootdirectoryEditField.Tooltip = {'Path to root'};
-            app.RootdirectoryEditField.Position = [36 63 441 22];
-
-            % Create SetOutputFolderButton
-            app.SetOutputFolderButton = uibutton(app.OutputTab, 'push');
-            app.SetOutputFolderButton.ButtonPushedFcn = createCallbackFcn(app, @SetOutputFolderButtonPushed, true);
-            app.SetOutputFolderButton.Tooltip = {'Enter the folder name to store Eventer output'};
-            app.SetOutputFolderButton.Position = [35 24 106 22];
-            app.SetOutputFolderButton.Text = 'Set output folder';
-
-            % Create outdirLabel
-            app.outdirLabel = uilabel(app.OutputTab);
-            app.outdirLabel.Position = [150 24 327 22];
-            app.outdirLabel.Text = '';
-
-            % Create SummaryTab
-            app.SummaryTab = uitab(app.TabGroupEventer);
-            app.SummaryTab.Title = 'Summary';
-
-            % Create TabGroupSummary
-            app.TabGroupSummary = uitabgroup(app.SummaryTab);
-            app.TabGroupSummary.SelectionChangedFcn = createCallbackFcn(app, @TabGroupSummarySelectionChanged, true);
-            app.TabGroupSummary.Position = [0 5 547 293];
-
-            % Create AllTab
-            app.AllTab = uitab(app.TabGroupSummary);
-            app.AllTab.Title = 'All';
-
-            % Create SummaryAll
-            app.SummaryAll = uitextarea(app.AllTab);
-            app.SummaryAll.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.SummaryAll.Position = [22 2 502 264];
-
-            % Create CurrentTab
-            app.CurrentTab = uitab(app.TabGroupSummary);
-            app.CurrentTab.Title = 'Current ';
-            app.CurrentTab.Scrollable = 'on';
-
-            % Create SummaryCurrent
-            app.SummaryCurrent = uitextarea(app.CurrentTab);
-            app.SummaryCurrent.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.SummaryCurrent.Position = [22 2 502 264];
-
-            % Create ParallelPanel
-            app.ParallelPanel = uipanel(app.Eventer);
-            app.ParallelPanel.Position = [10 10 469 33];
-
-            % Create ParallelCheckBox
-            app.ParallelCheckBox = uicheckbox(app.ParallelPanel);
-            app.ParallelCheckBox.ValueChangedFcn = createCallbackFcn(app, @ParallelCheckBoxValueChanged, true);
-            app.ParallelCheckBox.BusyAction = 'cancel';
-            app.ParallelCheckBox.Tooltip = {'Turn on/off parallel process to speed up batch analysis'};
-            app.ParallelCheckBox.Text = 'Parallel';
-            app.ParallelCheckBox.Position = [109 5 68 22];
-
-            % Create NoofworkersSpinnerLabel
-            app.NoofworkersSpinnerLabel = uilabel(app.ParallelPanel);
-            app.NoofworkersSpinnerLabel.HorizontalAlignment = 'right';
-            app.NoofworkersSpinnerLabel.Position = [225 5 90 22];
-            app.NoofworkersSpinnerLabel.Text = 'No. of workers';
-
-            % Create NoofworkersSpinner
-            app.NoofworkersSpinner = uispinner(app.ParallelPanel);
-            app.NoofworkersSpinner.Limits = [0 Inf];
-            app.NoofworkersSpinner.ValueChangedFcn = createCallbackFcn(app, @NoofworkersSpinnerChanged, true);
-            app.NoofworkersSpinner.BusyAction = 'cancel';
-            app.NoofworkersSpinner.Tooltip = {'Select the number of workers (e.g. cores)'};
-            app.NoofworkersSpinner.Position = [180 5 51 22];
-
-            % Create ProfileNameButton
-            app.ProfileNameButton = uibutton(app.ParallelPanel, 'push');
-            app.ProfileNameButton.ButtonPushedFcn = createCallbackFcn(app, @ProfileNameButtonPushed, true);
-            app.ProfileNameButton.BusyAction = 'cancel';
-            app.ProfileNameButton.Position = [323 5 78 22];
-            app.ProfileNameButton.Text = 'Profile name';
-
-            % Create ProfileLabel
-            app.ProfileLabel = uilabel(app.ParallelPanel);
-            app.ProfileLabel.Position = [406 5 53 22];
-            app.ProfileLabel.Text = 'local';
-
-            % Create ParallelsettingsLabel
-            app.ParallelsettingsLabel = uilabel(app.ParallelPanel);
-            app.ParallelsettingsLabel.Position = [8 5 90 22];
-            app.ParallelsettingsLabel.Text = 'Parallel settings';
-
-            % Create StorePanel
-            app.StorePanel = uipanel(app.Eventer);
-            app.StorePanel.Position = [10 373 546 33];
-
-            % Create WaveDropDownLabel
-            app.WaveDropDownLabel = uilabel(app.StorePanel);
-            app.WaveDropDownLabel.HorizontalAlignment = 'right';
-            app.WaveDropDownLabel.Position = [3 5 35 22];
-            app.WaveDropDownLabel.Text = 'Wave';
-
-            % Create WaveDropDown
-            app.WaveDropDown = uidropdown(app.StorePanel);
-            app.WaveDropDown.Items = {};
-            app.WaveDropDown.ValueChangedFcn = createCallbackFcn(app, @WaveDropDownValueChanged, true);
-            app.WaveDropDown.Tooltip = {'Select current wave. Key: k (up) and'; ' m (down)'};
-            app.WaveDropDown.Position = [43 5 55 22];
-            app.WaveDropDown.Value = {};
-
-            % Create StoreAllWavesButton
-            app.StoreAllWavesButton = uibutton(app.StorePanel, 'push');
-            app.StoreAllWavesButton.ButtonPushedFcn = createCallbackFcn(app, @StoreAllButtonPushed, true);
-            app.StoreAllWavesButton.Interruptible = 'off';
-            app.StoreAllWavesButton.Tooltip = {'Toggle store or unstore all wave settings for analysis'};
-            app.StoreAllWavesButton.Position = [179 5 105 22];
-            app.StoreAllWavesButton.Text = 'Store all waves';
-
-            % Create PopupGraphButton
-            app.PopupGraphButton = uibutton(app.StorePanel, 'push');
-            app.PopupGraphButton.ButtonPushedFcn = createCallbackFcn(app, @PopupGraphButtonPushed, true);
-            app.PopupGraphButton.BusyAction = 'cancel';
-            app.PopupGraphButton.Tooltip = {'Open a pop-up graph of the wave. Zoom into a region of interest and use the cursor buttons to initiate selection of lower and upper time limits for sections of the wave to use for template fitting or exclusion. Key: g'};
-            app.PopupGraphButton.Position = [288 5 92 22];
-            app.PopupGraphButton.Text = 'Pop-up Graph';
-
-            % Create RunningLamp
-            app.RunningLamp = uilamp(app.StorePanel);
-            app.RunningLamp.Enable = 'off';
-            app.RunningLamp.Position = [516 6 20 20];
-
-            % Create RunButton
-            app.RunButton = uibutton(app.StorePanel, 'push');
-            app.RunButton.ButtonPushedFcn = createCallbackFcn(app, @RunButtonPushed, true);
-            app.RunButton.BusyAction = 'cancel';
-            app.RunButton.Interruptible = 'off';
-            app.RunButton.Tooltip = {'Run eventer. Key: p'};
-            app.RunButton.Position = [384 5 45 22];
-            app.RunButton.Text = 'Run';
-
-            % Create RunDropDown
-            app.RunDropDown = uidropdown(app.StorePanel);
-            app.RunDropDown.Items = {'Current', 'Batch'};
-            app.RunDropDown.Tooltip = {'Set eventer run mode to current wave or batch'};
-            app.RunDropDown.Position = [433 5 77 22];
-            app.RunDropDown.Value = 'Current';
-
-            % Create CurrentWaveStoredBox
-            app.CurrentWaveStoredBox = uicheckbox(app.StorePanel);
-            app.CurrentWaveStoredBox.ValueChangedFcn = createCallbackFcn(app, @CurrentWaveStoredBoxValueChanged, true);
-            app.CurrentWaveStoredBox.BusyAction = 'cancel';
-            app.CurrentWaveStoredBox.Tooltip = {'Toggle on/off the store settings checkbox. Key: s (store) and d (delete)'};
-            app.CurrentWaveStoredBox.Text = '';
-            app.CurrentWaveStoredBox.Position = [161 5 15 22];
-
-            % Create StoreCurrentWaveButton
-            app.StoreCurrentWaveButton = uibutton(app.StorePanel, 'push');
-            app.StoreCurrentWaveButton.ButtonPushedFcn = createCallbackFcn(app, @StoreCurrentWaveButtonPushed, true);
-            app.StoreCurrentWaveButton.Interruptible = 'off';
-            app.StoreCurrentWaveButton.Tooltip = {'Select and store current wave settings for analysis. Key: s'};
-            app.StoreCurrentWaveButton.Position = [102 5 55 22];
-            app.StoreCurrentWaveButton.Text = 'Store';
-
-            % Create UnsavedLabel
-            app.UnsavedLabel = uilabel(app.StorePanel);
-            app.UnsavedLabel.VerticalAlignment = 'top';
-            app.UnsavedLabel.FontSize = 16;
-            app.UnsavedLabel.FontColor = [1 0 0];
-            app.UnsavedLabel.Visible = 'off';
-            app.UnsavedLabel.Position = [147 17 25 13];
-            app.UnsavedLabel.Text = '*';
-
-            % Create CreditsButton
-            app.CreditsButton = uibutton(app.Eventer, 'push');
-            app.CreditsButton.ButtonPushedFcn = createCallbackFcn(app, @AboutEventerButtonPushed, true);
-            app.CreditsButton.Position = [491 14 55 22];
-            app.CreditsButton.Text = 'Credits';
-
-            % Show the figure after all components are created
-            app.Eventer.Visible = 'on';
-        end
+    % Code that executes before app deletion
+    function delete(app)
+
+      % Delete UIFigure when app is deleted
+      delete(app.Eventer)
     end
-
-    % App creation and deletion
-    methods (Access = public)
-
-        % Construct app
-        function app = eventerapp_exported
-
-            % Create UIFigure and components
-            createComponents(app)
-
-            % Register the app with App Designer
-            registerApp(app, app.Eventer)
-
-            % Execute the startup function
-            runStartupFcn(app, @startupFcn)
-
-            if nargout == 0
-                clear app
-            end
-        end
-
-        % Code that executes before app deletion
-        function delete(app)
-
-            % Delete UIFigure when app is deleted
-            delete(app.Eventer)
-        end
-    end
+  end
 end

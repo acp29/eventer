@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="38659707" file="C:\Users\Andrew Penn\Documents\MATLAB\eventer\eventer.prj" location="C:\Users\Andrew Penn\Documents\MATLAB\eventer" name="eventer" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="38659707" file="Y:\Documents\GitHub\acpennlab-eventer\eventer.prj" location="Y:\Documents\GitHub\acpennlab-eventer" name="eventer" target="target.mlapps" target-name="Package App">
     <param.appname>eventer</param.appname>
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
     <param.email>eventer.neuroscience@gmail.com</param.email>
@@ -13,7 +13,7 @@
     <param.summary>Eventer is software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}\misc\eventer_logo.png</param.screenshot>
-    <param.version>1.4</param.version>
+    <param.version>1.5</param.version>
     <param.products.name />
     <param.products.id />
     <param.products.version />
@@ -221,7 +221,7 @@
     </fileset.resources>
     <fileset.package />
     <build-deliverables>
-      <file location="C:\Users\Andrew Penn\Documents\MATLAB" name="eventer" optional="false">C:\Users\Andrew Penn\Documents\MATLAB\eventer</file>
+      <file location="Y:\Documents\GitHub" name="acpennlab-eventer" optional="false">Y:\Documents\GitHub\acpennlab-eventer</file>
     </build-deliverables>
     <workflow />
     <matlab>
