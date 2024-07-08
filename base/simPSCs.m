@@ -1,97 +1,112 @@
-%  Function File: simEPSCs
+% Function File: simPSCs
 % ---------------------------------------------------------------------
 % Simulation for data 
 % 
-% 25 Hz
+% 25 Hz sampling rate
 %
-% 0. Create a vector of 0s called the time series vector
-% 1. start for loop (for i=1:100)
-% 2. model template using sum of two exponentials - random rise and decay time constants
-% 3. create event marker vector of zeros - 1 event at a random time
-% 4. multiply event marker vector with a random number (normal or log-normal distribution)
-% 5. convolve model template with event marker vector and add the resulting vector the time series vector
-% 6. add noise (Gaussian) to the time series data
 % ---------------------------------------------------------------------
 % This function is for generating events that have had noise added to it to
 % simulate realistic traces. Then it is possible to analyze these traces to
 % see what is the best compromise between settings such that the false
-% positive and false negative rate are the same
-
-% example
-% Example Settings:
-%Time=300                 % time of simulation in s
-%n=300;                   % number of events
-%A=20;                    % average amplitude of event in pA
-%cv=0;                    % coefficient of variation, 0 is no variation in peak of time course
-%rise=0.4;                % template rise in ms                                                
-%decay=4;                 % template decay in ms
-%sdnoise=2.5;             % standard deviation of noise in pA
-%latency=20;              % event latency in ms; no events closer than this
-%filename='Noise Final';  % Name of your results folder
+% positive and false negative rate are the same. The amplitudes and time
+% constants of the simulated synaptic currents have a log-normal
+% distribution, with the specified mean and coefficient of variation.
+%
+% Example usage:
+% simPSCs ('wave1', 60, 30, -10, 0.4, 4, 0.5, 2.5, 2, 'pink')
+%
+% filename = 'wave1';      % Name of your folder containing simulated data
+% Time = 60;               % Time of simulation in s
+% n = 30;                  % The number of events simulated
+% A = -10;                 % The mean amplitude of events in pA
+% rise = 0.4;              % The mean event rise time constant in ms                                                
+% decay = 4;               % The mean event decay time constant in ms
+% cv = 0.5;                % Coefficient of variation, 0 means no variation in amplitude or kinetics
+% sdnoise = 2.5;           % The standard deviation of the noise in pA
+% proximity = 2;           % The minimum proximity of events in ms; no events closer than this
+% colour = 'pink';         % colour of the additive noise (options are 'white' or 'pink')
+%
+% Note that there are no defaults! All parameters must be specified;
+%
+% Code by Samuel Liu and Andrew Penn, 2019, (last modified: 08 July 2024)
  
-%filename = 'wave1';
-%simPSCs(300,300,20,0,0.4,4,2.5,2,filename); % 5 minute simulation, 300 events
-%S=ephysIO(sprintf('./%s/Events.phy',filename));
-%plot(S.array(:,1),S.array(:,2))
- 
-function simPSCs(Time,n,A,cv,rise,decay,sdnoise,latency,filename)
+function simPSCs(varargin)    
 
-  % Example Settings:
-  	%n=200;                   % number of events
-    %A=10;                    % average amplitude of event in pA
- 	%cv=0.15;                 % coefficient of variation 
- 	%rise=0.4;                % template rise in ms                                                
- 	%decay=4;                 % template decay in ms
- 	%sdnoise=2.5;             % standard deviation of noise in pA
-    %latency=20;              % event latency (in ms); no events closer than this
- 	%filename='Noise Final';  % Name of your results folder
-  % Example Command:
-    %simPSCs(10,200,10,0.15,0.4,4,2.5,'Results1')
-    
+  [filename,time,n,A,rise,decay,cv,sdnoise,proximity,colour] = varargin{:};
+  s=sign(A);
+  A=abs(A);
   a=A*1e-12;
   tau_rise=rise*1e-3;	
   tau_decay=decay*1e-3;														
   sample_rate=25000;														
-  N=25000*Time;																
-  Events=zeros(N,1); 														
+  N=sample_rate*time;																
+  Event=zeros(N,1);
+  EventMarkers=Event;
   Trace=zeros(N,1); 												
   T = (0:N-1)'*1/sample_rate; 										
-  latency = fix(sample_rate*1e-3*latency);
-  
-  % Generating the timings and amplitudes of events
-  Events=zeros(N,1); 
-  for i=1:n															
-    W=a*random('logn',0,cv);	% Log-normal distributed random values with mean 1, std = cv
+  proximity = fix(sample_rate*1e-3*proximity);
+  sd = sqrt(log((cv^2)+1));
+  h = waitbar(0,'Please wait...');
+  for i=1:n	
+
+    % Generating the timings and amplitudes of events
+    Event=zeros(N,1); 
+    W=random('logn',log(a)-sd^2/2,sd);	% Log-normal distributed random values with mean = a and std = a * cv
     flag = 0;
     j=0;
     while flag == 0
-      while (j<latency) || (j>(N-latency))
+      while (j<proximity) || (j>(N-proximity))
         j=randi(N);
       end
-      if sum(Events(j-latency:j+latency)) == 0
+      if sum(Event(j-proximity:j+proximity)) == 0
         flag = 1;
       end
     end
-    Events(j)=W;															
-  end
+    Event(j)=1;			
+    EventMarkers=EventMarkers+Event;
   
-  % Generating the template events by deconvolution
-  tau_r=random('logn',log(tau_rise),cv);	 
-  tau_d=0;																
-  while tau_d <= tau_r												
-    tau_d=random('logn',log(tau_decay),cv);									
-  end
-  Template = -exp(-T/tau_r)+exp(-T/tau_d); 								
-  TemplatePeak = max(Template); 										
-  Template = Template/TemplatePeak; 								
-  Template = Template*-1;																				
-  Template_FFT = fft(Template); 										
-  Events_FFT = fft(Events); 											
-  Trace = real(ifft(Events_FFT.*Template_FFT)); 							
-  n = sum(Events);
+    % Generating the template events by deconvolution
+    tau_r=random('logn',log(tau_rise)-sd^2/2,sd);
+    tau_d=0;																
+    while tau_d <= tau_r												
+      tau_d=random('logn',log(tau_decay)-sd^2/2,sd);							
+    end
+    Template = -exp(-T/tau_r)+exp(-T/tau_d); 								
+    TemplatePeak = max(Template); 										
+    Template = Template/TemplatePeak;
+    Template = Template * s;
+
+    % Convolve the event marker with the template
+    Template_FFT=fft(Template); 										
+    Event_FFT=fft(Event);
+    temp=real(ifft(Event_FFT.*Template_FFT));
+    temp=temp*W;
+    Trace=Trace+temp;
+
+    % Update wait bar
+    waitbar(i/n,h)
   
+  end
+  close(h);
+  n = sum(EventMarkers);
+
+  % Generate noise
+  switch lower(colour)
+    case 'white'
+      noise = randn(N,1);
+    case 'pink'
+      % https://ccrma.stanford.edu/~jos/sasp/Example_Synthesis_1_F_Noise.html
+      coeffB = [0.049922035 -0.095993537 0.050612699 -0.004408786];
+      coeffA = [1 -2.494956002   2.017265875  -0.522189400];
+      nT60 = round(log(1000)/(1-max(abs(roots(coeffA))))); % T60 est.
+      v = randn(1,N+nT60); % Gaussian white noise: N(0,1)
+      noise = filter(coeffB,coeffA,v);    % Apply 1/F roll-off to PSD
+      noise = noise(nT60+1:end)';    % Skip transient response
+      noise = noise / std(noise,1);  % Scale noise to have RMSD of 1;
+  end
+
   % Add random gaussian noise to the recordings 
-  Trace = Trace + randn(N,1) * sdnoise * 1e-12;
+  Trace = Trace + noise * sdnoise * 1e-12;
  
   %Creating the folder to save stuff
   if exist(filename)==7
@@ -100,24 +115,28 @@ function simPSCs(Time,n,A,cv,rise,decay,sdnoise,latency,filename)
   mkdir(filename);
   cd (filename);
   
-  Xn=               'Number of Events:....................';
-  Xcv=              'Coefficient of Variation:............';
-  XA=               'Average Amplitude of Event(in pA):...';
-  Xtau_riseV=       'Rise Constant(in ms):................';
-  Xtau_decayV=      'Decay Constant(in ms):...............';
-  Xsdnoise=         'Standard Deviation of Noise(in pA):..';
+  outstr = cat(2,'Filename:............................. %s \n', ...
+                 'Total Simulation Time (in s):......... %.2f \n', ...
+                 'Number of Events:..................... %d \n', ...
+                 'Mean Amplitude (in pA):............... %.2f \n', ...
+                 'Mean Rise Time Constant (in ms):...... %.2f \n', ...
+                 'Mean Decay Time Constant (in ms):..... %.2f \n', ...
+                 'Coefficient of Variation:............. %.2f \n', ...
+                 'Standard Deviation of Noise (in pA):.. %.2f \n', ...
+                 'Minimum Proximity of Events (in ms):.. %.2f \n', ...
+                 'Type of Noise:........................ %s \n');
   %Saved Variables
   fid=(fopen('Variables.txt','wt'));
-  fprintf(fid, '%s %.2f\n%s %.2f\n%s %.2f\n%s %.2f\n%s %.2f\n%s %.2f\n', Xn, n, XA, a, Xcv, cv, Xtau_riseV, rise, Xtau_decayV, decay, Xsdnoise, sdnoise);
+  fprintf(fid, outstr, varargin{:});
   fclose(fid);
-  
+
   
   %Save Events
-  ephysIO ('Events.phy',[T,Trace],'s','A',{},{},'int32');
+  ephysIO ('Simulation.abf',[T,Trace],'s','A',{},{});
   %Save EventMarkers(event times with amplitude)
-  ephysIO ('EventMarkers.phy',[T,Events],'s','A',{},{},'int32');
+  ephysIO ('EventMarkers.abf',[T,EventMarkers],'s','A',{},{});
   %Save Event Times
-  EventTimes=find(Events~=0);
+  EventTimes=find(EventMarkers~=0)/sample_rate;
   fid=(fopen('Event Times.txt','wt'));
   fprintf(fid, '%.2f\n', EventTimes);
   fclose(fid);
