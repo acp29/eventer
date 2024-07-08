@@ -137,7 +137,7 @@ function simPSCs(varargin)
   ephysIO ('EventMarkers.abf',[T,EventMarkers],'s','A',{},{});
   %Save Event Times
   EventTimes=find(EventMarkers~=0)/sample_rate;
-  fid=(fopen('Event Times.txt','wt'));
+  fid=(fopen('EventTimes.txt','wt'));
   fprintf(fid, '%.2f\n', EventTimes);
   fclose(fid);
 
