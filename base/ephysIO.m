@@ -1056,7 +1056,7 @@ function [waves,xdiff,xunit,yunit,names,notes] = ITXread (filename)
       % End-of-file (EOF) condition breaks from while loop
       break
 
-    elseif ~isempty(regexpi(tmp,'^[\s]*WAVES','once'))
+    elseif ~isempty(regexpi(tmp,'WAVES','once'))
       tmp = strjust(tmp,'left');
       % Step-up data block counter
       block = block + 1;
@@ -1198,10 +1198,6 @@ function [waves,xdiff,xunit,yunit,names,notes] = ITXread (filename)
       if regexpi(tmp,'END','once') ~= 1
         error('expected END keyword after data block in Igor text file')
       end
-
-    elseif ~isempty(regexpi(tmp,'X\s+(GB)?LoadWave','once'))
-
-      error("no data found: create text waves when exporting Igor Pro format")
 
     elseif ~isempty(regexpi(tmp,'X\s+SetScale','once'))
       tmp = regexprep(tmp,'X\s*','','once','ignorecase');
