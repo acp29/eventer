@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="38659707" file="Y:\Documents\GitHub\acpennlab-eventer\eventer.prj" location="Y:\Documents\GitHub\acpennlab-eventer" name="eventer" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="272435767" file="Y:\Documents\GitHub\acpennlab-eventer\eventer.prj" location="Y:\Documents\GitHub\acpennlab-eventer" name="eventer" target="target.mlapps" target-name="Package App">
     <param.appname>eventer</param.appname>
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
     <param.email>eventer.neuroscience@gmail.com</param.email>
@@ -17,7 +17,12 @@
     <param.products.name />
     <param.products.id />
     <param.products.version />
-    <param.platforms />
+    <param.platforms>
+      <item>glnxa64</item>
+      <item>win64</item>
+      <item>maca64</item>
+      <item>maci64</item>
+    </param.platforms>
     <param.output>${PROJECT_ROOT}</param.output>
     <param.guid>a4201893-0fbf-44d9-890b-545e52ccefe0</param.guid>
     <unset>
@@ -26,14 +31,12 @@
       <param.products.name />
       <param.products.id />
       <param.products.version />
-      <param.platforms />
       <param.output />
     </unset>
     <fileset.main>
       <file>${PROJECT_ROOT}\eventerapp.mlapp</file>
     </fileset.main>
     <fileset.depfun>
-      <file>C:\eventer\misc\eventer_logo.png</file>
       <file>${PROJECT_ROOT}\base\binomialf.m</file>
       <file>${PROJECT_ROOT}\base\bounce.m</file>
       <file>${PROJECT_ROOT}\base\ephysIO.m</file>
@@ -50,11 +53,21 @@
       <file>${PROJECT_ROOT}\misc\eventer_logo.png</file>
       <file>${PROJECT_ROOT}\third_party\abfload\abfload.m</file>
       <file>${PROJECT_ROOT}\third_party\acq4\readMeta.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HEKA_Importer.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_extractHEKADataTree.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_extractHEKASolutionTree.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_extractHEKAStimTree.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_ImportHEKAtoMat.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_loadHEKAFile.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_readAmplifierFileHEKA.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_readPulseFileHEKA.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_readSolutionFileHEKA.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_readStimulusFileHEKA.m</file>
+      <file>${PROJECT_ROOT}\third_party\HEKA_Patchmaster_Importer\@HEKA_Importer\HI_time2date.m</file>
       <file>${PROJECT_ROOT}\third_party\ibwread\IBWread.m</file>
       <file>${PROJECT_ROOT}\third_party\ibwread\readIBWbinheader.m</file>
       <file>${PROJECT_ROOT}\third_party\ibwread\readIBWheaders.m</file>
       <file>${PROJECT_ROOT}\third_party\importaxo\importaxo.m</file>
-      <file>${PROJECT_ROOT}\third_party\ImportHEKA\ImportHEKA.m</file>
       <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\+interface\HasProps.m</file>
       <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\addSpaces.m</file>
       <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\Attribute.m</file>
@@ -200,10 +213,11 @@
       <file>${PROJECT_ROOT}\third_party\son\SONVersion.m</file>
       <file>${PROJECT_ROOT}\third_party\tdmsreader\tdmsinfo.m</file>
       <file>${PROJECT_ROOT}\third_party\tdmsreader\tdmsreader.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\get_axes_width.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\LinePlotReducer.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\reduce_plot.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\reduce_to_width.m</file>
+      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big\get_axes_width.m</file>
+      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big\LinePlotExplorer.m</file>
+      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big\LinePlotReducer.m</file>
+      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big\reduce_plot.m</file>
+      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big\reduce_to_width.m</file>
       <file>${PROJECT_ROOT}\third_party\wavesurfer\loadDataFile.m</file>
       <file>${PROJECT_ROOT}\third_party\wavesurfer\scaledSingleAnalogDataFromRaw.m</file>
       <file>${PROJECT_ROOT}\third_party\wcp_import\import_wcp.m</file>
