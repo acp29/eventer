@@ -46,7 +46,7 @@
 %    import_wcp.m from David Jaeckeld (modified by AP)
 %    importaxo.m from Marco Russo
 %    loadDataFile.m from WaveSurfer
-%    ImportHEKA.m from Malcolm Lidierth and Sammy Katta (modified by AP)
+%    HEKA_Importer.m from Malcolm Lidierth, Sammy Katta and Christian Keine
 %    abfload.m from Harald Hentschke, Forrest Collman and Ulrich Egert
 %              (modified by AP)
 %    matcfs32 and matcfs64d from Jim Colebatch
@@ -58,7 +58,7 @@
 %    pCLAMP Axon binary files v1 and v2 (*.abf)
 %    Axograph binary files (*.axgx, *.axgd)
 %    Generic 16-bit integer raw binary files (*.bin, *.dat)
-%    HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)
+%    HEKA PatchMaster binary files (*.dat)
 %    Neurodata without borders v2 (*.nwb)
 %    CED Spike2 binary files (*.smr)
 %    CED Signal binary files (*.cfs) (windows only; 32 or 64-bit)
@@ -413,10 +413,10 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
       ftype = fread(fid,4,'char');
       fclose(fid);
       if (strcmp (char (ftype'), 'DAT2'))
-        if exist('ImportHEKA')
+        if exist('HEKA_Importer')
           [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch);
         else
-           error('the required helper function ImportHEKA.m cannot be found')
+           error('the required helper function HEKA_Importer.m cannot be found')
         end
       else
         [array,xdiff,xunit,yunit,names,notes] = BINload (filename, ch);
@@ -2250,72 +2250,79 @@ end
 
 %--------------------------------------------------------------------------
 
-function [array,xdiff,xunit,yunit,names,notes,recChNames] = HEKAload (filename,ch)
-
-  % HEKA PatchMaster, Pulse and ChartMaster binary file
-  [matData, meta, nseries] = ImportHEKA(filename);
-  recChNames=cell(1);
-  nChannels=0;
-  for i=1:nseries
-    if nChannels > 0
-      newChFlag = 1;
-      for j=1:nChannels
-        if strcmpi(recChNames{j},meta{i}.title)
-          newChFlag=0;
-        end
-      end
-    else
-      newChFlag = 1;
-    end
-    if newChFlag>0
-      nChannels = nChannels + 1;
-      recChNames{nChannels,1} = meta{i}.title;
-    end
-  end
-  nChannels = numel(recChNames);
-  % Evaluate the recording channels
-  fprintf('Number of recording channels: %d\n',nChannels);
-  for i = 1:nChannels
-    fprintf('%d) %s\n',i,recChNames{i});
-  end
-  fprintf('loading channel %d...\n',ch)
-  if ch > nChannels
-    error('channel number out of range')
-  end
-  xdiff=[];
-  yunit='';
-  for i=1:nseries
-    if strcmp(recChNames{ch},meta{i}.title)
-      if isempty(xdiff)
-        xdiff = prod(meta{i}.adc.SampleInterval);
-      else
-        if xdiff ~= prod(meta{i}.adc.SampleInterval)
-          error(['the delta value for the X dimension is not the'...
-                 ' same for all waves'])
-        end
-      end
-      if isempty(yunit)
-        yunit = meta{i}.adc.Units;
-      else
-        if yunit ~= meta{i}.adc.Units
-          warning(['the unit for the Y dimension is not the same for'...
-                   ' all waves in the selected channel'])
-        end
-      end
-    else
-      matData{1}{i} = [];
-    end
-  end
-  array = cells2mat(matData{1});
-  nWaves = size(array,2);
-  x = [0:xdiff:xdiff*(size(array,1)-1)]';
-  array = cat(2,x,array);
-  xunit = 's';
+function [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch)
+  
+  % Initialize output variables
+  array = [];
+  xdiff = 0;
+  xunit = '';
+  yunit = '';
+  names = '';
   notes = '';
+  
+  % Import HEKA files
+  H = HEKA_Importer(filename);
+  D = H.RecTable;
+  
+  % Select experiment (i.e. group) - select any number of groups)
+  listGroup = unique (D.Experiment);
+  nGroup = numel (listGroup);
+  numListGroup = cell (2, nGroup);
+  for i=1:nGroup
+    numListGroup{1,i} = sprintf('%d. ',i);
+    tmp = D.ExperimentName(D.Experiment == i);
+    numListGroup{2,i} = tmp{1};
+  end
+  g = listdlg('ListString', ...
+          arrayfun(@(i) cat(2,numListGroup{:,i}), (1:nGroup), 'UniformOutput', false), ...
+          'Name','Select Group','ListSize',[200,100]);
+  if (isempty (g))
+    return
+  end
+  
+  % Select series - select only ONE series
+  listSeries = unique (D.Stimulus (any (D.Experiment == g, 2)));
+  nSeries = numel (listSeries);
+  numListSeries = cell (2, nSeries);
+  for j=1:nSeries
+    numListSeries{1,j} = sprintf('%d. ',j);
+    numListSeries{2,j} = listSeries{j};
+  end
+  s = listdlg('ListString', ...
+          arrayfun(@(i) cat(2,numListSeries{:,i}), (1:nSeries), 'UniformOutput', false), ...
+          'Name','Select Series','ListSize',[200,100],'SelectionMode','single');
+  if (isempty (s))
+    return
+  end
+  
+  % Get the data
+  idxGetData = find (all (cat (2, any(D.Experiment == g,2), ...
+                                  ismember(D.Stimulus,listSeries(s))), 2));
+  K = numel (idxGetData);
+  array = cell (1, 1 + K);
+  for k = 1:K
+    array{1+k} = D.dataRaw{idxGetData(k)}{ch};
+    if (k == 1)
+      clist = D.ChName{idxGetData(k)}(:);
+      numChannels = numel(clist);
+      yunit = D.ChUnit{idxGetData(k)}{ch};
+      xunit = D.TimeUnit{idxGetData(k)}{ch};
+      xdiff = 1/D.SR(idxGetData(k));
+      nPoints = size(array{1+k},1);
+      array{1} = (0:nPoints-1)' * xdiff;
+    end
+  end
+  array = cell2mat(array);
 
+  % Print channel info
+  fprintf('Number of recording channels: %d\n',numChannels); % not counting command channel
+  for i = 1:numChannels 
+    fprintf('%d) %s\n',i,clist{i,1});
+  end
+  fprintf('loading channel %d...\n',ch);
+  
   % Assign question marks to character array of column names
-  ncols = nWaves+1;
-  names = char(zeros(ncols,1)+63);
+  names = char(zeros(size(array,2),1)+63);
 
 end
 

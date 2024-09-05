@@ -1,5 +1,5 @@
 
-                                          PatchMaster v2.60, 24-Jan-2011
+                                          PatchMaster v2.90
 
 Time is stored as seconds from 01-Jan-1990.
 To convert the stored time into a string, proceed as follows:

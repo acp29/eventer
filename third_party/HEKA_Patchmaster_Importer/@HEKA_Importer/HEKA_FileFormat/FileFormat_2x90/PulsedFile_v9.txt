@@ -1,5 +1,5 @@
 
-                                          PatchMaster v2.70, 19-Oct-2012
+                                          PatchMaster v2.74, 22-Sep-2014
 
    SizeByte             = 1;
    SizeChar             = 1;
@@ -151,8 +151,13 @@
    TrSECM_Z             = 400; (* LONGREAL *)
    TrTrHolding          = 408; (* LONGREAL *)
    TrTcEnumerator       = 416; (* INT32 *)
-      TrFiller          = 420; (* INT32 *)
-   TraceRecSize         = 424;      (* = 53 * 8 *)
+   TrXTrace             = 420; (* INT32 *)
+   TrIntSolValue        = 424; (* LONGREAL *)
+   TrExtSolValue        = 432; (* LONGREAL *)
+   TrIntSolName         = 440; (* String32Size *)
+   TrExtSolName         = 472; (* String32Size *)
+   TrDataPedestal       = 504; (* LONGREAL *)
+   TraceRecSize         = 512;      (* = 64 * 8 *)
 
    (* SweepRecord       = RECORD *)
    SwMark               =   0; (* INT32 *)
@@ -184,20 +189,17 @@
    SeNumberSweeps       = 120; (* INT32 *)
    SeAmplStateOffset    = 124; (* INT32 *)
    SeAmplStateSeries    = 128; (* INT32 *)
-   SeSeriesType         = 132; (* BYTE *)
-   SeUseXStart          = 133; (* BOOLEAN *)
-      SeFiller1         = 134; (* BYTE *)
-      SeFiller2         = 135; (* BYTE *)
+   SeMethodTag          = 132; (* INT32 *)
    SeTime               = 136; (* LONGREAL *)
    SePageWidth          = 144; (* LONGREAL *)
    SeSwUserParamDescr   = 152; (* ARRAY[0..3] OF UserParamDescrType = 4*40 *)
-      SeFiller3         = 312; (* 32 BYTE *)
+   SeMethodName         = 312; (* String32Type *)
    SeSeUserParams1      = 344; (* ARRAY[0..3] OF LONGREAL *)
    SeLockInParams       = 376; (* SeLockInSize = 96, see "Pulsed.de" *)
    SeAmplifierState     = 472; (* AmplifierStateSize = 400 *)
    SeUsername           = 872; (* String80Type *)
    SeSeUserParamDescr1  = 952; (* ARRAY[0..3] OF UserParamDescrType = 4*40 *)
-      SeFiller4         = 1112; (* INT32 *)
+      SeFiller1         = 1112; (* INT32 *)
    SeCRC                = 1116; (* CARD32 *)
    SeSeUserParams2      = 1120; (* ARRAY[0..3] OF LONGREAL *)
    SeSeUserParamDescr2  = 1152; (* ARRAY[0..3] OF UserParamDescrType = 4*40 *)

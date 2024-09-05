@@ -1,9 +1,9 @@
 
-                                          PatchMaster v2.68, 16-Aug-2012
+                                          Patchmaster Next / PatchMaster v2.90.4 30-Oct-2018
 
 1. Data File Types
 
-There are 4 types of data files:
+There are 4 types of .dat files:
 
    - the oldest files where the raw data start at the very beginning
      (e.g. converted "PULSE" datafiles)
@@ -48,18 +48,22 @@ The "bundle" header has the following structure:
    IsLittleEndian is the endian flag: Windows=TRUE, MacOS=FALSE
 
    BundleItems is an array of BundleItem, each containing:
-      Start tells at which offset the respective sub-file starts
-      Length tells the number of bytes of that file
-      Extension tells the filename extension of the file. One can
+      "oStart" tells at which offset the respective sub-file starts
+      "oLength" tells the number of bytes of that file
+      "oExtension" tells the filename extension of the file. One can
          recognize the described file by its filename extension.
 
    Typically, the following indices are used:
       raw data file:    ".dat" = 0;
       Pulsed Tree file: ".pul" = 1;
       PGF Tree file:    ".pgf" = 2;
-      Amplifier file:   ".amp" = 3;  (* EPC/N only *)
+      Amplifier file:   ".amp" = 3;  
       Solution file:    ".sol" = 4;  (* when storing solutions only *)
       Notebook file:    ".txt" = 5;  (* auto store only *)
+      reserved:		           = 6;
+      Marker file:	    ".mrk" = 7;
+      Method file:	    ".mth" = 8;
+      Analysis file:	".onl" = 9;
 
 
 3. Structure of Trace Data
@@ -67,7 +71,7 @@ The "bundle" header has the following structure:
 3.1. General
 
    Trace data are described by the parameters of the "TraceRecord", see Document
-   "PulsedFileFormat_v9.txt".
+   "PulsedFileFormat_v1000.txt".
 
    Specifically:
       TrData            offset [in bytes] into the data file
@@ -108,7 +112,8 @@ The "bundle" header has the following structure:
      stDataStartTime.
 
    - "non-stored" data
-     Additionally, any data originating from a segment with seDoStore = false is not       stored.
+     Additionally, any data originating from a segment with seDoStore = false is not 
+	 stored.
 
 
 4. How to get V-membrane/I-membrane of a Trace

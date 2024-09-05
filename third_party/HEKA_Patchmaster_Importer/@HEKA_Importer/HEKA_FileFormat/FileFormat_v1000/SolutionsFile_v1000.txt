@@ -1,5 +1,5 @@
 
-                                          PatchMaster v2.60, 24-Jan-2011
+                                          PatchMaster v2.90.4, Patchmaster Next
 
    To find the solution belonging to a Trace locate that Solution record with a
    SoNumber value equal to the solution value stored in Trace.InternalSolution
@@ -34,9 +34,8 @@
    SolutionSize         = 160;
 
    (* RootRecord        = RECORD *)
-   RoVersion            =   0; (* INT16 *)
-   RoDataBaseName       =   2; (* SolutionNameSize *)
-   RoSpare1             =  82; (* INT16 *)
+   RoVersion            =   0; (* INT32 *)
+   RoDataBaseName       =   4; (* SolutionNameSize *)
    RoCRC                =  84; (* CARD32 *)
    RootSize             =  88;
 
