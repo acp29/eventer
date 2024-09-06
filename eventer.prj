@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="272435767" file="Y:\Documents\GitHub\acpennlab-eventer\eventer.prj" location="Y:\Documents\GitHub\acpennlab-eventer" name="eventer" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="2151773278" file="Y:\Documents\GitHub\acpennlab-eventer\eventer.prj" location="Y:\Documents\GitHub\acpennlab-eventer" name="eventer" target="target.mlapps" target-name="Package App">
     <param.appname>eventer</param.appname>
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
     <param.email>eventer.neuroscience@gmail.com</param.email>
