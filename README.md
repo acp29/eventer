@@ -20,8 +20,10 @@ To install, run or edit the source code:
 - Add the eventer folder with all subdirectories to the MATLAB path  
 - Start 'appdesigner', open the eventerapp.mlapp file and then click RUN  
   
-### The pre-print for this software is in preparation. In the mean time please cite: 
-Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.* http://doi.org/10.5281/zenodo.3991677  
+### Please cite: 
+
+- Winchester, G., Steele, O.G., Liu, S., Maia Chagas, A., Aziz, W. and Penn,A.C. (2024) Reproducible supervised learning-assisted classification of spontaneous synaptic waveforms with Eventer. *Front. Neuroinform.* Volume 18. https://doi.org/10.3389/fninf.2024.1427642  
+- Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) Eventer: Software for the detection of spontaneous synaptic events measured by electrophysiology or imaging. *Zenodo*, http://doi.org/10.5281/zenodo.3991677  
   
 ### Eventer acknowledges code included or modified from:  
 
@@ -31,8 +33,8 @@ Winchester, G., Liu, S., Steele, O.G., Aziz, W. and Penn, A.C. (2020) *Eventer: 
 - **abfload**, version 4 Dec 2017, Copyright © 2009, Forrest Collman, 2004, Harald Hentschke 1998, U. Egert  
 - **readMeta** (from ACQ4), version 24 Dec 2013, Copyright © 2013 Luke Campagnola   
 - **IBWread**, version 1.0.0.0, Copyright © 2009, Jakub Bialek  
-- **importaxo**, version 4 June 2015, Marco Russo, Modified from BJ/AM <importaxo.m>  
-- **ImportHEKA** (from sigTOOL), version 02 Sep 2012, Copyright © Malcolm Lidierth & King's College London 2009-  
+- **importaxo**, version 4 June 2015, Marco Russo, Modified from BJ/AM 
+- **HEKA_Patchmaster_Importer**, version 1.1, Copyright © Christian Keine 2019
 - **mat64c**, version 2014, Jim Colebatch  
 - **TDMS DAQmx Raw data reader**, version 24 Mar 2014, Copyright © CAS Key Laboratory of Basic Plasma Physics, USTC 1958-2014, Author: Tao Lan  
 - **SON2** (from sigTOOL version 0.95), Copyright © Malcolm Lidierth & King's College London 2009-  
@@ -137,6 +139,14 @@ United Kingdom.
 - Changes to behaviour of 'exmode' setting  on the advanced tab. The exmode feature tells eventer what to do in relation to calculation of interevent intervals after each exclusions zone, and for the first event in each wave. With mode = 1, interevent intervals (IEIs) are calculated for these events from the last event preceeding the exclusion zone under the assumption that no events occurred during the exclusion zone. When merging multiple waves, eventer also assumes there was no gap between waves. With mode = 2, the occurence of an event during these times is considered ambiguous and so is assign a value of NaN.  
 - Minor tweaks to GUI appearance  
 
+**v1.5.0** Release version (source code in version associated with MATLAB R2023b)  
+
+- Dramatically improved figure browsing functionality using mouse and/or keyboard
+- Changed default 'exmode' to 'Mode 1', which assumes that consecutive waves are contiguous
+- Switched direction of 'm' and 'k' short-cut keys used to changing the wave number
+- Added error which is triggered when trying to load an ITX file that does not contain a proper text wave
+- Updated ephysIO and third-party code to support loading newer HEKA PatchMaster .dat files
+- Added support for loading generic 16-bit integer raw binary files (EXPERIMENTAL)
 
 ## Development roadmap  
 
