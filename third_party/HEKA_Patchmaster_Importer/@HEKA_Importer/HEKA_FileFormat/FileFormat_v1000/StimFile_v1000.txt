@@ -1,5 +1,5 @@
 
-                                          PatchMaster v2.70, 19-Oct-2012
+                                          PatchMaster v2.90.4, Patchmaster Next
 
    SizeByte             = 1;
    SizeChar             = 1;
@@ -42,12 +42,12 @@
                              bit 0 (UseStimScale)    -> use StimScale
                              bit 1 (UseRelative)     -> relative to Vmemb
                              bit 2 (UseFileTemplate) -> use file template
-                             bit 3 (UseForLockIn)    -> Info-record has
-                                                        LockIn parameters
+                             bit 3 (UseForLockIn)    -> use for LockIn computation
                              bit 4 (UseForWavelength)
                              bit 5 (UseScaling)
                              bit 6 (UseForChirp)
                              bit 7 (UseForImaging)
+                             bit 14 (UseReserved)
                              bit 15 (UseReserved)
     *)
 
@@ -100,11 +100,23 @@
                             LabsLH,
                             LrelLH );
 
+   BreakType            = ( NoBreak,
+                            BreakPos,
+                            BreakNeg );
+
+   LeakCompType         = ( LeakCompSoft,
+                            LeakCompHard );
+
+   SegStoreType         = ( SegNoStore,
+                            SegStore,
+                            SegStoreStart,
+                            SegStoreEnd );
+
 
    (* StimSegmentRecord = RECORD *)
    seMark               =   0; (* INT32 *)
    seClass              =   4; (* BYTE *)
-   seDoStore            =   5; (* BOOLEAN *)
+   seStoreKind          =   5; (* BYTE *)
    seVoltageIncMode     =   6; (* BYTE *)
    seDurationIncMode    =   7; (* BYTE *)
    seVoltage            =   8; (* LONGREAL *)
@@ -152,7 +164,7 @@
    chHasLockInSine      =  86; (* BOOLEAN *)
    chBreakMode          =  87; (* BYTE *)
    chZeroSeg            =  88; (* INT32 *)
-      chFiller1         =  92; (* INT32 *)
+   chStimSweep          =  92; (* INT32 *)
    chSine_Cycle         =  96; (* LONGREAL *)
    chSine_Amplitude     = 104; (* LONGREAL *)
    chLockIn_VReversal   = 112; (* LONGREAL *)
@@ -181,15 +193,15 @@
    chTraceMathFormat    = 216; (* BYTE *)
    chHasChirp           = 217; (* BOOLEAN *)
    chSquare_Kind        = 218; (* BYTE *)
-      chFiller2         = 219; (* ARRAY[0..13] OF CHAR *)
+      chFiller1         = 219; (* ARRAY[0..5] OF CHAR *)
+   chSquare_BaseIncr    = 224; (* LONGREAL *)
    chSquare_Cycle       = 232; (* LONGREAL *)
    chSquare_PosAmpl     = 240; (* LONGREAL *)
    chCompressionOffset  = 248; (* INT32 *)
    chPhotoMode          = 252; (* INT32 *)
    chBreakLevel         = 256; (* LONGREAL *)
    chTraceMath          = 264; (* String128Type *)
-   chOldCRC             = 268; (* CARD32 *)
-      chFiller3         = 392; (* INT32 *)
+      chFiller2         = 392; (* INT32 *)
    chCRC                = 396; (* CARD32 *)
    ChannelRecSize       = 400;     (* = 50 * 8 *)
 
@@ -228,8 +240,7 @@
       stFiller1         = 242; (* BOOLEAN *)
       stFiller2         = 243; (* BOOLEAN *)
    stCRC                = 244; (* CARD32 *)
-   stTag                = 248; (* String32Type *)
-   StimulationRecSize   = 280;      (* = 35 * 8 *)
+   StimulationRecSize   = 248;      (* = 31 * 8 *)
 
    (* RootRecord        = RECORD *)
    roVersion            =   0; (* INT32 *)
@@ -237,10 +248,13 @@
    roVersionName        =   8; (* String32Type *)
    roMaxSamples         =  40; (* INT32 *)
       roFiller1         =  44; (* INT32 *)
+                                 (* StimParams     = 10  *)
+                                 (* StimParamChars = 320 *)
    roParams             =  48; (* ARRAY[0..9] OF LONGREAL *)
    roParamText          = 128; (* ARRAY[0..9],[0..31]OF CHAR *)
-   roReserved           = 448; (* INT32 *)
+   roReserved           = 448; (* String128Type *)
       roFiller2         = 576; (* INT32 *)
-   roCRC                = 580; (* CARD32 *)
-   RootRecSize          = 584;      (* = 73 * 8 *)
+   roReserved2          = 580; (* 560 Bytes *) 
+   roCRC               = 1140; (* CARD32 *)
+   RootRecSize         = 1144;
 

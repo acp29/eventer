@@ -1,5 +1,12 @@
 % function invcompE(tol,N)
 %
+% Return metrics relating to receiver operator characterics (ROC) for
+% Eventer output. The invcompE function must be run within an
+% eventer.output/Data_chX_wavename directory. The root directory of the
+% original eventer analysis should contain a text file called 
+% 'EventTimes.txt' or Event Times.txt', which lists the event times  
+% that are used as a reference. 
+%
 % tol is the absolute tolerance in ms
 %
 % Two event time (ms) values u and v are within tolerance if:
@@ -19,9 +26,17 @@ function invcompE(tol,N)
   DS = 1e-3; % since tol is in ms
 
   % Open the SimPSCs Event Time
-  fid = fopen('../../Event Times.txt');
+  try 
+    fid = fopen('../../Event Times.txt');
+  catch
+    fid = fopen('../../Event Times.txt');
+  end
   if fid < 0
-    fid = fopen('../../../Event Times.txt');
+    try
+      fid = fopen('../../../EventTimes.txt');
+    catch
+      fid = fopen('../../../Event Times.txt');
+    end
   end
   C = textscan(fid,'%f');
   J = cell2mat(C);
@@ -83,6 +98,6 @@ function invcompE(tol,N)
   fprintf(fid,'False negative rate (FNR): %g\n',FNR);
   fprintf(fid,'False discovery rate (FDR): %g\n',FDR);
   fprintf(fid,'Accuracy (ACC): %g\n',ACC);
-  fprintf(fid,'Matthews correlation coefficient (MCC): %g\n',MCC);
+  fprintf(fid,'Matthews correlation coefficient (MCC): %g\n\n',MCC);
   fclose(fid);
   type('results.txt')

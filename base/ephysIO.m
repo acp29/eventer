@@ -46,7 +46,7 @@
 %    import_wcp.m from David Jaeckeld (modified by AP)
 %    importaxo.m from Marco Russo
 %    loadDataFile.m from WaveSurfer
-%    ImportHEKA.m from Malcolm Lidierth and Sammy Katta (modified by AP)
+%    HEKA_Importer.m from Malcolm Lidierth, Sammy Katta and Christian Keine
 %    abfload.m from Harald Hentschke, Forrest Collman and Ulrich Egert
 %              (modified by AP)
 %    matcfs32 and matcfs64d from Jim Colebatch
@@ -57,7 +57,8 @@
 %  Supported input file formats:
 %    pCLAMP Axon binary files v1 and v2 (*.abf)
 %    Axograph binary files (*.axgx, *.axgd)
-%    HEKA PatchMaster, Pulse and ChartMaster binary files (*.dat)
+%    Generic 16-bit integer raw binary files (*.bin, *.dat)
+%    HEKA PatchMaster binary files (*.dat)
 %    Neurodata without borders v2 (*.nwb)
 %    CED Spike2 binary files (*.smr)
 %    CED Signal binary files (*.cfs) (windows only; 32 or 64-bit)
@@ -232,7 +233,7 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
     %[junk,idx] = sort([D.datenum],'descend');
     %filename = D(idx(1)).name;
     pat = ['(.\.nwb)*(.\.mat)*(.\.phy)*(.\.txt)*(.\.csv)*(.\.itx)*(\.awav)*(.\.atf)*(.\.ibw)*(.\.pxp)*(.\.paq)*'...
-           '(.\.abf)*(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.cfs)*(\.smr)*(\.tdms)*'];
+           '(.\.abf)*(.\.ma)*(.\.h5)*(.\.wcp)*(.\.EDR)*(\.axgd)*(\.axgx)*(\.dat)*(\.bin)*(\.cfs)*(\.smr)*(\.tdms)*'];
     if isempty(regexpi(filename(end-minlim:end),pat))
       error('unsupported filetype for load')
     end
@@ -408,11 +409,20 @@ function [array,xdiff,xunit,yunit,names,notes,clist,saved] = ...
          error('the required helper function importaxo.m cannot be found')
       end
     elseif strcmpi(filename(end-3:end),'.dat')
-      if exist('ImportHEKA')
-        [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch);
+      fid = fopen(filename,'r');
+      ftype = fread(fid,4,'char');
+      fclose(fid);
+      if (strcmp (char (ftype'), 'DAT2'))
+        if exist('HEKA_Importer')
+          [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch);
+        else
+           error('the required helper function HEKA_Importer.m cannot be found')
+        end
       else
-         error('the required helper function ImportHEKA.m cannot be found')
+        [array,xdiff,xunit,yunit,names,notes] = BINload (filename, ch);
       end
+    elseif strcmpi(filename(end-3:end),'.bin')
+      [array,xdiff,xunit,yunit,names,notes] = BINload (filename, ch);
     elseif strcmpi(filename(end-3:end),'.cfs')
       [array,xdiff,xunit,yunit,names,notes,clist] = CFSload (filename,ch);
     elseif strcmpi(filename(end-3:end),'.smr')
@@ -728,6 +738,9 @@ end
 
 function [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename)
 
+  % Initialise empty array for error checking later on
+  array = [];
+
   % HDF5 matlab binary file
   try
     % The matlab format of the hdf5 is not a strict requirement for saved files
@@ -746,9 +759,13 @@ function [array,xdiff,xunit,yunit,names,notes,saved] = PHYload (filename)
     end
   catch
     % Try loading using matlab's load command, the matlab file maybe version < 7.3
-    load(filename); %#ok<*LOAD>
+    load(filename,'-mat') %#ok<*LOAD>
   end
 
+  % Error checking
+  if isempty (array)
+    error ('error reading file - check permissions and availability of the file content')
+  end
 
   if isa(array,'single')
 
@@ -1056,7 +1073,7 @@ function [waves,xdiff,xunit,yunit,names,notes] = ITXread (filename)
       % End-of-file (EOF) condition breaks from while loop
       break
 
-    elseif ~isempty(regexpi(tmp,'WAVES','once'))
+    elseif ~isempty(regexpi(tmp,'^[\s]*WAVES','once'))
       tmp = strjust(tmp,'left');
       % Step-up data block counter
       block = block + 1;
@@ -1198,6 +1215,10 @@ function [waves,xdiff,xunit,yunit,names,notes] = ITXread (filename)
       if regexpi(tmp,'END','once') ~= 1
         error('expected END keyword after data block in Igor text file')
       end
+
+    elseif ~isempty(regexpi(tmp,'X\s+(GB)?LoadWave','once'))
+
+      error("no data found: create text waves when exporting Igor Pro format")
 
     elseif ~isempty(regexpi(tmp,'X\s+SetScale','once'))
       tmp = regexprep(tmp,'X\s*','','once','ignorecase');
@@ -2229,72 +2250,180 @@ end
 
 %--------------------------------------------------------------------------
 
-function [array,xdiff,xunit,yunit,names,notes,recChNames] = HEKAload (filename,ch)
-
-  % HEKA PatchMaster, Pulse and ChartMaster binary file
-  [matData, meta, nseries] = ImportHEKA(filename);
-  recChNames=cell(1);
-  nChannels=0;
-  for i=1:nseries
-    if nChannels > 0
-      newChFlag = 1;
-      for j=1:nChannels
-        if strcmpi(recChNames{j},meta{i}.title)
-          newChFlag=0;
-        end
-      end
-    else
-      newChFlag = 1;
-    end
-    if newChFlag>0
-      nChannels = nChannels + 1;
-      recChNames{nChannels,1} = meta{i}.title;
+function [array,xdiff,xunit,yunit,names,notes,clist] = HEKAload (filename,ch)
+  
+  % Initialize output variables
+  array = [];
+  xdiff = 0;
+  xunit = '';
+  yunit = '';
+  names = '';
+  notes = '';
+  
+  % Import HEKA files
+  H = HEKA_Importer(filename);
+  D = H.RecTable;
+  
+  % Select experiment (i.e. group) - select any number of groups)
+  listGroup = unique (D.Experiment);
+  nGroup = numel (listGroup);
+  numListGroup = cell (2, nGroup);
+  for i=1:nGroup
+    numListGroup{1,i} = sprintf('%d. ',i);
+    tmp = D.ExperimentName(D.Experiment == i);
+    numListGroup{2,i} = tmp{1};
+  end
+  g = listdlg('ListString', ...
+          arrayfun(@(i) cat(2,numListGroup{:,i}), (1:nGroup), 'UniformOutput', false), ...
+          'Name','Select Group','ListSize',[200,100]);
+  if (isempty (g))
+    return
+  end
+  
+  % Select series - select only ONE series
+  listSeries = unique (D.Stimulus (any (D.Experiment == g, 2)));
+  nSeries = numel (listSeries);
+  numListSeries = cell (2, nSeries);
+  for j=1:nSeries
+    numListSeries{1,j} = sprintf('%d. ',j);
+    numListSeries{2,j} = listSeries{j};
+  end
+  s = listdlg('ListString', ...
+          arrayfun(@(i) cat(2,numListSeries{:,i}), (1:nSeries), 'UniformOutput', false), ...
+          'Name','Select Series','ListSize',[200,100],'SelectionMode','single');
+  if (isempty (s))
+    return
+  end
+  
+  % Get the data
+  idxGetData = find (all (cat (2, any(D.Experiment == g,2), ...
+                                  ismember(D.Stimulus,listSeries(s))), 2));
+  K = numel (idxGetData);
+  array = cell (1, 1 + K);
+  for k = 1:K
+    array{1+k} = D.dataRaw{idxGetData(k)}{ch};
+    if (k == 1)
+      clist = D.ChName{idxGetData(k)}(:);
+      numChannels = numel(clist);
+      yunit = D.ChUnit{idxGetData(k)}{ch};
+      xunit = D.TimeUnit{idxGetData(k)}{ch};
+      xdiff = 1/D.SR(idxGetData(k));
+      nPoints = size(array{1+k},1);
+      array{1} = (0:nPoints-1)' * xdiff;
     end
   end
-  nChannels = numel(recChNames);
-  % Evaluate the recording channels
+  array = cell2mat(array);
+
+  % Print channel info
+  fprintf('Number of recording channels: %d\n',numChannels); % not counting command channel
+  for i = 1:numChannels 
+    fprintf('%d) %s\n',i,clist{i,1});
+  end
+  fprintf('loading channel %d...\n',ch);
+  
+  % Assign question marks to character array of column names
+  names = char(zeros(size(array,2),1)+63);
+
+end
+
+%--------------------------------------------------------------------------
+
+function [array,xdiff,xunit,yunit,names,notes] = BINload (filename,ch)
+
+  % Set defaults: Select channel 1 if no channel specified
+  if (nargin < 2)
+    ch = 1;
+  end
+
+  % Get file size
+  fid = fopen(filename);
+  fseek(fid,0,1);
+  fSz = ftell(fid);
+  fclose(fid);
+
+  % Request for more information about the file
+  prompt = {...
+      sprintf(cat(2,'Generic 16-bit integer raw binary file loader\n\n', ...
+        'File Name: %s \nFile size (in bytes): %d \n\n',...
+        'Byte start location of data block:'), filename, fSz),...
+      'Byte end location of data block:',...
+      'Machine format (e.g. ieee-le or ieee-be):',...
+      'Number of ADC channels in recording (e.g. 1):',...
+      'ADC voltage range (+/- Volts, e.g. 5 or 10):',...
+      'ADC bit depth (in bits, e.g. 12, 14 or 16):',...
+      'Scaling factor (in Volts/unit):' ...
+      'Unit (pA or mV):',...
+      'Sampling Interval (in microseconds):'};
+  dlg_title = 'Raw binary file';
+  num_lines = 1;
+  def = {'0',...
+         num2str(fSz),...
+         'native',...
+         '1',...
+         '10',...
+         '16',...
+         '0.02',...
+         'pA',...
+         '200'};
+  opts = struct;
+  opts.Resize = 'on';
+  opts.WindowStyle = 'modal';
+  answer = inputdlg(prompt,dlg_title,num_lines,def,'on');
+
+  % Read raw binary data block
+  tmp = cellfun(@str2double,answer(1:2),'UniformOutput',false);
+  [byteLocStart,byteLocEnd] = deal(tmp{:});
+  machForm = answer{3};
+  fid = fopen(filename,'r',machForm);
+  fseek(fid,byteLocStart,'bof');
+  allRawData = double(fread(fid, byteLocEnd - byteLocStart, 'int16'));
+  fclose(fid);
+
+  % Collect only the channnel specified by app.ChannelSpinner.Value
+  % assuming data for each sample point is collected in channel order
+  % for all channels
+  nChannels = str2double(answer{4});
+  clist = arrayfun(@(i)sprintf('ch%d',i),(1:nChannels)','UniformOutput',false);
   fprintf('Number of recording channels: %d\n',nChannels);
   for i = 1:nChannels
-    fprintf('%d) %s\n',i,recChNames{i});
+    fprintf('%d) %s\n',i,clist{i});
   end
   fprintf('loading channel %d...\n',ch)
   if ch > nChannels
     error('channel number out of range')
   end
-  xdiff=[];
-  yunit='';
-  for i=1:nseries
-    if strcmp(recChNames{ch},meta{i}.title)
-      if isempty(xdiff)
-        xdiff = prod(meta{i}.adc.SampleInterval);
-      else
-        if xdiff ~= prod(meta{i}.adc.SampleInterval)
-          error(['the delta value for the X dimension is not the'...
-                 ' same for all waves'])
-        end
-      end
-      if isempty(yunit)
-        yunit = meta{i}.adc.Units;
-      else
-        if yunit ~= meta{i}.adc.Units
-          warning(['the unit for the Y dimension is not the same for'...
-                   ' all waves in the selected channel'])
-        end
-      end
-    else
-      matData{1}{i} = [];
-    end
-  end
-  array = cells2mat(matData{1});
-  nWaves = size(array,2);
-  x = [0:xdiff:xdiff*(size(array,1)-1)]';
-  array = cat(2,x,array);
-  xunit = 's';
-  notes = '';
+  rawData = allRawData(ch:nChannels:end);
 
-  % Assign question marks to character array of column names
-  ncols = nWaves+1;
-  names = char(zeros(ncols,1)+63);
+  % Rescale the raw data to the correct unit
+  tmp = cellfun(@str2double,answer(5:7),'UniformOutput',false);
+  [voltRange,bitDepth,voltsPerUnit] = deal(tmp{:});
+  voltsPerBit = voltRange / (2^(bitDepth-1)-1);
+  yunit = answer{8};
+  switch yunit
+    case 'pA'
+      unitPrefixScale = 1e-12;
+    case 'mV'
+      unitPrefixScale = 1e-03;
+    otherwise
+      error('Units must be pA or mV')
+  end
+  yunit(1) = [];
+  data = unitPrefixScale * rawData * voltsPerBit / voltsPerUnit;
+
+  % Create time vector using sampling interval and size of the data
+  xunit = 's';
+  xdiff = str2double(answer{9}) * 1.0e-06; % in s
+  N = numel(data);
+  time = (0:N-1)' * xdiff;
+
+  % Combine time vector and data into a single array
+  array = cat(2,time,data);
+
+  % Assign an array of question marks to it
+  names = char(zeros(2,1)+63);
+
+  % Create empty notes character array
+  notes = '';
 
 end
 

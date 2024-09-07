@@ -1,23 +1,28 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="38659707" file="C:\Users\Andrew Penn\Documents\MATLAB\eventer\eventer.prj" location="C:\Users\Andrew Penn\Documents\MATLAB\eventer" name="eventer" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="1239993651" file="/Users/andrewcpenn/Library/Mobile Documents/com~apple~CloudDocs/GitHub/acpennlab-eventer/eventer.prj" location="/Users/andrewcpenn/Library/Mobile Documents/com~apple~CloudDocs/GitHub/acpennlab-eventer" name="eventer" target="target.mlapps" target-name="Package App">
     <param.appname>eventer</param.appname>
     <param.authnamewatermark>Winchester, G. and Penn, A. C.</param.authnamewatermark>
     <param.email>eventer.neuroscience@gmail.com</param.email>
     <param.company />
-    <param.icon>${PROJECT_ROOT}\eventer_resources\icon_24.png</param.icon>
+    <param.icon>${PROJECT_ROOT}/eventer_resources/icon_24.png</param.icon>
     <param.icons>
-      <file>${PROJECT_ROOT}\eventer_resources\icon_48.png</file>
-      <file>${PROJECT_ROOT}\eventer_resources\icon_24.png</file>
-      <file>${PROJECT_ROOT}\eventer_resources\icon_16.png</file>
+      <file>${PROJECT_ROOT}/eventer_resources/icon_48.png</file>
+      <file>${PROJECT_ROOT}/eventer_resources/icon_24.png</file>
+      <file>${PROJECT_ROOT}/eventer_resources/icon_16.png</file>
     </param.icons>
     <param.summary>Eventer is software for the detection of spontaneous synaptic events measured by electrophysiology or imaging.</param.summary>
     <param.description />
-    <param.screenshot>${PROJECT_ROOT}\misc\eventer_logo.png</param.screenshot>
-    <param.version>1.4</param.version>
+    <param.screenshot>${PROJECT_ROOT}/misc/eventer_logo.png</param.screenshot>
+    <param.version>1.5</param.version>
     <param.products.name />
     <param.products.id />
     <param.products.version />
-    <param.platforms />
+    <param.platforms>
+      <item>glnxa64</item>
+      <item>win64</item>
+      <item>maca64</item>
+      <item>maci64</item>
+    </param.platforms>
     <param.output>${PROJECT_ROOT}</param.output>
     <param.guid>a4201893-0fbf-44d9-890b-545e52ccefe0</param.guid>
     <unset>
@@ -26,206 +31,215 @@
       <param.products.name />
       <param.products.id />
       <param.products.version />
-      <param.platforms />
       <param.output />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\eventerapp.mlapp</file>
+      <file>${PROJECT_ROOT}/eventerapp.mlapp</file>
     </fileset.main>
     <fileset.depfun>
-      <file>C:\eventer\misc\eventer_logo.png</file>
-      <file>${PROJECT_ROOT}\base\binomialf.m</file>
-      <file>${PROJECT_ROOT}\base\bounce.m</file>
-      <file>${PROJECT_ROOT}\base\ephysIO.m</file>
-      <file>${PROJECT_ROOT}\base\eventer.m</file>
-      <file>${PROJECT_ROOT}\base\filter1.m</file>
-      <file>${PROJECT_ROOT}\base\gaussianf.m</file>
-      <file>${PROJECT_ROOT}\base\hpfilter.m</file>
-      <file>${PROJECT_ROOT}\base\lsqfit.m</file>
-      <file>${PROJECT_ROOT}\base\medianf.m</file>
-      <file>${PROJECT_ROOT}\base\reduce_data.m</file>
-      <file>${PROJECT_ROOT}\base\sinv.m</file>
-      <file>${PROJECT_ROOT}\misc\copy.png</file>
-      <file>${PROJECT_ROOT}\misc\cursor-23231_1280.png</file>
-      <file>${PROJECT_ROOT}\misc\eventer_logo.png</file>
-      <file>${PROJECT_ROOT}\third_party\abfload\abfload.m</file>
-      <file>${PROJECT_ROOT}\third_party\acq4\readMeta.m</file>
-      <file>${PROJECT_ROOT}\third_party\ibwread\IBWread.m</file>
-      <file>${PROJECT_ROOT}\third_party\ibwread\readIBWbinheader.m</file>
-      <file>${PROJECT_ROOT}\third_party\ibwread\readIBWheaders.m</file>
-      <file>${PROJECT_ROOT}\third_party\importaxo\importaxo.m</file>
-      <file>${PROJECT_ROOT}\third_party\ImportHEKA\ImportHEKA.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\+interface\HasProps.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\addSpaces.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\Attribute.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\cloneNwbFileClass.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\Dataset.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillClass.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillConstructor.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillDynamicTableMethods.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillExport.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillProps.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillSetters.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\fillValidators.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\formatShape.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\Group.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\isShapeScalar.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\Link.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\mapType.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\processClass.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+file\writeNamespace.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\+space\+shape\Block.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\+space\+shape\Point.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\+space\findShapes.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\+space\getReadSpace.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\+space\segmentSelection.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\+space\Shape.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\getBaseType.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\getMatType.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\getMatTypeSize.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\getRefData.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\isBool.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\map2kwargs.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\mapData2H5.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\parseAttributes.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\parseCompound.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\parseDataset.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\parseGroup.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\parseReference.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\pathParts.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\resolvePath.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\writeAttribute.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\writeCompound.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\writeDataset.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+io\writeGroup.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+misc\cellPrettyPrint.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+misc\getMatnwbDir.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+misc\parseSkipInvalidName.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+misc\str2validName.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+schemes\exportJson.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+schemes\getClasses.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+schemes\loadNamespace.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+schemes\Namespace.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\generate.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\getNamespaceInfo.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\getSourceInfo.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\loadCache.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\loadSchemaObject.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\saveCache.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+spec\schema2matlab.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\CurrentClampSeries.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\Device.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\IntracellularElectrode.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\NWBContainer.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\NWBDataInterface.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\NWBFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\PatchClampSeries.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\TimeIntervals.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\TimeSeries.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+core\VoltageClampSeries.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+hdmf_common\Container.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+hdmf_common\Data.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+hdmf_common\DynamicTable.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+hdmf_common\ElementIdentifiers.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+hdmf_common\VectorData.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+hdmf_common\VectorIndex.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\+properties\Chunking.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\+properties\Compression.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\+properties\DynamicFilter.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\+properties\Shuffle.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\BlueprintPipe.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\BoundPipe.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\Configuration.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\guessChunkSize.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\Pipe.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\+datapipe\Property.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\DataPipe.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\DatasetClass.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\DataStub.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\ExternalLink.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\GroupClass.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\MetaClass.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\ObjectView.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\RegionView.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\Set.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+untyped\SoftLink.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addColumn.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addRawData.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addRow.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addTableColumn.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addVarargColumn.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addVarargRow.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\addVecInd.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\checkConfig.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\clear.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\getIndex.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\getRow.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\getTypeMap.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\+dynamictable\nwbToTable.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\checkConstraint.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\checkDims.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\checkDtype.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\checkSet.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\checkUnset.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\correctType.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+types\+util\parseConstrained.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\+util\getSchemaVersion.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\external_packages\datenum8601\datenum8601.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\generateCore.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\generateExtension.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\nwbExport.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\NwbFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\nwbRead.m</file>
-      <file>${PROJECT_ROOT}\third_party\parfor_progressbar\parfor_progressbar.m</file>
-      <file>${PROJECT_ROOT}\third_party\relativepath\relativepath.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\MakeMATFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\OpenMATFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\progressbar.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\scverLessThan.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONADCToDouble.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONChanList.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONChannelInfo.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONFileHeader.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetADCChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetADCMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetBlockHeaders.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetEventChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetRealMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetRealWaveChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetSampleInterval.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONGetTextMarkerChannel.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONTicksToSeconds.m</file>
-      <file>${PROJECT_ROOT}\third_party\son\SONVersion.m</file>
-      <file>${PROJECT_ROOT}\third_party\tdmsreader\tdmsinfo.m</file>
-      <file>${PROJECT_ROOT}\third_party\tdmsreader\tdmsreader.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\get_axes_width.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\LinePlotReducer.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\reduce_plot.m</file>
-      <file>${PROJECT_ROOT}\third_party\tuckermcclure-matlab-plot-big-6e92329\reduce_to_width.m</file>
-      <file>${PROJECT_ROOT}\third_party\wavesurfer\loadDataFile.m</file>
-      <file>${PROJECT_ROOT}\third_party\wavesurfer\scaledSingleAnalogDataFromRaw.m</file>
-      <file>${PROJECT_ROOT}\third_party\wcp_import\import_wcp.m</file>
+      <file>${PROJECT_ROOT}/base/binomialf.m</file>
+      <file>${PROJECT_ROOT}/base/bounce.m</file>
+      <file>${PROJECT_ROOT}/base/ephysIO.m</file>
+      <file>${PROJECT_ROOT}/base/eventer.m</file>
+      <file>${PROJECT_ROOT}/base/filter1.m</file>
+      <file>${PROJECT_ROOT}/base/gaussianf.m</file>
+      <file>${PROJECT_ROOT}/base/hpfilter.m</file>
+      <file>${PROJECT_ROOT}/base/lsqfit.m</file>
+      <file>${PROJECT_ROOT}/base/medianf.m</file>
+      <file>${PROJECT_ROOT}/base/reduce_data.m</file>
+      <file>${PROJECT_ROOT}/base/sinv.m</file>
+      <file>${PROJECT_ROOT}/misc/copy.png</file>
+      <file>${PROJECT_ROOT}/misc/cursor-23231_1280.png</file>
+      <file>${PROJECT_ROOT}/misc/eventer_logo.png</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HEKA_Importer.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_ImportHEKAtoMat.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_extractHEKADataTree.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_extractHEKASolutionTree.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_extractHEKAStimTree.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_loadHEKAFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_readAmplifierFileHEKA.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_readPulseFileHEKA.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_readSolutionFileHEKA.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_readStimulusFileHEKA.m</file>
+      <file>${PROJECT_ROOT}/third_party/HEKA_Patchmaster_Importer/@HEKA_Importer/HI_time2date.m</file>
+      <file>${PROJECT_ROOT}/third_party/abfload/abfload.m</file>
+      <file>${PROJECT_ROOT}/third_party/acq4/readMeta.m</file>
+      <file>${PROJECT_ROOT}/third_party/ibwread/IBWread.m</file>
+      <file>${PROJECT_ROOT}/third_party/ibwread/readIBWbinheader.m</file>
+      <file>${PROJECT_ROOT}/third_party/ibwread/readIBWheaders.m</file>
+      <file>${PROJECT_ROOT}/third_party/importaxo/importaxo.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/+interface/HasProps.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/Attribute.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/Dataset.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/Group.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/Link.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/addSpaces.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/cloneNwbFileClass.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillClass.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillConstructor.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillDynamicTableMethods.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillExport.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillProps.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillSetters.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/fillValidators.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/formatShape.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/isShapeScalar.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/mapType.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/processClass.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+file/writeNamespace.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/+space/+shape/Block.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/+space/+shape/Point.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/+space/Shape.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/+space/findShapes.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/+space/getReadSpace.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/+space/segmentSelection.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/getBaseType.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/getMatType.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/getMatTypeSize.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/getRefData.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/isBool.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/map2kwargs.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/mapData2H5.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/parseAttributes.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/parseCompound.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/parseDataset.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/parseGroup.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/parseReference.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/pathParts.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/resolvePath.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/writeAttribute.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/writeCompound.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/writeDataset.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+io/writeGroup.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+misc/cellPrettyPrint.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+misc/getMatnwbDir.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+misc/parseSkipInvalidName.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+misc/str2validName.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+schemes/Namespace.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+schemes/exportJson.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+schemes/getClasses.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+schemes/loadNamespace.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/generate.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/getNamespaceInfo.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/getSourceInfo.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/loadCache.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/loadSchemaObject.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/saveCache.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+spec/schema2matlab.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/CurrentClampSeries.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/Device.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/IntracellularElectrode.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/NWBContainer.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/NWBDataInterface.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/NWBFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/PatchClampSeries.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/TimeIntervals.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/TimeSeries.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+core/VoltageClampSeries.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+hdmf_common/Container.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+hdmf_common/Data.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+hdmf_common/DynamicTable.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+hdmf_common/ElementIdentifiers.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+hdmf_common/VectorData.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+hdmf_common/VectorIndex.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/+properties/Chunking.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/+properties/Compression.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/+properties/DynamicFilter.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/+properties/Shuffle.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/BlueprintPipe.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/BoundPipe.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/Configuration.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/Pipe.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/Property.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/+datapipe/guessChunkSize.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/DataPipe.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/DataStub.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/DatasetClass.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/ExternalLink.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/GroupClass.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/MetaClass.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/ObjectView.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/RegionView.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/Set.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+untyped/SoftLink.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addColumn.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addRawData.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addRow.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addTableColumn.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addVarargColumn.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addVarargRow.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/addVecInd.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/checkConfig.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/clear.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/getIndex.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/getRow.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/getTypeMap.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/+dynamictable/nwbToTable.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/checkConstraint.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/checkDims.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/checkDtype.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/checkSet.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/checkUnset.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/correctType.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+types/+util/parseConstrained.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/+util/getSchemaVersion.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/NwbFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/external_packages/datenum8601/datenum8601.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/generateCore.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/generateExtension.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/nwbExport.m</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/nwbRead.m</file>
+      <file>${PROJECT_ROOT}/third_party/parfor_progressbar/parfor_progressbar.m</file>
+      <file>${PROJECT_ROOT}/third_party/relativepath/relativepath.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/MakeMATFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/OpenMATFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONADCToDouble.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONChanList.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONChannelInfo.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONFileHeader.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetADCChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetADCMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetBlockHeaders.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetEventChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetRealMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetRealWaveChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetSampleInterval.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONGetTextMarkerChannel.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONTicksToSeconds.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/SONVersion.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/progressbar.m</file>
+      <file>${PROJECT_ROOT}/third_party/son/scverLessThan.m</file>
+      <file>${PROJECT_ROOT}/third_party/tdmsreader/tdmsinfo.m</file>
+      <file>${PROJECT_ROOT}/third_party/tdmsreader/tdmsreader.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big/LinePlotExplorer.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big/LinePlotReducer.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big/get_axes_width.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big/reduce_plot.m</file>
+      <file>${PROJECT_ROOT}/third_party/tuckermcclure-matlab-plot-big/reduce_to_width.m</file>
+      <file>${PROJECT_ROOT}/third_party/wavesurfer/loadDataFile.m</file>
+      <file>${PROJECT_ROOT}/third_party/wavesurfer/scaledSingleAnalogDataFromRaw.m</file>
+      <file>${PROJECT_ROOT}/third_party/wcp_import/import_wcp.m</file>
     </fileset.depfun>
     <fileset.resources>
-      <file>${PROJECT_ROOT}\base\mex\medianf_mex_glnxa64.mexa64</file>
-      <file>${PROJECT_ROOT}\base\mex\medianf_mex_maca64.mexmaca64</file>
-      <file>${PROJECT_ROOT}\base\mex\medianf_mex_maci64.mexmaci64</file>
-      <file>${PROJECT_ROOT}\base\mex\medianf_mex_win64.mexw64</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs32\CFS32.dll</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs32\MATCFS32.dll</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs64c\CFS64c.dll</file>
-      <file>${PROJECT_ROOT}\third_party\matcfs64c\matcfs64c.mexw64</file>
-      <file>${PROJECT_ROOT}\third_party\matnwb-2.6.0.2\jar\schema.jar</file>
+      <file>${PROJECT_ROOT}/base/mex/medianf_mex_glnxa64.mexa64</file>
+      <file>${PROJECT_ROOT}/base/mex/medianf_mex_maca64.mexmaca64</file>
+      <file>${PROJECT_ROOT}/base/mex/medianf_mex_maci64.mexmaci64</file>
+      <file>${PROJECT_ROOT}/base/mex/medianf_mex_win64.mexw64</file>
+      <file>${PROJECT_ROOT}/third_party/matcfs32/CFS32.dll</file>
+      <file>${PROJECT_ROOT}/third_party/matcfs32/MATCFS32.dll</file>
+      <file>${PROJECT_ROOT}/third_party/matcfs64c/CFS64c.dll</file>
+      <file>${PROJECT_ROOT}/third_party/matcfs64c/matcfs64c.mexw64</file>
+      <file>${PROJECT_ROOT}/third_party/matnwb-2.6.0.2/jar/schema.jar</file>
     </fileset.resources>
     <fileset.package />
     <build-deliverables>
-      <file location="C:\Users\Andrew Penn\Documents\MATLAB" name="eventer" optional="false">C:\Users\Andrew Penn\Documents\MATLAB\eventer</file>
+      <file location="/Users/andrewcpenn/Library/Mobile Documents/com~apple~CloudDocs/GitHub" name="acpennlab-eventer" optional="false">/Users/andrewcpenn/Library/Mobile Documents/com~apple~CloudDocs/GitHub/acpennlab-eventer</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2023b</root>
+      <root>/Applications/MATLAB_R2023b.app</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
       </toolboxes>
@@ -236,18 +250,18 @@
       </toolbox>
     </matlab>
     <platform>
-      <unix>false</unix>
-      <mac>false</mac>
-      <windows>true</windows>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
       <win2k>false</win2k>
       <winxp>false</winxp>
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>10.0</osver>
+      <osver>14.6.1</osver>
       <os32>false</os32>
       <os64>true</os64>
-      <arch>win64</arch>
+      <arch>maci64</arch>
       <matlab>true</matlab>
     </platform>
   </configuration>

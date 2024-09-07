@@ -163,7 +163,7 @@ classdef LinePlotReducer < handle
         
         % Create a ReductiveViewer for the x and y variables.
         function o = LinePlotReducer(varargin)
-            
+
             % We're busy. Ignore resizing and things.
             o.busy = true;
 
@@ -444,10 +444,16 @@ classdef LinePlotReducer < handle
             end
             
             % Listen for changes to the x limits of the axes.
-            if verLessThan('matlab', '8.4')
+            info = ver; 
+            ISOCTAVE = any (ismember ({info.Name}, 'Octave'));
+            if ISOCTAVE
                 size_cb = {'Position', 'PostSet'};
             else
-                size_cb = {'SizeChanged'};
+                if verLessThan('matlab', '8.4')
+                    size_cb = {'Position', 'PostSet'};
+                else
+                    size_cb = {'SizeChanged'};
+                end
             end
             
             % Listen for changes on the axes.
@@ -566,8 +572,14 @@ classdef LinePlotReducer < handle
             
             % Note: In MATLAB 2014b, changing units won't trigger a change
             % in size, so we don't need to do this.
-            if verLessThan('matlab', '8.4')
+            info = ver; 
+            ISOCTAVE = any (ismember ({info.Name}, 'Octave'));
+            if ISOCTAVE
                 o.calls_to_ignore = o.calls_to_ignore + 1;
+            else
+                if verLessThan('matlab', '8.4')
+                    o.calls_to_ignore = o.calls_to_ignore + 1;
+                end
             end
             
         end
